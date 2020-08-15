@@ -2,9 +2,9 @@ spring:
   profiles: local
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/angelhack?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useLegacyDatetimeCode=false
-    username: teamrocket
-    password: teamrocket
+    url: jdbc:mysql://localhost:3306/fork?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useLegacyDatetimeCode=false
+    username: fork
+    password: fork
     #    initialization-mode: always
     hikari:
       maximum-pool-size: 10
