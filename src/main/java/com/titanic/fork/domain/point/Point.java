@@ -25,7 +25,7 @@ public abstract class Point {
     @Column(name = "POINT_CONTENT", columnDefinition = "VARCHAR(500)")
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_GOAL_ID")
     private AccountGoal accountGoal;
 }

@@ -8,6 +8,7 @@ spring:
     initialization-mode: always
     hikari:
       maximum-pool-size: 10
+#    data: classpath:sql/schema.sql, classpath:sql/accommodation-local.sql, classpath:sql/picture-local.sql
   jpa:
     properties:
       hibernate:
@@ -24,6 +25,8 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  codec:
+    max-in-memory-size: 10MB
 ---
 cloud:
   aws:

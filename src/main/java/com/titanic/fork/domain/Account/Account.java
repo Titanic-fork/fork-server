@@ -1,7 +1,7 @@
 package com.titanic.fork.domain.Account;
 
 import lombok.Getter;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account {
 
@@ -21,6 +22,7 @@ public abstract class Account {
     private String email;
     private String name;
     private String phoneNumber;
+
     @OneToMany(mappedBy = "account")
     private List<AccountGoal> accountGoals = new ArrayList<>();
 }

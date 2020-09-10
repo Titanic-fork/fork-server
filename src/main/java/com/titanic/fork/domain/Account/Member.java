@@ -1,9 +1,12 @@
 package com.titanic.fork.domain.Account;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 @Entity
+@Getter
+@NoArgsConstructor
 public class Member extends Account {
 }

@@ -3,12 +3,14 @@ package com.titanic.fork.domain.Account;
 import com.titanic.fork.domain.goal.Alarm;
 import com.titanic.fork.domain.goal.Goal;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class AccountGoal {
 
     @Id

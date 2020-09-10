@@ -1,11 +1,14 @@
 package com.titanic.fork.domain.goal;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 public class Alarm {
 
     @Id
@@ -13,7 +16,7 @@ public class Alarm {
     private Long id;
 
     @ElementCollection
-    @CollectionTable(name = "TARGET_DAY_OF_WEEK", joinColumns = @JoinColumn(name = "alarm_id"))
+    @CollectionTable(name = "TARGET_DAY_OF_WEEK", joinColumns = @JoinColumn(name = "ALARM_ID"))
     @Column(name = "DAY_OF_WEEKS")
     private List<String> targetDayOfWeeks = new ArrayList<>();
 
