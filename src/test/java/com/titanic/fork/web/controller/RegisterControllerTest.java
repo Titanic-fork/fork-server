@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
@@ -18,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
+@Rollback(false)
 public class RegisterControllerTest {
 
     @LocalServerPort
@@ -39,12 +42,12 @@ public class RegisterControllerTest {
         RegisterWantDto registerWantDto = RegisterWantDto.of(email,password,name,phoneNumber);
 
         // when
-        EntityExchangeResult<RegisterResponseDto> registerResponse = webTestClient.post()
+        EntityExchangeResult<ResponseEntity> registerResponse = webTestClient.post()
                 .uri(requestUrl)
                 .body(Mono.just(registerWantDto), RegisterWantDto.class)
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.OK)
-                .expectBody(RegisterResponseDto.class)
+                .expectBody(ResponseEntity.class)
                 .returnResult();
 
         /* then

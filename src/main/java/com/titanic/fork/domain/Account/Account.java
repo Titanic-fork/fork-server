@@ -25,4 +25,11 @@ public abstract class Account {
 
     @OneToMany(mappedBy = "account")
     private List<AccountGoal> accountGoals = new ArrayList<>();
+
+    public Account(String password, String email, String name, String phoneNumber) {
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
 }
