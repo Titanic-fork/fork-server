@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Account {
 
     @Id
@@ -24,7 +24,7 @@ public abstract class Account {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "account")
-    private List<AccountGoal> accountGoals = new ArrayList<>();
+    private final List<AccountGoal> accountGoals = new ArrayList<>();
 
     public Account(String password, String email, String name, String phoneNumber) {
         this.password = password;

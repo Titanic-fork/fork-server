@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -15,5 +16,11 @@ public class AccountRepository {
     public long save(Account account) {
         entityManager.persist(account);
         return account.getId();
+    }
+
+    public List<Account> findByEmail(String email) {
+        return entityManager.createQuery("select a from Account a where a.email = :email", Account.class)
+                .setParameter("email", email)
+                .getResultList();
     }
 }
