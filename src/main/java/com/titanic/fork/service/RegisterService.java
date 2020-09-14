@@ -24,21 +24,16 @@ public class RegisterService {
     private final JwtService jwtService;
 
     public ResponseEntity<Void> register(RegisterWantDto registerWantDto, HttpServletResponse response) {
-        try {
-            Member account = Member.from(registerWantDto);
-            validateDuplicateMember(account);
-            accountRepository.save(account);
-            String jwtTokenWithEmail = jwtService.createJwtTokenWithEmail(account.getEmail());
-            response.setHeader(LoginEnum.AUTHORIZATION.getValue(), jwtTokenWithEmail);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (AlreadyExistedException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        Member account = Member.from(registerWantDto);
+        validateDuplicateMember(account);
+        accountRepository.save(account);
+        String jwtTokenWithEmail = jwtService.createJwtTokenWithEmail(account.getEmail());
+        response.setHeader(LoginEnum.AUTHORIZATION.getValue(), jwtTokenWithEmail);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private void validateDuplicateMember(Account account) {
-        List<Account> foundAccounts = accountRepository.findByEmail(account.getEmail());
+        List<Account> foundAccounts = accountRepository.findDuplicatedEmail(account.getEmail());
         if (!foundAccounts.isEmpty()) {
             throw new AlreadyExistedException();
         }

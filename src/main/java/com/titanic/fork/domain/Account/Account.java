@@ -19,6 +19,8 @@ public abstract class Account {
     private Long id;
 
     private String password;
+
+    @Column(unique = true)
     private String email;
     private String name;
     private String phoneNumber;
@@ -31,5 +33,9 @@ public abstract class Account {
         this.email = email;
         this.name = name;
         this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isEqualName(String name) {
+        return this.name.equals(name);
     }
 }

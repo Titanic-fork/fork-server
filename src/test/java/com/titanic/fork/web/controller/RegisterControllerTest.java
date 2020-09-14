@@ -15,6 +15,8 @@ import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
 @Rollback(false)
@@ -30,7 +32,7 @@ public class RegisterControllerTest {
     private final static String LOCALHOST = "http://localhost:";
 
     @ParameterizedTest
-    @CsvSource({"guswns1657,password,hyunjun,010-7720-7957"})
+    @CsvSource({"guswns1651@gmail.com,password,hyunjun,010-7720-7957"})
     void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
 
         // given
@@ -42,13 +44,14 @@ public class RegisterControllerTest {
                 .uri(requestUrl)
                 .body(Mono.just(registerWantDto), RegisterWantDto.class)
                 .exchange()
-                .expectStatus().isEqualTo(HttpStatus.OK)
                 .expectBody(ResponseEntity.class)
                 .returnResult();
 
         /* then
          * 회원가입 성공 후 Header.Authorization에 Jwt토큰이 담기는 지 테스트
+         * 실패 시 HttpStatus = 401(BAD_REQUEST)
          */
-        System.out.println(registerResponse.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
+        System.out.println("token = " + registerResponse.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
+        assertThat(registerResponse.getStatus()).isEqualTo(HttpStatus.OK);
     }
 }

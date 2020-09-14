@@ -1,6 +1,6 @@
 package com.titanic.fork.web.controller;
 
-import com.titanic.fork.web.dto.request.account.CheckNameAndPasswordWantDto;
+import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordDto;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +30,18 @@ public class LoginControllerTest {
     private final static String LOCALHOST = "http://localhost:";
 
     @ParameterizedTest
-    @CsvSource({"hyunjun,guswns1659@gmail.com"})
+    @CsvSource({"hyunjun,guswns1652@gmail.com"})
     void 비밀번호변경API를_테스트한다(String name, String email) {
 
         // given
         String requestUrl = LOCALHOST + port + requestMapping + "/find";
-        CheckNameAndPasswordWantDto checkNameAndPasswordWantDto = CheckNameAndPasswordWantDto.of(name, email);
+        ValidateNameAndPasswordDto validateNameAndPasswordDto = ValidateNameAndPasswordDto.of(name, email);
 
         // when
-        ResponseEntity responseEntity = webTestClient.post()
+        ResponseEntity<Void> responseEntity = webTestClient.post()
                 .uri(requestUrl)
-                .body(Mono.just(checkNameAndPasswordWantDto), CheckNameAndPasswordWantDto.class)
+                .body(Mono.just(validateNameAndPasswordDto), ValidateNameAndPasswordDto.class)
                 .exchange()
-                .expectStatus().isEqualTo(HttpStatus.OK)
                 .expectBody(ResponseEntity.class)
                 .returnResult()
                 .getResponseBody();
@@ -50,6 +49,6 @@ public class LoginControllerTest {
         /* then
          * 이름과 이메일이 일치하면 OK(200) / 아니면 401(UNAuthorized)
          */
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 }
