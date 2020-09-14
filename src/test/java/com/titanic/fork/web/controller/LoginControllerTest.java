@@ -1,7 +1,6 @@
 package com.titanic.fork.web.controller;
 
-import com.titanic.fork.web.dto.request.account.RegisterWantDto;
-import com.titanic.fork.web.login.LoginEnum;
+import com.titanic.fork.web.dto.request.account.CheckNameAndPasswordWantDto;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +10,15 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
 @Rollback(false)
-public class RegisterControllerTest {
+public class LoginControllerTest {
 
     @LocalServerPort
     private int port;
@@ -30,25 +30,26 @@ public class RegisterControllerTest {
     private final static String LOCALHOST = "http://localhost:";
 
     @ParameterizedTest
-    @CsvSource({"guswns1657,password,hyunjun,010-7720-7957"})
-    void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
+    @CsvSource({"hyunjun,guswns1659@gmail.com"})
+    void 비밀번호변경API를_테스트한다(String name, String email) {
 
         // given
-        String requestUrl = LOCALHOST + port + requestMapping;
-        RegisterWantDto registerWantDto = RegisterWantDto.of(email,password,name,phoneNumber);
+        String requestUrl = LOCALHOST + port + requestMapping + "/find";
+        CheckNameAndPasswordWantDto checkNameAndPasswordWantDto = CheckNameAndPasswordWantDto.of(name, email);
 
         // when
-        EntityExchangeResult<ResponseEntity> registerResponse = webTestClient.post()
+        ResponseEntity responseEntity = webTestClient.post()
                 .uri(requestUrl)
-                .body(Mono.just(registerWantDto), RegisterWantDto.class)
+                .body(Mono.just(checkNameAndPasswordWantDto), CheckNameAndPasswordWantDto.class)
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.OK)
                 .expectBody(ResponseEntity.class)
-                .returnResult();
+                .returnResult()
+                .getResponseBody();
 
         /* then
-         * 회원가입 성공 후 Header.Authorization에 Jwt토큰이 담기는 지 테스트
+         * 이름과 이메일이 일치하면 OK(200) / 아니면 401(UNAuthorized)
          */
-        System.out.println(registerResponse.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }

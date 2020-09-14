@@ -26,7 +26,7 @@ public class RegisterService {
     public ResponseEntity<Void> register(RegisterWantDto registerWantDto, HttpServletResponse response) {
         try {
             Member account = Member.from(registerWantDto);
-//            validateDuplicateMember(account);
+            validateDuplicateMember(account);
             accountRepository.save(account);
             String jwtTokenWithEmail = jwtService.createJwtTokenWithEmail(account.getEmail());
             response.setHeader(LoginEnum.AUTHORIZATION.getValue(), jwtTokenWithEmail);
