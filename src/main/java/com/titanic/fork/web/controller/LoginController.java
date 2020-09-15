@@ -1,7 +1,9 @@
 package com.titanic.fork.web.controller;
 
 import com.titanic.fork.service.LoginService;
-import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordDto;
+import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
+import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +18,17 @@ public class LoginController {
 
     private final LoginService loginService;
 
+    @ApiOperation(value = "비밀번호 수정을 위한 인증API")
     @PostMapping("find")
-    public ResponseEntity<Void> validateNameAndPassword(@RequestBody ValidateNameAndPasswordDto
-                                                                    validateNameAndPasswordDto) {
-        return loginService.validateNameAndPassword(validateNameAndPasswordDto);
+    public ResponseEntity<Void> validateNameAndPassword(@RequestBody ValidateNameAndPasswordRequest
+                                                                validateNameAndPasswordRequest) {
+        return loginService.validateNameAndPassword(validateNameAndPasswordRequest);
+    }
+
+    @ApiOperation(value = "비밀번호 수정API")
+    @PutMapping("find")
+    public ResponseEntity<Void> changePassword(@RequestBody NewPasswordRequest newPasswordRequest) {
+        return loginService.changePassword(newPasswordRequest);
     }
 
     /*

@@ -3,6 +3,7 @@ package com.titanic.fork.service;
 import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.exception.NoSuchAccountException;
 import com.titanic.fork.repository.AccountRepository;
+import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
 import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,5 +25,9 @@ public class LoginService {
             throw new NoSuchAccountException();
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<Void> changePassword(NewPasswordRequest newPasswordRequest) {
+        return null;
     }
 }
