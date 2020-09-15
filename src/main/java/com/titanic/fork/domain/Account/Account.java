@@ -16,17 +16,17 @@ public abstract class Account {
     @Id
     @GeneratedValue
     @Column(name = "Account_id")
-    private Long id;
+    protected Long id;
 
-    private String password;
+    protected String password;
 
     @Column(unique = true)
-    private String email;
-    private String name;
-    private String phoneNumber;
+    protected String email;
+    protected String name;
+    protected String phoneNumber;
 
     @OneToMany(mappedBy = "account")
-    private final List<AccountGoal> accountGoals = new ArrayList<>();
+    protected final List<AccountGoal> accountGoals = new ArrayList<>();
 
     public Account(String password, String email, String name, String phoneNumber) {
         this.password = password;
@@ -38,4 +38,6 @@ public abstract class Account {
     public boolean isEqualName(String name) {
         return this.name.equals(name);
     }
+
+    public abstract void changePassword(String newPassword);
 }

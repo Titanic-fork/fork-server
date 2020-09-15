@@ -19,7 +19,6 @@ public class LoginService {
     private final AccountRepository accountRepository;
 
     public ResponseEntity<Void> validateNameAndPassword(ValidateNameAndPasswordRequest validateNameAndPasswordRequest) {
-
         Account foundAccount = accountRepository.findByEmail(validateNameAndPasswordRequest.getEmail());
         if (!foundAccount.isEqualName(validateNameAndPasswordRequest.getName())) {
             throw new NoSuchAccountException();
@@ -28,6 +27,8 @@ public class LoginService {
     }
 
     public ResponseEntity<Void> changePassword(NewPasswordRequest newPasswordRequest) {
-        return null;
+        Account foundAccount = accountRepository.findByEmail(newPasswordRequest.getEmail());
+        foundAccount.changePassword(newPasswordRequest.getNewPassword());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

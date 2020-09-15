@@ -57,12 +57,12 @@ public class LoginControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"newPassword"})
-    void 비밀번호변경API를_테스트한다(String newPassword) {
+    @CsvSource({"guswns1651@gmail.com,newPassword"})
+    void 비밀번호변경API를_테스트한다(String email, String newPassword) {
 
         // given
         String requestUrl = LOCALHOST + port + requestMapping +"/find";
-        NewPasswordRequest newPasswordRequest = NewPasswordRequest.from(newPassword);
+        NewPasswordRequest newPasswordRequest = NewPasswordRequest.from(email, newPassword);
 
         // when
         EntityExchangeResult<NewPasswordRequest> newPasswordRequestEntityExchangeResult = webTestClient.put()

@@ -17,6 +17,11 @@ public class Member extends Account {
         super(password, email, name, phoneNumber);
     }
 
+    @Override
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
     public static Member from(RegisterWantDto registerWantDto) {
         return Member.builder()
                 .email(registerWantDto.getEmail())

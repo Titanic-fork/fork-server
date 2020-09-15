@@ -9,15 +9,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NewPasswordRequest {
 
+    private String email;
     private String newPassword;
 
     @Builder
-    public NewPasswordRequest(String newPassword) {
+    public NewPasswordRequest(String email, String newPassword) {
+        this.email = email;
         this.newPassword = newPassword;
     }
 
-    public static NewPasswordRequest from(String newPassword) {
+    public static NewPasswordRequest from(String email, String newPassword) {
         return NewPasswordRequest.builder()
+                .email(email)
                 .newPassword(newPassword)
                 .build();
     }
