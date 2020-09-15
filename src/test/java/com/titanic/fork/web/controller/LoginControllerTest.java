@@ -10,6 +10,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -38,17 +39,16 @@ public class LoginControllerTest {
         ValidateNameAndPasswordDto validateNameAndPasswordDto = ValidateNameAndPasswordDto.of(name, email);
 
         // when
-        ResponseEntity<Void> responseEntity = webTestClient.post()
+        EntityExchangeResult<ResponseEntity> responseEntityEntityExchangeResult = webTestClient.post()
                 .uri(requestUrl)
                 .body(Mono.just(validateNameAndPasswordDto), ValidateNameAndPasswordDto.class)
                 .exchange()
                 .expectBody(ResponseEntity.class)
-                .returnResult()
-                .getResponseBody();
+                .returnResult();
 
         /* then
          * 이름과 이메일이 일치하면 OK(200) / 아니면 401(UNAuthorized)
          */
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(responseEntityEntityExchangeResult.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 }

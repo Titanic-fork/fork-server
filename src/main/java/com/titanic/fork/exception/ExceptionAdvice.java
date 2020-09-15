@@ -21,7 +21,7 @@ public class ExceptionAdvice {
     }
 
     /*
-     * Repository에서 해당 객체가 없을 때 발생하는 에러를 핸들링하는 메서
+     * Repository에서 해당 객체가 없을 때 발생하는 에러를 핸들링하는 메서드
      */
     @ExceptionHandler(NoResultException.class)
     public ResponseEntity<Void> noResult() {

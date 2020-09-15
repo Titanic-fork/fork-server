@@ -10,17 +10,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class LoginService {
 
     private final AccountRepository accountRepository;
+    private final static int ZERO = 0;
 
     public ResponseEntity<Void> validateNameAndPassword(ValidateNameAndPasswordDto validateNameAndPasswordDto) {
 
-        Account foundAccount = accountRepository.findByEmail(validateNameAndPasswordDto.getEmail())
-                .orElseThrow(NoSuchAccountException::new);
+        List<Account> foundAccounts = accountRepository.findByEmail(validateNameAndPasswordDto.getEmail());
+
+        if (foundAccounts.isEmpty()) {
+            throw new NoSuchAccountException();
+        }
+
+        Account foundAccount = foundAccounts.get(ZERO);
 
         if (!foundAccount.isEqualName(validateNameAndPasswordDto.getName())) {
             throw new NoSuchAccountException();
