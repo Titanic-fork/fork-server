@@ -7,19 +7,19 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ValidateNameAndPasswordDto {
+public class ValidateNameAndPasswordRequest {
 
     private String name;
     private String email;
 
     @Builder
-    public ValidateNameAndPasswordDto(String name, String email) {
+    public ValidateNameAndPasswordRequest(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
-    public static ValidateNameAndPasswordDto of(String name, String email) {
-        return ValidateNameAndPasswordDto.builder()
+    public static ValidateNameAndPasswordRequest of(String name, String email) {
+        return ValidateNameAndPasswordRequest.builder()
                 .name(name)
                 .email(email)
                 .build();
