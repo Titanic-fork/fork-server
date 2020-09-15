@@ -33,7 +33,7 @@ public class RegisterService {
     }
 
     private void validateDuplicateMember(Account account) {
-        List<Account> foundAccounts = accountRepository.findByEmail(account.getEmail());
+        List<Account> foundAccounts = accountRepository.findDuplicatedEmail(account.getEmail());
         if (!foundAccounts.isEmpty()) {
             throw new AlreadyExistedException();
         }

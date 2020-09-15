@@ -31,7 +31,7 @@ public class LoginControllerTest {
     private final static String LOCALHOST = "http://localhost:";
 
     @ParameterizedTest
-    @CsvSource({"hyunjun,guswns1652@gmail.com"})
+    @CsvSource({"hyunjun,guswns1651@gmail.com"})
     void 비밀번호변경API를_테스트한다(String name, String email) {
 
         // given
@@ -49,6 +49,6 @@ public class LoginControllerTest {
         /* then
          * 이름과 이메일이 일치하면 OK(200) / 아니면 401(UNAuthorized)
          */
-        assertThat(responseEntityEntityExchangeResult.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(responseEntityEntityExchangeResult.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }
