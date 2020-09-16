@@ -30,13 +30,14 @@ public class RegisterControllerTest {
 
     private final static String requestMapping = "/account";
     private final static String LOCALHOST = "http://localhost:";
+    private final static String SERVICE_URL = "http://15.165.66.150/api/";
 
     @ParameterizedTest
-    @CsvSource({"guswns1651@gmail.com,password,hyunjun,010-7720-7957"})
+    @CsvSource({"guswns1659@gmail.com,password,hyunjun,010-7720-7957"})
     void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
 
         // given
-        String requestUrl = LOCALHOST + port + requestMapping;
+        String requestUrl = SERVICE_URL + requestMapping;
         RegisterWantDto registerWantDto = RegisterWantDto.of(email,password,name,phoneNumber);
 
         // when
