@@ -34,7 +34,7 @@ public class AccountControllerTest {
 
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
-    @CsvSource({"guswns1651@gmail.com,010-7720-7957"})
+    @CsvSource({"guswns1651@gmail.com,010-1234-5678"})
     void 핸드폰번호_수정API를_테스트한다(String email, String phoneNumber) {
 
         // given
