@@ -7,21 +7,21 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NewPasswordRequest {
+public class NewPhoneNumberRequest {
 
     private String email;
-    private String newPassword;
+    private String phoneNumber;
 
     @Builder
-    public NewPasswordRequest(String email, String newPassword) {
+    public NewPhoneNumberRequest(String email, String phoneNumber) {
         this.email = email;
-        this.newPassword = newPassword;
+        this.phoneNumber = phoneNumber;
     }
 
-    public static NewPasswordRequest of(String email, String newPassword) {
-        return NewPasswordRequest.builder()
+    public static NewPhoneNumberRequest of(String email, String phoneNumber) {
+        return NewPhoneNumberRequest.builder()
                 .email(email)
-                .newPassword(newPassword)
+                .phoneNumber(phoneNumber)
                 .build();
     }
 }

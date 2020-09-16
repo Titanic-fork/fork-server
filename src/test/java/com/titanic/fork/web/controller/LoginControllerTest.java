@@ -15,10 +15,7 @@ import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-import javax.servlet.http.HttpServletResponse;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
@@ -51,9 +48,9 @@ public class LoginControllerTest {
                 .returnResult();
 
         /* then
-         * 이름과 이메일이 일치하면 OK(200) / 아니면 401(UNAuthorized)
+         * 이름과 이메일이 일치하면 OK(200) / 아니면 401(UnAuthorized)
          */
-        assertThat(responseEntityEntityExchangeResult.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(responseEntityEntityExchangeResult.getStatus()).isEqualTo(HttpStatus.OK);
     }
 
     @ParameterizedTest
@@ -62,14 +59,14 @@ public class LoginControllerTest {
 
         // given
         String requestUrl = LOCALHOST + port + requestMapping +"/find";
-        NewPasswordRequest newPasswordRequest = NewPasswordRequest.from(email, newPassword);
+        NewPasswordRequest newPasswordRequest = NewPasswordRequest.of(email, newPassword);
 
         // when
-        EntityExchangeResult<NewPasswordRequest> newPasswordRequestEntityExchangeResult = webTestClient.put()
+        EntityExchangeResult<ResponseEntity> newPasswordRequestEntityExchangeResult = webTestClient.put()
                 .uri(requestUrl)
                 .body(Mono.just(newPasswordRequest), NewPasswordRequest.class)
                 .exchange()
-                .expectBody(NewPasswordRequest.class)
+                .expectBody(ResponseEntity.class)
                 .returnResult();
 
         // then
