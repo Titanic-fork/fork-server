@@ -10,7 +10,7 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(AlreadyExistedException.class)
     public ResponseEntity<Void> alreadyExisted() {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NoSuchAccountException.class)

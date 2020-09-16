@@ -1,6 +1,8 @@
 package com.titanic.fork.web.controller;
 
+import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
+import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -52,5 +54,47 @@ public class AccountControllerTest {
 
         // then
         assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.OK);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"hyunjun,guswns1651@gmail.com"})
+    void 비밀번호변경을_위한_인증API을_테스트한다(String name, String email) {
+
+        // given
+        String requestUrl = LOCALHOST + port + requestMapping + "/find";
+        ValidateNameAndPasswordRequest validateNameAndPasswordRequest = ValidateNameAndPasswordRequest.of(name, email);
+
+        // when
+        EntityExchangeResult<ResponseEntity> responseEntityEntityExchangeResult = webTestClient.post()
+                .uri(requestUrl)
+                .body(Mono.just(validateNameAndPasswordRequest), ValidateNameAndPasswordRequest.class)
+                .exchange()
+                .expectBody(ResponseEntity.class)
+                .returnResult();
+
+        /* then
+         * 이름과 이메일이 일치하면 OK(200) / 아니면 401(UnAuthorized)
+         */
+        assertThat(responseEntityEntityExchangeResult.getStatus()).isEqualTo(HttpStatus.OK);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"guswns1651@gmail.com,newPassword"})
+    void 비밀번호변경API를_테스트한다(String email, String newPassword) {
+
+        // given
+        String requestUrl = LOCALHOST + port + requestMapping +"/find";
+        NewPasswordRequest newPasswordRequest = NewPasswordRequest.of(email, newPassword);
+
+        // when
+        EntityExchangeResult<ResponseEntity> newPasswordRequestEntityExchangeResult = webTestClient.put()
+                .uri(requestUrl)
+                .body(Mono.just(newPasswordRequest), NewPasswordRequest.class)
+                .exchange()
+                .expectBody(ResponseEntity.class)
+                .returnResult();
+
+        // then
+        assertThat(newPasswordRequestEntityExchangeResult.getStatus()).isEqualTo(HttpStatus.OK);
     }
 }

@@ -30,7 +30,7 @@ public class RegisterService {
         accountRepository.save(account);
         String jwtTokenWithEmail = jwtService.createJwtTokenWithEmail(account.getEmail());
         response.setHeader(LoginEnum.AUTHORIZATION.getValue(), jwtTokenWithEmail);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     private void validateDuplicateMember(Account account) {
