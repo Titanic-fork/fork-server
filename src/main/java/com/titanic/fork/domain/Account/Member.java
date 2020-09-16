@@ -22,6 +22,11 @@ public class Member extends Account {
         this.password = newPassword;
     }
 
+    @Override
+    public void changePhoneNumber(String newPhoneNumber) {
+        this.phoneNumber = newPhoneNumber;
+    }
+
     public static Member from(RegisterWantDto registerWantDto) {
         return Member.builder()
                 .email(registerWantDto.getEmail())

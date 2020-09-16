@@ -1,4 +1,4 @@
-package com.titanic.fork.service;
+package com.titanic.fork.service.account;
 
 import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.exception.NoSuchAccountException;

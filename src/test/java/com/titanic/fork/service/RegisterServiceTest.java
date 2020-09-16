@@ -1,6 +1,7 @@
 package com.titanic.fork.service;
 
 import com.titanic.fork.repository.AccountRepository;
+import com.titanic.fork.service.account.RegisterService;
 import com.titanic.fork.web.dto.request.account.RegisterWantDto;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -40,4 +40,6 @@ public abstract class Account {
     }
 
     public abstract void changePassword(String newPassword);
+
+    public abstract void changePhoneNumber(String phoneNumber);
 }

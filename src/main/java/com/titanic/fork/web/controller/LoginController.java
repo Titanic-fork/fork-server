@@ -1,6 +1,6 @@
 package com.titanic.fork.web.controller;
 
-import com.titanic.fork.service.LoginService;
+import com.titanic.fork.service.account.LoginService;
 import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
 import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;
 import io.swagger.annotations.ApiOperation;

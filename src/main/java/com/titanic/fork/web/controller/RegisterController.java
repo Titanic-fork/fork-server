@@ -1,6 +1,6 @@
 package com.titanic.fork.web.controller;
 
-import com.titanic.fork.service.RegisterService;
+import com.titanic.fork.service.account.RegisterService;
 import com.titanic.fork.web.dto.request.account.RegisterWantDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

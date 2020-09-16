@@ -20,4 +20,9 @@ public class Leader extends Account {
     public void changePassword(String newPassword) {
         this.password = newPassword;
     }
+
+    @Override
+    public void changePhoneNumber(String newPhoneNumber) {
+        this.phoneNumber = newPhoneNumber;
+    }
 }

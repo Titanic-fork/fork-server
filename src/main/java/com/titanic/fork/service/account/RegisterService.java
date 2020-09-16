@@ -1,9 +1,10 @@
-package com.titanic.fork.service;
+package com.titanic.fork.service.account;
 
 import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.Member;
 import com.titanic.fork.exception.AlreadyExistedException;
 import com.titanic.fork.repository.AccountRepository;
+import com.titanic.fork.service.JwtService;
 import com.titanic.fork.web.dto.request.account.RegisterWantDto;
 import com.titanic.fork.web.login.LoginEnum;
 import lombok.RequiredArgsConstructor;
