@@ -1,7 +1,6 @@
 package com.titanic.fork.domain.goal;
 
 import com.titanic.fork.domain.Account.AccountGoal;
-import com.titanic.fork.domain.value.Location;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

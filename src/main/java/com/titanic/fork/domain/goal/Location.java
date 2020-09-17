@@ -1,4 +1,4 @@
-package com.titanic.fork.domain.value;
+package com.titanic.fork.domain.goal;
 
 import lombok.AccessLevel;
 import lombok.Builder;
