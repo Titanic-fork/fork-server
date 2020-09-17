@@ -1,5 +1,6 @@
 package com.titanic.fork.web.controller;
 
+import com.titanic.fork.utils.TestEnum;
 import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
 import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;
@@ -32,7 +33,6 @@ public class AccountControllerTest {
     private WebTestClient webTestClient;
 
     private final static String requestMapping = "/account";
-    private final static String LOCALHOST = "http://localhost:";
 
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
@@ -40,7 +40,7 @@ public class AccountControllerTest {
     void 핸드폰번호_수정API를_테스트한다(String email, String phoneNumber) {
 
         // given
-        String requestUrl = LOCALHOST + port + requestMapping + "/phoneNumber";
+        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/phoneNumber";
         NewPhoneNumberRequest newPhoneNumberRequest = NewPhoneNumberRequest.of(email, phoneNumber);
 
         // when
@@ -61,7 +61,7 @@ public class AccountControllerTest {
     void 비밀번호변경을_위한_인증API을_테스트한다(String name, String email) {
 
         // given
-        String requestUrl = LOCALHOST + port + requestMapping + "/find";
+        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/find";
         ValidateNameAndPasswordRequest validateNameAndPasswordRequest = ValidateNameAndPasswordRequest.of(name, email);
 
         // when
@@ -83,7 +83,7 @@ public class AccountControllerTest {
     void 비밀번호변경API를_테스트한다(String email, String newPassword) {
 
         // given
-        String requestUrl = LOCALHOST + port + requestMapping +"/find";
+        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping +"/find";
         NewPasswordRequest newPasswordRequest = NewPasswordRequest.of(email, newPassword);
 
         // when

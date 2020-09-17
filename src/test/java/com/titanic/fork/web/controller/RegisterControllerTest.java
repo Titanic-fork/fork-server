@@ -1,5 +1,6 @@
 package com.titanic.fork.web.controller;
 
+import com.titanic.fork.utils.TestEnum;
 import com.titanic.fork.web.dto.request.account.RegisterWantDto;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,16 +30,14 @@ public class RegisterControllerTest {
     private WebTestClient webTestClient;
 
     private final static String requestMapping = "/account";
-    private final static String LOCALHOST = "http://localhost:";
-    private final static String SERVICE_URL = "http://15.165.66.150/api/";
 
     @ParameterizedTest
-    @CsvSource({"guswns1659@gmail.com,password,hyunjun,010-7720-7957"})
+    @CsvSource({"guswns1651@gmail.com,password,hyunjun,010-7720-7957"})
     void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
 
         // given
-//        String localRequestUrl = LOCALHOST + port + requestMapping;
-        String apiRequestUrl = SERVICE_URL + requestMapping;
+//        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping;
+        String apiRequestUrl = TestEnum.SERVICE_URL.getValue() + requestMapping;
         RegisterWantDto registerWantDto = RegisterWantDto.of(email,password,name,phoneNumber);
 
         // when
