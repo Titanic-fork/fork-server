@@ -8,7 +8,7 @@ spring:
     initialization-mode: always
     hikari:
       maximum-pool-size: 10
-#    data: classpath:sql/schema.sql, classpath:sql/accommodation-local.sql, classpath:sql/picture-local.sql
+    data: classpath:sql/schema.sql
   jpa:
     properties:
       hibernate:

@@ -37,7 +37,7 @@ public class RegisterControllerTest {
     void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
 
         // given
-        String requestUrl = SERVICE_URL + requestMapping;
+        String requestUrl = LOCALHOST + port + requestMapping;
         RegisterWantDto registerWantDto = RegisterWantDto.of(email,password,name,phoneNumber);
 
         // when
@@ -50,9 +50,9 @@ public class RegisterControllerTest {
 
         /* then
          * 회원가입 성공 후 Header.Authorization에 Jwt토큰이 담기는 지 테스트
-         * 실패 시 HttpStatus = 401(BAD_REQUEST)
+         * 실패 시 HttpStatus = 500(BAD_REQUEST)
          */
         System.out.println("token = " + registerResponse.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
-        assertThat(registerResponse.getStatus()).isEqualTo(HttpStatus.OK);
+        assertThat(registerResponse.getStatus()).isEqualTo(HttpStatus.CREATED);
     }
 }
