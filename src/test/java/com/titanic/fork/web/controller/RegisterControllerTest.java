@@ -37,12 +37,13 @@ public class RegisterControllerTest {
     void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
 
         // given
-        String requestUrl = LOCALHOST + port + requestMapping;
+//        String localRequestUrl = LOCALHOST + port + requestMapping;
+        String apiRequestUrl = SERVICE_URL + requestMapping;
         RegisterWantDto registerWantDto = RegisterWantDto.of(email,password,name,phoneNumber);
 
         // when
         EntityExchangeResult<ResponseEntity> registerResponse = webTestClient.post()
-                .uri(requestUrl)
+                .uri(apiRequestUrl)
                 .body(Mono.just(registerWantDto), RegisterWantDto.class)
                 .exchange()
                 .expectBody(ResponseEntity.class)
