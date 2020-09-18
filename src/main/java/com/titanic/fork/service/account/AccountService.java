@@ -6,6 +6,7 @@ import com.titanic.fork.repository.AccountRepository;
 import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
 import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +14,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Transactional
 public class AccountService {
 
-    private final AccountRepository accountRepository;
+    private AccountRepository accountRepository;
+
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
+    }
 
     public ResponseEntity<Void> changePhoneNumber(NewPhoneNumberRequest newPhoneNumberRequest) {
         Account foundAccount = accountRepository.findByEmail(newPhoneNumberRequest.getEmail());

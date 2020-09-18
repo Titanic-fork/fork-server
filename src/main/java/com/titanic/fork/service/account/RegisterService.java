@@ -7,7 +7,9 @@ import com.titanic.fork.repository.AccountRepository;
 import com.titanic.fork.service.JwtService;
 import com.titanic.fork.web.dto.request.account.RegisterWantDto;
 import com.titanic.fork.web.login.LoginEnum;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,12 +19,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Transactional
 public class RegisterService {
 
-    private final AccountRepository accountRepository;
-    private final JwtService jwtService;
+    private AccountRepository accountRepository;
+    private JwtService jwtService;
+
+    @Autowired
+    public RegisterService(AccountRepository accountRepository, JwtService jwtService) {
+        this.accountRepository = accountRepository;
+        this.jwtService = jwtService;
+    }
 
     public ResponseEntity<Void> register(RegisterWantDto registerWantDto, HttpServletResponse response) {
         Member account = Member.from(registerWantDto);
