@@ -8,10 +8,13 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -42,10 +45,11 @@ public class WebMvcControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());
         // then
-        actions
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andDo(print());
+        MvcResult mvcResult = actions
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(200);
     }
 
     public static String asJsonString(final Object obj) {

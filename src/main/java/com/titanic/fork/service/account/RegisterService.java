@@ -19,18 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class RegisterService {
 
-    private AccountRepository accountRepository;
-    private JwtService jwtService;
-
-    @Autowired
-    public RegisterService(AccountRepository accountRepository, JwtService jwtService) {
-        this.accountRepository = accountRepository;
-        this.jwtService = jwtService;
-    }
+    private final AccountRepository accountRepository;
+    private final JwtService jwtService;
 
     public ResponseEntity<Void> register(RegisterWantDto registerWantDto, HttpServletResponse response) {
         Member account = Member.from(registerWantDto);
