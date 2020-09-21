@@ -1,13 +1,9 @@
 package com.titanic.fork.web.dto.request.account;
 
-import com.titanic.fork.domain.Account.Account;
-import com.titanic.fork.domain.Account.Member;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RegisterRequestDto {
 
