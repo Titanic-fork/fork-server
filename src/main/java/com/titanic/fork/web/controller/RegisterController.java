@@ -4,6 +4,7 @@ import com.titanic.fork.service.account.RegisterService;
 import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ public class RegisterController {
     @PostMapping("account")
     public ResponseEntity<Void> register(@RequestBody RegisterRequestDto registerRequestDto,
                                          HttpServletResponse response) {
-        return registerService.register(registerRequestDto, response);
+        registerService.register(registerRequestDto, response);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

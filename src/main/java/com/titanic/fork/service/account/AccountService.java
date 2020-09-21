@@ -25,25 +25,22 @@ public class AccountService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<Void> changePhoneNumber(NewPhoneNumberRequest newPhoneNumberRequest) {
+    public void changePhoneNumber(NewPhoneNumberRequest newPhoneNumberRequest) {
         Account foundAccount = accountRepository.findByEmail(newPhoneNumberRequest.getEmail());
         foundAccount.changePhoneNumber(newPhoneNumberRequest.getPhoneNumber());
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<Void> validateNameAndPassword(ValidateNameAndPasswordRequest validateNameAndPasswordRequest) {
+    public void validateNameAndPassword(ValidateNameAndPasswordRequest validateNameAndPasswordRequest) {
         Account foundAccount = accountRepository.findByEmail(validateNameAndPasswordRequest.getEmail());
         if (!foundAccount.isEqualName(validateNameAndPasswordRequest.getName())) {
             throw new NoSuchAccountException();
         }
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<Void> changePassword(NewPasswordRequest newPasswordRequest) {
+    public void changePassword(NewPasswordRequest newPasswordRequest) {
         Account foundAccount = accountRepository.findByEmail(newPasswordRequest.getEmail());
         foundAccount.changePassword(newPasswordRequest.getNewPassword());
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

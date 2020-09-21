@@ -24,7 +24,8 @@ public class AccountController {
                             "실패 시 HttpStatus = 500(Internal Server Error")
     @PutMapping("phoneNumber")
     public ResponseEntity<Void> changePhoneNumber(@RequestBody NewPhoneNumberRequest newPhoneNumberRequest) {
-        return accountService.changePhoneNumber(newPhoneNumberRequest);
+        accountService.changePhoneNumber(newPhoneNumberRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "비밀번호 수정을 위한 인증API",
@@ -32,13 +33,15 @@ public class AccountController {
     @PostMapping("find")
     public ResponseEntity<Void> validateNameAndPassword(@RequestBody ValidateNameAndPasswordRequest
                                                                 validateNameAndPasswordRequest) {
-        return accountService.validateNameAndPassword(validateNameAndPasswordRequest);
+        accountService.validateNameAndPassword(validateNameAndPasswordRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "비밀번호 수정API")
     @PutMapping("find")
     public ResponseEntity<Void> changePassword(@RequestBody NewPasswordRequest newPasswordRequest) {
-        return accountService.changePassword(newPasswordRequest);
+        accountService.changePassword(newPasswordRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /*

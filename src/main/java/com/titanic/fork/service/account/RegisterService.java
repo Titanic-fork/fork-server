@@ -26,7 +26,7 @@ public class RegisterService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<Void> register(RegisterRequestDto registerRequestDto, HttpServletResponse response) {
+    public void register(RegisterRequestDto registerRequestDto, HttpServletResponse response) {
         validateDuplicateEmail(registerRequestDto.getEmail());
 //        String rawPassword = registerRequestDto.getPassword();
 
@@ -42,7 +42,6 @@ public class RegisterService {
         accountRepository.save(account);
         String jwtTokenWithEmail = jwtService.createJwtTokenWithEmail(account.getEmail());
         response.setHeader(LoginEnum.AUTHORIZATION.getValue(), jwtTokenWithEmail);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     private void validateDuplicateEmail(String email) {
