@@ -12,6 +12,7 @@ import java.util.List;
 public class AccountRepository {
 
     private final EntityManager entityManager;
+    final String findEmailQuery = "select a from Account a where a.email = :email";
 
     public long save(Account account) {
         entityManager.persist(account);
@@ -19,13 +20,13 @@ public class AccountRepository {
     }
 
     public List<Account> findDuplicatedEmail(String email) {
-        return entityManager.createQuery("select a from Account a where a.email = :email", Account.class)
+        return entityManager.createQuery(findEmailQuery, Account.class)
                 .setParameter("email", email)
                 .getResultList();
     }
 
     public Account findByEmail(String email) {
-        return entityManager.createQuery("select a from Account a where a.email = :email", Account.class)
+        return entityManager.createQuery(findEmailQuery, Account.class)
                 .setParameter("email", email)
                 .getSingleResult();
     }

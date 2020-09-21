@@ -1,7 +1,7 @@
 package com.titanic.fork.web.controller;
 
 import com.titanic.fork.service.account.RegisterService;
-import com.titanic.fork.web.dto.request.account.RegisterWantDto;
+import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class RegisterController {
                     notes = "회원가입 성공 시 HttpStatus = 201(Created), Header에 Authorization에 JWT 토큰 응답 \n" +
                             "회원가입 실패 시 HttpStatus = 500(Internal Sever Error)")
     @PostMapping("account")
-    public ResponseEntity<Void> register(@RequestBody RegisterWantDto registerWantDto,
+    public ResponseEntity<Void> register(@RequestBody RegisterRequestDto registerRequestDto,
                                          HttpServletResponse response) {
-        return registerService.register(registerWantDto, response);
+        return registerService.register(registerRequestDto, response);
     }
 }

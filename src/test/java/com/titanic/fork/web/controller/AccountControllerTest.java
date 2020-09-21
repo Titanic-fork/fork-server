@@ -47,7 +47,7 @@ public class AccountControllerTest {
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.put()
                 .uri(requestUrl)
                 .body(Mono.just(newPhoneNumberRequest), NewPhoneNumberRequest.class)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LoginEnum.JWT_TOKEN_EXAMPLE.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_EXAMPLE.getValue())
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();

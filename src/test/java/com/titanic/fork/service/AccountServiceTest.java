@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName(value = "AccountService 테스트")
 @SpringBootTest
 public class AccountServiceTest {
 

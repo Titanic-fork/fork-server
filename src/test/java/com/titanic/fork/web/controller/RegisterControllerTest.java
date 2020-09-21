@@ -1,7 +1,7 @@
 package com.titanic.fork.web.controller;
 
 import com.titanic.fork.utils.TestEnum;
-import com.titanic.fork.web.dto.request.account.RegisterWantDto;
+import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -36,14 +36,14 @@ public class RegisterControllerTest {
     void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
 
         // given
-//        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping;
-        String apiRequestUrl = TestEnum.SERVICE_URL.getValue() + requestMapping;
-        RegisterWantDto registerWantDto = RegisterWantDto.of(email,password,name,phoneNumber);
+        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping;
+//        String apiRequestUrl = TestEnum.SERVICE_URL.getValue() + requestMapping;
+        RegisterRequestDto registerRequestDto = RegisterRequestDto.of(email,password,name,phoneNumber);
 
         // when
         EntityExchangeResult<ResponseEntity> registerResponse = webTestClient.post()
-                .uri(apiRequestUrl)
-                .body(Mono.just(registerWantDto), RegisterWantDto.class)
+                .uri(localRequestUrl)
+                .body(Mono.just(registerRequestDto), RegisterRequestDto.class)
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();

@@ -15,7 +15,7 @@ public abstract class Account {
 
     @Id
     @GeneratedValue
-    @Column(name = "Account_id")
+    @Column(name = "ACCOUNT_ID")
     protected Long id;
 
     protected String password;
