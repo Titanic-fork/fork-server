@@ -22,7 +22,7 @@ public class AccountController {
     @ApiOperation(value = "핸드폰번호를 수정하는 API",
                     notes = "성공 시 HttpStatus = 200(OK) \n" +
                             "실패 시 HttpStatus = 500(Internal Server Error")
-    @PutMapping("phoneNumber")
+    @PutMapping("phone-number")
     public ResponseEntity<Void> changePhoneNumber(@RequestBody NewPhoneNumberRequest newPhoneNumberRequest) {
         accountService.changePhoneNumber(newPhoneNumberRequest);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -30,7 +30,7 @@ public class AccountController {
 
     @ApiOperation(value = "비밀번호 수정을 위한 인증API",
                     notes = "이름과 이메일이 같은 지 확인하는 API")
-    @PostMapping("find")
+    @PutMapping("/authentication")
     public ResponseEntity<Void> validateNameAndPassword(@RequestBody ValidateNameAndPasswordRequest
                                                                 validateNameAndPasswordRequest) {
         accountService.validateNameAndPassword(validateNameAndPasswordRequest);
@@ -38,7 +38,7 @@ public class AccountController {
     }
 
     @ApiOperation(value = "비밀번호 수정API")
-    @PutMapping("find")
+    @PutMapping("password")
     public ResponseEntity<Void> changePassword(@RequestBody NewPasswordRequest newPasswordRequest) {
         accountService.changePassword(newPasswordRequest);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -49,6 +49,6 @@ public class AccountController {
      */
     @ExceptionHandler(NoResultException.class)
     public ResponseEntity<Void> noResultAccount() {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

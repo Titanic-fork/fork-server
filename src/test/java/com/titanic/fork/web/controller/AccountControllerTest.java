@@ -1,10 +1,16 @@
 package com.titanic.fork.web.controller;
 
+import com.titanic.fork.domain.Account.Account;
+import com.titanic.fork.domain.Account.Member;
+import com.titanic.fork.repository.AccountRepository;
+import com.titanic.fork.service.account.RegisterService;
 import com.titanic.fork.utils.TestEnum;
 import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
+import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
 import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;
 import com.titanic.fork.web.login.LoginEnum;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,13 +23,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+
+import javax.servlet.http.HttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
 @Rollback(false)
+@Transactional
 public class AccountControllerTest {
 
     @LocalServerPort
@@ -32,7 +42,18 @@ public class AccountControllerTest {
     @Autowired
     private WebTestClient webTestClient;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     private final static String requestMapping = "/account";
+
+    @BeforeEach
+    void setUp() {
+        RegisterRequestDto registerRequestDto = RegisterRequestDto
+                .of("guswns1652@gmail.com","password","hyunjun","010-7720-7957");
+        Account account = Member.from(registerRequestDto);
+        accountRepository.save(account);
+    }
 
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
@@ -57,15 +78,15 @@ public class AccountControllerTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"hyunjun,guswns1651@gmail.com"})
+    @CsvSource({"hyunjun,guswns1652@gmail.com"})
     void 비밀번호변경을_위한_인증API을_테스트한다(String name, String email) {
 
         // given
-        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/find";
+        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/authentication";
         ValidateNameAndPasswordRequest validateNameAndPasswordRequest = ValidateNameAndPasswordRequest.of(name, email);
 
         // when
-        EntityExchangeResult<ResponseEntity> responseEntityEntityExchangeResult = webTestClient.post()
+        EntityExchangeResult<ResponseEntity> responseEntityEntityExchangeResult = webTestClient.put()
                 .uri(requestUrl)
                 .body(Mono.just(validateNameAndPasswordRequest), ValidateNameAndPasswordRequest.class)
                 .exchange()

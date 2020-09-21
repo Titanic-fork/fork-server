@@ -14,15 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class AccountService {
 
-    private AccountRepository accountRepository;
-
-    public AccountService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
+    private final AccountRepository accountRepository;
 
     @Transactional(readOnly = true)
     public void changePhoneNumber(NewPhoneNumberRequest newPhoneNumberRequest) {
@@ -30,7 +26,6 @@ public class AccountService {
         foundAccount.changePhoneNumber(newPhoneNumberRequest.getPhoneNumber());
     }
 
-    @Transactional(readOnly = true)
     public void validateNameAndPassword(ValidateNameAndPasswordRequest validateNameAndPasswordRequest) {
         Account foundAccount = accountRepository.findByEmail(validateNameAndPasswordRequest.getEmail());
         if (!foundAccount.isEqualName(validateNameAndPasswordRequest.getName())) {
