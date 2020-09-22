@@ -1,9 +1,11 @@
 package com.titanic.fork.web.controller;
 
 import com.titanic.fork.service.account.AccountService;
+import com.titanic.fork.utils.TestEnum;
 import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
 import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,8 @@ public class AccountController {
     @ApiOperation(value = "핸드폰번호를 수정하는 API",
                     notes = "성공 시 HttpStatus = 200(OK) \n" +
                             "실패 시 HttpStatus = 500(Internal Server Error")
+    @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
+            paramType = "header", dataType = "string", example = "testToken")
     @PutMapping("phone-number")
     public ResponseEntity<Void> changePhoneNumber(@RequestBody NewPhoneNumberRequest newPhoneNumberRequest) {
         accountService.changePhoneNumber(newPhoneNumberRequest);
@@ -30,6 +34,8 @@ public class AccountController {
 
     @ApiOperation(value = "비밀번호 수정을 위한 인증API",
                     notes = "이름과 이메일이 같은 지 확인하는 API")
+    @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
+            paramType = "header", dataType = "string", example = "testToken")
     @PutMapping("/authentication")
     public ResponseEntity<Void> validateNameAndPassword(@RequestBody ValidateNameAndPasswordRequest
                                                                 validateNameAndPasswordRequest) {
@@ -38,6 +44,8 @@ public class AccountController {
     }
 
     @ApiOperation(value = "비밀번호 수정API")
+    @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
+            paramType = "header", dataType = "string", example = "testToken")
     @PutMapping("password")
     public ResponseEntity<Void> changePassword(@RequestBody NewPasswordRequest newPasswordRequest) {
         accountService.changePassword(newPasswordRequest);
@@ -45,7 +53,7 @@ public class AccountController {
     }
 
     /*
-     * AccountRepository에서 해당 계정이 없을 때 발생하는 에러를 핸들링하는 메서드
+     * getSingleResult() 했을 때 해당 조회 결과가 없을 경우 : 204, No Content
      */
     @ExceptionHandler(NoResultException.class)
     public ResponseEntity<Void> noResultAccount() {
