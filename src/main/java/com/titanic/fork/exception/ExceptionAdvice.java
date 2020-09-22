@@ -1,5 +1,6 @@
 package com.titanic.fork.exception;
 
+import com.titanic.fork.exception.account.LoginAuthenticationFail;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,5 +23,13 @@ public class ExceptionAdvice {
     @ExceptionHandler(NoSuchAccountException.class)
     public ResponseEntity<Void> noSuchAccount() {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /*
+     * 로그인 시 비밀번호 다르면 : 403, Forbidden
+     */
+    @ExceptionHandler(LoginAuthenticationFail.class)
+    public ResponseEntity<Void> passwordWrong() {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 }

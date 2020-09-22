@@ -37,7 +37,7 @@ public class LoginControllerIntegrationTest {
 
     @DisplayName("로그인API테스트")
     @ParameterizedTest
-    @CsvSource({"guswns1659@gmail.com,password"})
+    @CsvSource({"guswns1651@gmail.com,password1"})
     void 로그인_테스트한다(String email, String password) {
 
         // given
@@ -54,6 +54,7 @@ public class LoginControllerIntegrationTest {
                 .returnResult();
 
         // then
-        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.OK);
+//        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 }
