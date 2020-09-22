@@ -27,7 +27,7 @@ public class AccountGoal {
     private Goal goal;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ACCOUNT_GOAL_ID")
+    @JoinColumn(name = "ALARM_ID")
     private Alarm alarm;
 
     private LocalTime targetTime;

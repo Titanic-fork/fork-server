@@ -20,7 +20,7 @@ create table account_goal (
        id bigint not null auto_increment,
         target_time time,
         account_id bigint,
-        ACCOUNT_GOAL_ID bigint,
+        ALARM_ID bigint,
         goal_id bigint,
         primary key (id)
 );

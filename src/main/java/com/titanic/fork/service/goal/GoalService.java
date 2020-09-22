@@ -53,11 +53,13 @@ public class GoalService {
         AccountGoal savedAccountGoal = foundAccount.addAccountGoal(accountGoal);
         accountRepository.save(foundAccount);
 
+        // account와 accountGoal 관계를 저장한 후 다시 찾은 후 goal과 accountGoal 관계를 지정하기 위함
+//        Account savedAccount = accountRepository.findByEmail(userEmail);
+
         Goal newGoal = CreateGoalRequest.toEntity(createGoalRequest, location);
 
         // account에 추가한 accountGoal를 추가해야 테이블에서 정상처리된다.
         newGoal.addAccountGoal(savedAccountGoal);
-
         goalRepository.save(newGoal);
     }
 }
