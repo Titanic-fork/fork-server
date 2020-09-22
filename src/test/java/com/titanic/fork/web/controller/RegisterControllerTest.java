@@ -1,58 +1,65 @@
 package com.titanic.fork.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.titanic.fork.service.account.RegisterService;
 import com.titanic.fork.utils.TestEnum;
 import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureWebTestClient(timeout = "30000")
-@Rollback(false)
+@WebMvcTest(controllers = {RegisterController.class})
 public class RegisterControllerTest {
 
-    @LocalServerPort
-    private int port;
-
     @Autowired
-    private WebTestClient webTestClient;
+    MockMvc mockMvc;
 
-    private final static String requestMapping = "/account";
+    @MockBean
+    RegisterService registerService;
+
+    private final String REQUEST_MAPPING = "/account";
 
     @ParameterizedTest
     @CsvSource({"guswns1652@gmail.com,password,hyunjun,010-7720-7957"})
-    void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
-
-        // given
-        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping;
-//        String apiRequestUrl = TestEnum.SERVICE_URL.getValue() + requestMapping;
-        RegisterRequestDto registerRequestDto = RegisterRequestDto.of(email,password,name,phoneNumber);
+    void 회원가입테스트한다(String email, String password, String name, String phoneNumber) throws Exception {
+        /* given
+         * serialize를 해서 content에 넣어야 함.
+         */
+        RegisterRequestDto registerRequestDto = RegisterRequestDto.of(email, password, name, phoneNumber);
 
         // when
-        EntityExchangeResult<ResponseEntity> registerResponse = webTestClient.post()
-                .uri(localRequestUrl)
-                .body(Mono.just(registerRequestDto), RegisterRequestDto.class)
-                .exchange()
-                .expectBody(ResponseEntity.class)
-                .returnResult();
+        final ResultActions actions = mockMvc.perform(post(REQUEST_MAPPING)
+                .header(TestEnum.ORIGIN.getValue(), TestEnum.ALL.getValue())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(registerRequestDto))
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+        // then
+        MvcResult mvcResult = actions
+                .andExpect(status().isCreated())
+                .andReturn();
 
-        /* then
-         * 회원가입 성공 후 Header.Authorization에 Jwt토큰이 담기는 지 테스트
-         * 실패 시 HttpStatus = 500(BAD_REQUEST)
-         */
-        System.out.println("token = " + registerResponse.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
-        assertThat(registerResponse.getStatus()).isEqualTo(HttpStatus.CREATED);
+        System.out.println(mvcResult.getResponse().getHeader(LoginEnum.AUTHORIZATION.getValue()));
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

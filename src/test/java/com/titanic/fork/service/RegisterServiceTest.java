@@ -15,12 +15,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-@Rollback(false)
-@Transactional
 public class RegisterServiceTest {
 
     @Mock
@@ -31,13 +30,12 @@ public class RegisterServiceTest {
 
     @ParameterizedTest
     @CsvSource({"guswns1659,password,hyunjun,010-7720-7957"})
-    void register메서드를_테스트한다(String email, String password, String name, String phoneNumber,
-                            HttpServletResponse response) {
+    void register메서드를_테스트한다(String email, String password, String name, String phoneNumber) {
         // given
         RegisterRequestDto registerRequestDto = RegisterRequestDto.of(email,password,name,phoneNumber);
 
         // when
-//        ResponseEntity<Void> responseEntity = registerService.register(registerRequestDto, response);
+//        registerService.register(registerRequestDto, response);
 
         // then
 //        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
