@@ -1,5 +1,6 @@
 package com.titanic.fork.domain.goal;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,4 +27,11 @@ public class Alarm {
 
     @Column(name = "ALARM_CONTENT", columnDefinition = "VARCHAR(500)")
     private String content;
+
+    @Builder
+    public Alarm(List<String> targetDayOfWeeks, LocalTime alarmTime, String content) {
+        this.targetDayOfWeeks = targetDayOfWeeks;
+        this.alarmTime = alarmTime;
+        this.content = content;
+    }
 }

@@ -1,7 +1,8 @@
-package com.titanic.fork.web.controller;
+package com.titanic.fork.web.controller.account;
 
 import com.titanic.fork.repository.AccountRepository;
 import com.titanic.fork.utils.TestEnum;
+import com.titanic.fork.web.dto.request.account.LoginRequest;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

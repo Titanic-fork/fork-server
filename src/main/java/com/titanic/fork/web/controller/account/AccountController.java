@@ -1,4 +1,4 @@
-package com.titanic.fork.web.controller;
+package com.titanic.fork.web.controller.account;
 
 import com.titanic.fork.service.account.AccountService;
 import com.titanic.fork.utils.TestEnum;

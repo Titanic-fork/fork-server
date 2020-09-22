@@ -7,6 +7,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
@@ -34,10 +36,16 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        String[] excludePathPatterns = new String[]{"/account/**", "/**"};
+        /*
+         * 회원가입하는 url (~/account)만 제외하기
+         */
+        String[] excludePathPatterns = new String[]{"/account"};
+        String[] swaggerPaths = new String[]{"/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**"};
 
         registry.addInterceptor(loginInterceptor())
                 .addPathPatterns(ALL_PATH)
-                .excludePathPatterns(excludePathPatterns);
+                .excludePathPatterns(excludePathPatterns)
+                .excludePathPatterns(swaggerPaths);
+
     }
 }

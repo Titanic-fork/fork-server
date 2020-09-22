@@ -1,4 +1,4 @@
-package com.titanic.fork.web.controller;
+package com.titanic.fork.web.controller.goal;
 
 import com.titanic.fork.utils.TestEnum;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
 @Rollback(false)
-public class GoalControllerTest {
+public class GoalControllerIntegrationTest {
 
     @LocalServerPort
     private int port;

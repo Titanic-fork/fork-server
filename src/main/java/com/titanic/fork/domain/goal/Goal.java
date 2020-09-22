@@ -1,6 +1,9 @@
 package com.titanic.fork.domain.goal;
 
+import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.AccountGoal;
+import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +25,17 @@ public class Goal {
     @Embedded
     private Location location;
 
-    @OneToMany(mappedBy = "goal")
-    private List<AccountGoal> accountGoals = new ArrayList<>();
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL)
+    private final List<AccountGoal> accountGoals = new ArrayList<>();
+
+    @Builder
+    public Goal (String title, Location location) {
+        this.title = title;
+        this.location = location;
+    }
+
+    public void addAccountGoal(AccountGoal accountGoal) {
+        this.accountGoals.add(accountGoal);
+        accountGoal.setGoal(this);
+    }
 }

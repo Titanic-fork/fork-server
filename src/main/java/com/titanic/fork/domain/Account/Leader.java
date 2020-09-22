@@ -25,4 +25,11 @@ public class Leader extends Account {
     public void changePhoneNumber(String newPhoneNumber) {
         this.phoneNumber = newPhoneNumber;
     }
+
+    @Override
+    public AccountGoal addAccountGoal(AccountGoal accountGoal) {
+        this.accountGoals.add(accountGoal);
+        accountGoal.setAccount(this);
+        return accountGoal;
+    }
 }

@@ -1,4 +1,4 @@
-package com.titanic.fork.web.controller;
+package com.titanic.fork.web.dto.request.account;
 
 import lombok.AccessLevel;
 import lombok.Builder;

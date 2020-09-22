@@ -4,7 +4,7 @@ import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.exception.NoSuchAccountException;
 import com.titanic.fork.exception.account.LoginAuthenticationFail;
 import com.titanic.fork.repository.AccountRepository;
-import com.titanic.fork.web.controller.LoginRequest;
+import com.titanic.fork.web.dto.request.account.LoginRequest;
 import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
 import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;

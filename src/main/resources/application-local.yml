@@ -5,8 +5,8 @@ spring:
     url: jdbc:mysql://localhost:3306/fork?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useLegacyDatetimeCode=false
     username: jack
     password: 1234
-    # 외부 DB 사용할 때 schema.sql로 스키마 생성시 필요한 옵션
-    #    initialization-mode: always
+#     외부 DB 사용할 때 schema.sql로 스키마 생성시 필요한 옵션
+#    initialization-mode: always
     hikari:
       maximum-pool-size: 10
     data: classpath:sql/schema.sql

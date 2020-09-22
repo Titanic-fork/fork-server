@@ -25,7 +25,7 @@ public abstract class Account {
     protected String name;
     protected String phoneNumber;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     protected final List<AccountGoal> accountGoals = new ArrayList<>();
 
     public Account(String password, String email, String name, String phoneNumber) {
@@ -42,4 +42,6 @@ public abstract class Account {
     public abstract void changePassword(String newPassword);
 
     public abstract void changePhoneNumber(String phoneNumber);
+
+    public abstract AccountGoal addAccountGoal(AccountGoal accountGoal);
 }

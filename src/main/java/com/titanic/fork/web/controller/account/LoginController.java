@@ -1,6 +1,7 @@
-package com.titanic.fork.web.controller;
+package com.titanic.fork.web.controller.account;
 
 import com.titanic.fork.service.account.AccountService;
+import com.titanic.fork.web.dto.request.account.LoginRequest;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
