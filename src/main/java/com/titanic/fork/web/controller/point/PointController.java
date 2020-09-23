@@ -32,7 +32,7 @@ public class PointController {
         return pointService.getTotalAndAvailablePoint(goalId, request);
     }
 
-    @ApiOperation(value = "사용자의 월간 적립된 포인트 조회API",
+    @ApiOperation(value = "사용자의 월간 적립 포인트 조회API",
             notes = "성공 시 HttpStatus = 200(OK) \n" +
                     "실패 시 HttpStatus = ???(Internal Server Error")
     @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
@@ -44,4 +44,18 @@ public class PointController {
                                                      HttpServletRequest request) {
         return pointService.getMonthlySavedPoint(goalId,year,month,request);
     }
+
+    @ApiOperation(value = "사용자의 월간 사용 포인트 조회API",
+            notes = "성공 시 HttpStatus = 200(OK) \n" +
+                    "실패 시 HttpStatus = ???(Internal Server Error")
+    @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
+            paramType = "header", dataType = "string", example = "testToken")
+    @GetMapping("{goalId}/used/{year}/{month}")
+    public MonthlyPointResponse getMonthlyUsedPoint(@PathVariable Long goalId,
+                                                    @PathVariable Integer year,
+                                                    @PathVariable Integer month,
+                                                    HttpServletRequest request) {
+        return pointService.getMonthlySavedPoint(goalId, year, month, request);
+    }
+
 }
