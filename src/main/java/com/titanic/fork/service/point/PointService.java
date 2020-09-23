@@ -6,13 +6,17 @@ import com.titanic.fork.domain.point.Point;
 import com.titanic.fork.repository.AccountRepository;
 import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
 import com.titanic.fork.repository.point.PointRepository;
+import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
 import com.titanic.fork.web.dto.response.point.PointResponse;
+import com.titanic.fork.web.login.LoginEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +28,7 @@ public class PointService {
     private final AccountRepository accountRepository;
 
     public PointResponse getTotalAndAvailablePoint(Long goalId, HttpServletRequest request) {
-        String userEmail = (String) request.getAttribute("userEmail");
+        String userEmail = (String) request.getAttribute(LoginEnum.USER_EMAIL.getValue());
         Account foundAccount = accountRepository.findByEmail(userEmail);
 
         // accountID와 goalId로 1개 accountGoal을 찾는다.
@@ -44,7 +48,21 @@ public class PointService {
         return PointResponse.of(totalPoint, usedPoint);
     }
 
-    public PointResponse getMonthlySavedPoint(Long goalId, Integer month, HttpServletRequest request) {
-        return null;
+    public MonthlyPointResponse getMonthlySavedPoint(Long goalId, Integer month, HttpServletRequest request) {
+        String userEmail = (String) request.getAttribute(LoginEnum.USER_EMAIL.getValue());
+        Account foundAccount = accountRepository.findByEmail(userEmail);
+
+        // accountID와 goalId로 1개 accountGoal을 찾는다.
+        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
+        List<Point> monthlySavedPoints = pointRepository.findMonthlySavedPoint(foundAccountGoal.getId(), month);
+        int savedPointSum = monthlySavedPoints.stream()
+                .filter(p -> p.getCreatedDate().isBefore(LocalDateTime.of(2020, 10, 1, 0, 0, 0)) &&
+                        p.getCreatedDate().isAfter(LocalDateTime.of(2020, 9, 1, 0, 0)))
+                .mapToInt(Point::getAmount)
+                .sum();
+
+        return MonthlyPointResponse.builder()
+                .savedPoint(savedPointSum)
+                .build();
     }
 }

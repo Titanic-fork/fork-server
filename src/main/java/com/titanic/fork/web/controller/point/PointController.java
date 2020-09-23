@@ -2,6 +2,7 @@ package com.titanic.fork.web.controller.point;
 
 
 import com.titanic.fork.service.point.PointService;
+import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
 import com.titanic.fork.web.dto.response.point.PointResponse;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -37,9 +38,9 @@ public class PointController {
     @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
             paramType = "header", dataType = "string", example = "testToken")
     @GetMapping("{goalId}/saved/{month}")
-    public PointResponse getMonthlySavedPoint(@PathVariable Long goalId,
-                                                   @PathVariable Integer month,
-                                                   HttpServletRequest request) {
+    public MonthlyPointResponse getMonthlySavedPoint(@PathVariable Long goalId,
+                                                     @PathVariable Integer month,
+                                                     HttpServletRequest request) {
         return pointService.getMonthlySavedPoint(goalId,month,request);
     }
 }
