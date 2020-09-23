@@ -43,4 +43,8 @@ public class PointService {
 
         return PointResponse.of(totalPoint, usedPoint);
     }
+
+    public PointResponse getMonthlySavedPoint(Long goalId, Integer month, HttpServletRequest request) {
+        return null;
+    }
 }
