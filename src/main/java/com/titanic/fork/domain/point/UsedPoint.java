@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
+@DiscriminatorValue("used_point")
 public class UsedPoint extends Point {
 
     @ElementCollection

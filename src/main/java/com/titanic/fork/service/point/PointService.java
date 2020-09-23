@@ -2,6 +2,7 @@ package com.titanic.fork.service.point;
 
 import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.AccountGoal;
+import com.titanic.fork.domain.point.Point;
 import com.titanic.fork.repository.AccountRepository;
 import com.titanic.fork.repository.GoalRepository;
 import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +31,11 @@ public class PointService {
 
         // accountID와 goalId로 1개 accountGoal을 찾는다.
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
-        pointRepository.findSavingPointByAccountGoalId(foundAccount.getId());
+        List<Point> savingPoints = pointRepository.findSavingPointByAccountGoalId(foundAccount.getId());
+
+        int totalPoint = savingPoints.stream()
+                .mapToInt(Point::getAmount)
+                .sum();
 
 
         return null;
