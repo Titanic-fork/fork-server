@@ -1,5 +1,6 @@
 package com.titanic.fork.web.dto.response.point;
 
+import com.titanic.fork.domain.Account.AccountGoal;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,5 +19,13 @@ public class EachMonthlySavedPointStatus {
         AccountId = accountId;
         this.name = name;
         this.monthlySavedPoint = monthlySavedPoint;
+    }
+
+    public static EachMonthlySavedPointStatus of(AccountGoal accountGoal, int savedPointSum) {
+        return EachMonthlySavedPointStatus.builder()
+                .accountId(accountGoal.getAccount().getId())
+                .name(accountGoal.getAccount().getName())
+                .monthlySavedPoint(savedPointSum)
+                .build();
     }
 }

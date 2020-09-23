@@ -91,7 +91,7 @@ public class PointService {
 
     public PointRankingResponse getMonthlyPointRanking(Long goalId, Integer year, Integer month, HttpServletRequest request) {
         List<AccountGoal> foundAccountGoals = accountGoalRepository.findByGoalId(goalId);
-        List<EachMonthlySavedPointStatus> eachMonthlyPoints = new ArrayList<>();
+        List<EachMonthlySavedPointStatus> eachMonthlySavedPoints = new ArrayList<>();
 
         /*
          * 반복문에서 각 accountGoal의 월간 적립 포인트를 찾은 뒤
@@ -104,19 +104,16 @@ public class PointService {
                     .mapToInt(Point::getAmount)
                     .sum();
 
-            EachMonthlySavedPointStatus eachMonthlySavedPointStatus = EachMonthlySavedPointStatus.builder()
-                    .accountId(accountGoal.getAccount().getId())
-                    .name(accountGoal.getAccount().getName())
-                    .monthlySavedPoint(savedPointSum)
-                    .build();
+            EachMonthlySavedPointStatus eachMonthlySavedPointStatus
+                    = EachMonthlySavedPointStatus.of(accountGoal, savedPointSum);
 
-            eachMonthlyPoints.add(eachMonthlySavedPointStatus);
+            eachMonthlySavedPoints.add(eachMonthlySavedPointStatus);
         }
         // 각 누적 포인트 순으로 정렬
-        eachMonthlyPoints.sort((o1, o2) -> Integer.compare(o2.getMonthlySavedPoint(), o1.getMonthlySavedPoint()));
+        eachMonthlySavedPoints.sort((o1, o2) -> Integer.compare(o2.getMonthlySavedPoint(), o1.getMonthlySavedPoint()));
 
         return PointRankingResponse.builder()
-                .eachMonthlyPoints(eachMonthlyPoints)
+                .eachMonthlySavedPoints(eachMonthlySavedPoints)
                 .build();
     }
 }

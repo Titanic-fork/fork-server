@@ -11,10 +11,10 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PointRankingResponse {
 
-    private List<EachMonthlySavedPointStatus> eachMonthlyPoints;
+    private List<EachMonthlySavedPointStatus> eachMonthlySavedPoints;
 
     @Builder
-    public PointRankingResponse(List<EachMonthlySavedPointStatus> eachMonthlyPoints) {
-        this.eachMonthlyPoints = eachMonthlyPoints;
+    public PointRankingResponse(List<EachMonthlySavedPointStatus> eachMonthlySavedPoints) {
+        this.eachMonthlySavedPoints = eachMonthlySavedPoints;
     }
 }

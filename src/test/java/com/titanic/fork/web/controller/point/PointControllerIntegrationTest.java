@@ -14,10 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.net.URL;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
@@ -118,10 +115,8 @@ public class PointControllerIntegrationTest {
         /* then
          * size()를 4로 한 이유는 account_id = 1인 계정이 같은 목표에 2개 들어가 있음. 조정이 필요
          */
-        assertThat(pointRankingResponse.getEachMonthlyPoints().size()).isEqualTo(size);
-        assertThat(pointRankingResponse.getEachMonthlyPoints().get(1).getMonthlySavedPoint()).isEqualTo(savedPoint);
-        assertThat(pointRankingResponse.getEachMonthlyPoints().get(1).getName()).isEqualTo(name);
+        assertThat(pointRankingResponse.getEachMonthlySavedPoints().size()).isEqualTo(size);
+        assertThat(pointRankingResponse.getEachMonthlySavedPoints().get(1).getMonthlySavedPoint()).isEqualTo(savedPoint);
+        assertThat(pointRankingResponse.getEachMonthlySavedPoints().get(1).getName()).isEqualTo(name);
     }
-
-
 }
