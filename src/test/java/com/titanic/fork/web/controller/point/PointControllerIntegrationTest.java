@@ -2,6 +2,7 @@ package com.titanic.fork.web.controller.point;
 
 import com.titanic.fork.utils.TestEnum;
 import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
+import com.titanic.fork.web.dto.response.point.PointRankingResponse;
 import com.titanic.fork.web.dto.response.point.PointResponse;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.net.URL;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
@@ -91,6 +95,30 @@ public class PointControllerIntegrationTest {
 
         // then
         assertThat(monthlyPointResponse.getUsedPoint()).isEqualTo(savedPoint);
+    }
+
+    @DisplayName("해당 목표의 사용자들의 월간 누적 포인트 랭킹API")
+    @ParameterizedTest
+    @CsvSource({"1,2020,9,3,1000,solar"})
+    void 해당목표_사용자들의_월간누적포인트랭킹API를_테스트한다(int goalId, int year, int month, int size, int savedPoint, String name) {
+
+        // given
+        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/"
+                + goalId + "/ranking" + "/" + year + "/" + month;
+
+        // when
+        PointRankingResponse pointRankingResponse = webTestClient.get()
+                .uri(localRequestUrl)
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_EXAMPLE.getValue())
+                .exchange()
+                .expectBody(PointRankingResponse.class)
+                .returnResult()
+                .getResponseBody();
+
+        // then
+        assertThat(pointRankingResponse.getEachMonthlyPoints().size()).isEqualTo(size);
+        assertThat(pointRankingResponse.getEachMonthlyPoints().get(1).getMonthlySavedPoint()).isEqualTo(savedPoint);
+        assertThat(pointRankingResponse.getEachMonthlyPoints().get(1).getName()).isEqualTo(name);
     }
 
 
