@@ -6,6 +6,7 @@ import com.titanic.fork.domain.point.Point;
 import com.titanic.fork.repository.AccountRepository;
 import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
 import com.titanic.fork.repository.point.PointRepository;
+import com.titanic.fork.web.dto.response.point.EachMonthlySavedPointStatus;
 import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
 import com.titanic.fork.web.dto.response.point.PointRankingResponse;
 import com.titanic.fork.web.dto.response.point.PointResponse;
@@ -15,9 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -90,6 +90,33 @@ public class PointService {
     }
 
     public PointRankingResponse getMonthlyPointRanking(Long goalId, Integer year, Integer month, HttpServletRequest request) {
-        return null;
+        List<AccountGoal> foundAccountGoals = accountGoalRepository.findByGoalId(goalId);
+        List<EachMonthlySavedPointStatus> eachMonthlyPoints = new ArrayList<>();
+
+        /*
+         * 반복문에서 각 accountGoal의 월간 적립 포인트를 찾은 뒤
+         * MonthlyPointResponse에 저장한다.
+         */
+        for (AccountGoal accountGoal : foundAccountGoals) {
+            List<Point> monthlySavedPoints = pointRepository.findMonthlySavedPoint(accountGoal.getId());
+            int savedPointSum = monthlySavedPoints.stream()
+                    .filter(point -> point.isPeriod(year,month))
+                    .mapToInt(Point::getAmount)
+                    .sum();
+
+            EachMonthlySavedPointStatus eachMonthlySavedPointStatus = EachMonthlySavedPointStatus.builder()
+                    .accountId(accountGoal.getAccount().getId())
+                    .name(accountGoal.getAccount().getName())
+                    .monthlySavedPoint(savedPointSum)
+                    .build();
+
+            eachMonthlyPoints.add(eachMonthlySavedPointStatus);
+        }
+        // 각 누적 포인트 순으로 정렬
+        eachMonthlyPoints.sort((o1, o2) -> Integer.compare(o2.getMonthlySavedPoint(), o1.getMonthlySavedPoint()));
+
+        return PointRankingResponse.builder()
+                .eachMonthlyPoints(eachMonthlyPoints)
+                .build();
     }
 }

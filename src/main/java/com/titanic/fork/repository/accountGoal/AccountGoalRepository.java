@@ -26,4 +26,16 @@ public class AccountGoalRepository {
 
         return foundAccountGoal.get(0);
     }
+
+    // goalId로 전체 AccountGoal를 찾는다. 하나도 없을 경우 NoSuchAccountGoal 예외
+    public List<AccountGoal> findByGoalId(Long goalId) {
+        List<AccountGoal> foundAccountGoals = entityManager.createQuery("select ag from AccountGoal as ag where ag.goal.id = :goalId", AccountGoal.class)
+                .setParameter("goalId", goalId)
+                .getResultList();
+
+        if (foundAccountGoals.size() == 0) {
+            throw new NoSuchAccountGoalException();
+        }
+        return foundAccountGoals;
+    }
 }
