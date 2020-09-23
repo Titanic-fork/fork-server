@@ -6,4 +6,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public enum PointStatus {
+    APPROVAL, NON_APPROVAL
 }

@@ -29,7 +29,7 @@ public class PointControllerIntegrationTest {
 
     @DisplayName("사용자 누적포인트, 사용가능 포인트 조회 API")
     @ParameterizedTest
-    @CsvSource({"3000,1000"})
+    @CsvSource({"2000,1600"})
     void 사용자의_누적및사용가능_포인트조회API를_테스트한다(int totalPoint, int availablePoint) {
 
         // given
@@ -45,7 +45,7 @@ public class PointControllerIntegrationTest {
                 .getResponseBody();
 
         // then
-//        assertThat(pointResponse.getTotalPoint()).isEqualTo(totalPoint);
-//        assertThat(pointResponse.getAvailablePoint()).isEqualTo(availablePoint);
+        assertThat(pointResponse.getTotalPoint()).isEqualTo(totalPoint);
+        assertThat(pointResponse.getAvailablePoint()).isEqualTo(availablePoint);
     }
 }
