@@ -17,15 +17,17 @@ public abstract class Point {
     @Id
     @GeneratedValue
     @Column(name = "POINT_ID")
-    private Long id;
+    protected Long id;
 
-    private int amount;
-    private LocalDateTime createdDate;
+    protected int amount;
+    protected LocalDateTime createdDate;
 
     @Column(name = "POINT_CONTENT", columnDefinition = "VARCHAR(500)")
-    private String content;
+    protected String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_GOAL_ID")
-    private AccountGoal accountGoal;
+    protected AccountGoal accountGoal;
+
+    public abstract boolean isPeriod(int year, int month);
 }

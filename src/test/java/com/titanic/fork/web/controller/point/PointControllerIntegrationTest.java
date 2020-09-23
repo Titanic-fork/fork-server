@@ -14,7 +14,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
@@ -52,11 +51,12 @@ public class PointControllerIntegrationTest {
 
     @DisplayName("사용자의 월간 적립 포인트 조회API")
     @ParameterizedTest
-    @CsvSource({"1,9,2000"})
-    void 사용자의_월간적립포인트조회API를_테스트한다(int goalId, int month, int savedPoint) {
+    @CsvSource({"1,2020,9,2000"})
+    void 사용자의_월간적립포인트조회API를_테스트한다(int goalId, int year, int month, int savedPoint) {
 
         //given
-        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/" + goalId + "/saved" + "/" + month;
+        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/"
+                + goalId + "/saved" + "/" + year + "/" + month;
 
         // when
         MonthlyPointResponse monthlyPointResponse = webTestClient.get()
@@ -69,6 +69,5 @@ public class PointControllerIntegrationTest {
 
         // then
         assertThat(monthlyPointResponse.getSavedPoint()).isEqualTo(savedPoint);
-
     }
 }

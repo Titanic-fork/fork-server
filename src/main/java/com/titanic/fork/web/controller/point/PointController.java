@@ -37,10 +37,11 @@ public class PointController {
                     "실패 시 HttpStatus = ???(Internal Server Error")
     @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
             paramType = "header", dataType = "string", example = "testToken")
-    @GetMapping("{goalId}/saved/{month}")
+    @GetMapping("{goalId}/saved/{year}/{month}")
     public MonthlyPointResponse getMonthlySavedPoint(@PathVariable Long goalId,
+                                                     @PathVariable Integer year,
                                                      @PathVariable Integer month,
                                                      HttpServletRequest request) {
-        return pointService.getMonthlySavedPoint(goalId,month,request);
+        return pointService.getMonthlySavedPoint(goalId,year,month,request);
     }
 }

@@ -48,16 +48,17 @@ public class PointService {
         return PointResponse.of(totalPoint, usedPoint);
     }
 
-    public MonthlyPointResponse getMonthlySavedPoint(Long goalId, Integer month, HttpServletRequest request) {
+    // 사용자가 1달 동안 적립한 포인트 조회
+    public MonthlyPointResponse getMonthlySavedPoint(Long goalId, Integer year, Integer month, HttpServletRequest request) {
         String userEmail = (String) request.getAttribute(LoginEnum.USER_EMAIL.getValue());
         Account foundAccount = accountRepository.findByEmail(userEmail);
 
         // accountID와 goalId로 1개 accountGoal을 찾는다.
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
         List<Point> monthlySavedPoints = pointRepository.findMonthlySavedPoint(foundAccountGoal.getId(), month);
+
         int savedPointSum = monthlySavedPoints.stream()
-                .filter(p -> p.getCreatedDate().isBefore(LocalDateTime.of(2020, 10, 1, 0, 0, 0)) &&
-                        p.getCreatedDate().isAfter(LocalDateTime.of(2020, 9, 1, 0, 0)))
+                .filter(point -> point.isPeriod(year,month))
                 .mapToInt(Point::getAmount)
                 .sum();
 
