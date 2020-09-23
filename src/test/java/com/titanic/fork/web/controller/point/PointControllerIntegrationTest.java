@@ -97,7 +97,7 @@ public class PointControllerIntegrationTest {
         assertThat(monthlyPointResponse.getUsedPoint()).isEqualTo(savedPoint);
     }
 
-    @DisplayName("해당 목표의 사용자들의 월간 누적 포인트 랭킹API")
+    @DisplayName("해당 목표 사용자들의 월간 누적 포인트 랭킹API")
     @ParameterizedTest
     @CsvSource({"1,2020,9,3,1000,solar"})
     void 해당목표_사용자들의_월간누적포인트랭킹API를_테스트한다(int goalId, int year, int month, int size, int savedPoint, String name) {

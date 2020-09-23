@@ -3,6 +3,7 @@ package com.titanic.fork.web.controller.point;
 
 import com.titanic.fork.service.point.PointService;
 import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
+import com.titanic.fork.web.dto.response.point.PointRankingResponse;
 import com.titanic.fork.web.dto.response.point.PointResponse;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -56,5 +57,18 @@ public class PointController {
                                                     @PathVariable Integer month,
                                                     HttpServletRequest request) {
         return pointService.getMonthlyUsedPoint(goalId, year, month, request);
+    }
+
+    @ApiOperation(value = "해당 목표 사용자들의 월간 누적 포인트 랭킹API",
+            notes = "성공 시 HttpStatus = 200(OK) \n" +
+                    "실패 시 HttpStatus = ???(Internal Server Error")
+    @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
+            paramType = "header", dataType = "string", example = "testToken")
+    @GetMapping("{goalId}/ranking/{year}/{month}")
+    public PointRankingResponse getMonthlyPointRanking(@PathVariable Long goalId,
+                                                       @PathVariable Integer year,
+                                                       @PathVariable Integer month,
+                                                       HttpServletRequest request) {
+        return pointService.getMonthlyPointRanking(goalId, year, month, request);
     }
 }

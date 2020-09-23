@@ -7,6 +7,7 @@ import com.titanic.fork.repository.AccountRepository;
 import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
 import com.titanic.fork.repository.point.PointRepository;
 import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
+import com.titanic.fork.web.dto.response.point.PointRankingResponse;
 import com.titanic.fork.web.dto.response.point.PointResponse;
 import com.titanic.fork.web.login.LoginEnum;
 import lombok.RequiredArgsConstructor;
@@ -86,5 +87,9 @@ public class PointService {
         return MonthlyPointResponse.builder()
                 .usedPoint(usedPointSum)
                 .build();
+    }
+
+    public PointRankingResponse getMonthlyPointRanking(Long goalId, Integer year, Integer month, HttpServletRequest request) {
+        return null;
     }
 }
