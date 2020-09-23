@@ -70,4 +70,28 @@ public class PointControllerIntegrationTest {
         // then
         assertThat(monthlyPointResponse.getSavedPoint()).isEqualTo(savedPoint);
     }
+
+    @DisplayName("사용자의 월간 사용 포인트 조회API")
+    @ParameterizedTest
+    @CsvSource({"1,2020,9,400"})
+    void 사용자의_월간사용_포인트조회API를_테스트한다(int goalId, int year, int month, int savedPoint) {
+
+        //given
+        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/"
+                + goalId + "/used" + "/" + year + "/" + month;
+
+        // when
+        MonthlyPointResponse monthlyPointResponse = webTestClient.get()
+                .uri(localRequestUrl)
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_EXAMPLE.getValue())
+                .exchange()
+                .expectBody(MonthlyPointResponse.class)
+                .returnResult()
+                .getResponseBody();
+
+        // then
+        assertThat(monthlyPointResponse.getUsedPoint()).isEqualTo(savedPoint);
+    }
+
+
 }
