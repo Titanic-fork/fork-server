@@ -49,7 +49,7 @@ public class LoginControllerIntegrationTest {
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.post()
                 .uri(requestUrl)
                 .body(Mono.just(loginRequest), LoginRequest.class)
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_EXAMPLE.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();

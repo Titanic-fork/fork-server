@@ -40,7 +40,7 @@ public class AccountControllerTest {
         // when, then
         mockMvc.perform(put(requestUrl)
                 .header(TestEnum.ORIGIN.getValue(), TestEnum.ALL.getValue())
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_EXAMPLE.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(newPhoneNumberRequest))
                 .accept(MediaType.APPLICATION_JSON))

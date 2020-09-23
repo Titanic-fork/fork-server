@@ -32,7 +32,7 @@ public class RegisterControllerIntegrationTest {
     private final static String requestMapping = "/account";
 
     @ParameterizedTest
-    @CsvSource({"guswns1653@gmail.com,password,hyunjun,010-7720-7957"})
+    @CsvSource({"guswns1655@gmail.com,password,hyunjun,010-7720-7957"})
     void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
 
         // given

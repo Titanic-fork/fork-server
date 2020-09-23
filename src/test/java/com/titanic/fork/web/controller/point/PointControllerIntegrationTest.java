@@ -42,7 +42,7 @@ public class PointControllerIntegrationTest {
         // when
         PointResponse pointResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_EXAMPLE.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(PointResponse.class)
                 .returnResult()
@@ -65,7 +65,7 @@ public class PointControllerIntegrationTest {
         // when
         MonthlyPointResponse monthlyPointResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_EXAMPLE.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(MonthlyPointResponse.class)
                 .returnResult()
@@ -87,7 +87,7 @@ public class PointControllerIntegrationTest {
         // when
         MonthlyPointResponse monthlyPointResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_EXAMPLE.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(MonthlyPointResponse.class)
                 .returnResult()
@@ -99,7 +99,7 @@ public class PointControllerIntegrationTest {
 
     @DisplayName("해당 목표 사용자들의 월간 누적 포인트 랭킹API")
     @ParameterizedTest
-    @CsvSource({"1,2020,9,3,1000,solar"})
+    @CsvSource({"1,2020,9,4,3000,hyunjun"})
     void 해당목표_사용자들의_월간누적포인트랭킹API를_테스트한다(int goalId, int year, int month, int size, int savedPoint, String name) {
 
         // given
@@ -109,13 +109,15 @@ public class PointControllerIntegrationTest {
         // when
         PointRankingResponse pointRankingResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_EXAMPLE.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(PointRankingResponse.class)
                 .returnResult()
                 .getResponseBody();
 
-        // then
+        /* then
+         * size()를 4로 한 이유는 account_id = 1인 계정이 같은 목표에 2개 들어가 있음. 조정이 필요
+         */
         assertThat(pointRankingResponse.getEachMonthlyPoints().size()).isEqualTo(size);
         assertThat(pointRankingResponse.getEachMonthlyPoints().get(1).getMonthlySavedPoint()).isEqualTo(savedPoint);
         assertThat(pointRankingResponse.getEachMonthlyPoints().get(1).getName()).isEqualTo(name);

@@ -58,7 +58,7 @@ public class GoalControllerIntegrationTest {
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.post()
                 .uri(localRequestUrl)
                 .body(Mono.just(createGoalRequest), CreateGoalRequest.class)
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_EXAMPLE.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1655.getValue())
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();
