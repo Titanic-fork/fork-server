@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient(timeout = "30000")
-@Rollback(false)
 public class GoalControllerIntegrationTest {
 
     @LocalServerPort
