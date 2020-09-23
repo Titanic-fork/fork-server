@@ -23,7 +23,7 @@ public class AccountController {
 
     @ApiOperation(value = "핸드폰번호를 수정하는 API",
                     notes = "성공 시 HttpStatus = 200(OK) \n" +
-                            "실패 시 HttpStatus = 500(Internal Server Error")
+                            "실패 시 HttpStatus = ???(Internal Server Error")
     @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
             paramType = "header", dataType = "string", example = "testToken")
     @PutMapping("phone-number")
