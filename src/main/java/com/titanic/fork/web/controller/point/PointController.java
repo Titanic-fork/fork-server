@@ -55,7 +55,6 @@ public class PointController {
                                                     @PathVariable Integer year,
                                                     @PathVariable Integer month,
                                                     HttpServletRequest request) {
-        return pointService.getMonthlySavedPoint(goalId, year, month, request);
+        return pointService.getMonthlyUsedPoint(goalId, year, month, request);
     }
-
 }

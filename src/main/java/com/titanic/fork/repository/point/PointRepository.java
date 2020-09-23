@@ -31,8 +31,16 @@ public class PointRepository {
     }
 
     // 사용자가 1달 간 적립한 포인트 조회
-    public List<Point> findMonthlySavedPoint(Long accountGoalId, Integer month) {
+    public List<Point> findMonthlySavedPoint(Long accountGoalId) {
         return entityManager.createQuery("select p from SavingPoint as p " +
+                "left join fetch p.accountGoal as ag where ag.id = :accountGoalId", Point.class)
+                .setParameter("accountGoalId", accountGoalId)
+                .getResultList();
+    }
+
+    // 사용자가 1달 간 사용한 포인트 조회
+    public List<Point> findMonthlyUsedPoint(Long accountGoalId) {
+        return entityManager.createQuery("select p from UsedPoint as p " +
                 "left join fetch p.accountGoal as ag where ag.id = :accountGoalId", Point.class)
                 .setParameter("accountGoalId", accountGoalId)
                 .getResultList();

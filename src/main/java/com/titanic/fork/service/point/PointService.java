@@ -28,8 +28,7 @@ public class PointService {
     private final AccountRepository accountRepository;
 
     public PointResponse getTotalAndAvailablePoint(Long goalId, HttpServletRequest request) {
-        String userEmail = (String) request.getAttribute(LoginEnum.USER_EMAIL.getValue());
-        Account foundAccount = accountRepository.findByEmail(userEmail);
+        Account foundAccount = findByEmail(request);
 
         // accountID와 goalId로 1개 accountGoal을 찾는다.
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
@@ -48,14 +47,18 @@ public class PointService {
         return PointResponse.of(totalPoint, usedPoint);
     }
 
-    // 사용자가 1달 동안 적립한 포인트 조회
-    public MonthlyPointResponse getMonthlySavedPoint(Long goalId, Integer year, Integer month, HttpServletRequest request) {
+    private Account findByEmail(HttpServletRequest request) {
         String userEmail = (String) request.getAttribute(LoginEnum.USER_EMAIL.getValue());
-        Account foundAccount = accountRepository.findByEmail(userEmail);
+        return accountRepository.findByEmail(userEmail);
+    }
+
+    // 사용자가 해당 년,월 동안 적립한 포인트 조회
+    public MonthlyPointResponse getMonthlySavedPoint(Long goalId, Integer year, Integer month, HttpServletRequest request) {
+        Account foundAccount = findByEmail(request);
 
         // accountID와 goalId로 1개 accountGoal을 찾는다.
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
-        List<Point> monthlySavedPoints = pointRepository.findMonthlySavedPoint(foundAccountGoal.getId(), month);
+        List<Point> monthlySavedPoints = pointRepository.findMonthlySavedPoint(foundAccountGoal.getId());
 
         int savedPointSum = monthlySavedPoints.stream()
                 .filter(point -> point.isPeriod(year,month))
@@ -64,6 +67,24 @@ public class PointService {
 
         return MonthlyPointResponse.builder()
                 .savedPoint(savedPointSum)
+                .build();
+    }
+
+    // 사용자가 해당 년,월 동안 지출한 포인트 조회
+    public MonthlyPointResponse getMonthlyUsedPoint(Long goalId, Integer year, Integer month, HttpServletRequest request) {
+        Account foundAccount = findByEmail(request);
+
+        // accountID와 goalId로 1개 accountGoal을 찾는다.
+        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
+        List<Point> monthlyUsedPoints = pointRepository.findMonthlyUsedPoint(foundAccountGoal.getId());
+
+        int usedPointSum = monthlyUsedPoints.stream()
+                .filter(point -> point.isPeriod(year,month))
+                .mapToInt(Point::getAmount)
+                .sum();
+
+        return MonthlyPointResponse.builder()
+                .usedPoint(usedPointSum)
                 .build();
     }
 }
