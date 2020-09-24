@@ -1,10 +1,13 @@
 package com.titanic.fork.web.controller.goal;
 
 import com.titanic.fork.utils.TestEnum;
+import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import com.titanic.fork.web.login.LoginEnum;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -65,5 +68,28 @@ public class GoalControllerIntegrationTest {
 
         // then
         assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.CREATED);
+    }
+
+    @DisplayName("메인화면 일일, 주간 목표달성률API")
+    @ParameterizedTest
+    @CsvSource({"30,30"})
+    void 일일_주간목표달성률API를_테스트한다(int today, int weekly) {
+
+        // given
+        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/achievement";
+
+        // when
+        AchievementResponse achievementResponse = webTestClient.get()
+                .uri(localRequestUrl)
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .exchange()
+                .expectBody(AchievementResponse.class)
+                .returnResult()
+                .getResponseBody();
+
+        // then
+        assertThat(achievementResponse.getTodayAchievement()).isEqualTo(today);
+        assertThat(achievementResponse.getWeeklyAchievement()).isEqualTo(weekly);
+
     }
 }
