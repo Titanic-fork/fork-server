@@ -8,6 +8,7 @@ import com.titanic.fork.repository.goal.GoalRepository;
 import com.titanic.fork.domain.goal.Location;
 import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.service.account.AccountService;
+import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import com.titanic.fork.web.login.LoginEnum;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,9 @@ public class GoalService {
         // account에 추가한 accountGoal를 추가해야 테이블에서 정상처리된다.
         newGoal.addAccountGoal(savedAccountGoal);
         goalRepository.save(newGoal);
+    }
+
+    public AchievementResponse getAchievement(Integer todayTime, Integer weeklyTime) {
+        return null;
     }
 }

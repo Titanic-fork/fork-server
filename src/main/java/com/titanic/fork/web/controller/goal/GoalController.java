@@ -1,14 +1,12 @@
 package com.titanic.fork.web.controller.goal;
 
 import com.titanic.fork.service.goal.GoalService;
+import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,5 +24,9 @@ public class GoalController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
+    @GetMapping("achievement")
+    public AchievementResponse getAchievement(@RequestParam Integer todayTime,
+                                              @RequestParam Integer weeklyTime) {
+        return goalService.getAchievement(todayTime, weeklyTime);
+    }
 }
