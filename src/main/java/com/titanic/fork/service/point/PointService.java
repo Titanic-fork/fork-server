@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,6 +29,30 @@ public class PointService {
     private final AccountService accountService;
     private final PointCalculator pointCalculator;
     private final DateSupplier dateSupplier;
+
+    public MonthlyPointResponse getMonthlySavedPoint(Long goalId, Integer year, Integer month, HttpServletRequest request) {
+        int nextMonth = month + 1;
+        Account foundAccount = accountService.findByEmail(request);
+        // accountID와 goalId로 1개 accountGoal을 찾는다.
+        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
+        List<Point> monthlySavedPoints = pointRepository.findAllMonthlySavedPoint(foundAccountGoal.getId(),
+                dateSupplier.localDateTime(year, month), dateSupplier.localDateTime(year, nextMonth));
+
+        int savedPointSum = pointCalculator.sumCalculate(monthlySavedPoints);
+        return MonthlyPointResponse.toSavedPoint(savedPointSum);
+    }
+
+    public MonthlyPointResponse getMonthlyUsedPoint(Long goalId, Integer year, Integer month, HttpServletRequest request) {
+        int nextMonth = month + 1;
+        Account foundAccount = accountService.findByEmail(request);
+        // accountID와 goalId로 1개 accountGoal을 찾는다.
+        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
+        List<Point> monthlyUsedPoints = pointRepository.findAllMonthlyUsedPoint(foundAccountGoal.getId(),
+                dateSupplier.localDateTime(year,month), dateSupplier.localDateTime(year, nextMonth));
+        int usedPointSum = pointCalculator.sumCalculate(monthlyUsedPoints);
+
+        return MonthlyPointResponse.toUsedPoint(usedPointSum);
+    }
 
     public PointResponse getTotalAndAvailablePoint(Long goalId, HttpServletRequest request) {
         Account foundAccount = accountService.findByEmail(request);
@@ -46,57 +68,11 @@ public class PointService {
         return PointResponse.of(totalPoint, usedPoint);
     }
 
-    // 사용자가 해당 년,월 동안 적립한 포인트 조회
-    public MonthlyPointResponse getMonthlySavedPoint(Long goalId, Integer year, Integer month, HttpServletRequest request) {
-        int nextMonth = month + 1;
-        Account foundAccount = accountService.findByEmail(request);
-        // accountID와 goalId로 1개 accountGoal을 찾는다.
-        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
-        List<Point> monthlySavedPoints = pointRepository.findAllMonthlySavedPoint(foundAccountGoal.getId(),
-                dateSupplier.localDateTime(year, month), dateSupplier.localDateTime(year, nextMonth));
-
-        int savedPointSum = pointCalculator.sumCalculate(monthlySavedPoints);
-        return MonthlyPointResponse.toSavedPoint(savedPointSum);
-    }
-
-    // 사용자가 해당 년,월 동안 지출한 포인트 조회
-    public MonthlyPointResponse getMonthlyUsedPoint(Long goalId, Integer year, Integer month, HttpServletRequest request) {
-        int nextMonth = month + 1;
-        Account foundAccount = accountService.findByEmail(request);
-        // accountID와 goalId로 1개 accountGoal을 찾는다.
-        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
-        List<Point> monthlyUsedPoints = pointRepository.findAllMonthlyUsedPoint(foundAccountGoal.getId(),
-                dateSupplier.localDateTime(year,month), dateSupplier.localDateTime(year, nextMonth));
-        int usedPointSum = pointCalculator.sumCalculate(monthlyUsedPoints);
-
-        return MonthlyPointResponse.toUsedPoint(usedPointSum);
-    }
-
     public PointRankingResponse getMonthlyPointRanking(Long goalId, Integer year, Integer month, HttpServletRequest request) {
         List<AccountGoal> foundAccountGoals = accountGoalRepository.findAllByGoalId(goalId);
-        List<EachMonthlySavedPointStatus> eachMonthlySavedPoints = new ArrayList<>();
-        int first = 1;
-        int zero = 0;
-        int nextMonth = month + 1;
+        List<EachMonthlySavedPointStatus> eachMonthlySavedPoints =
+                pointCalculator.getRankingOfPoints(foundAccountGoals, year, month);
 
-        /*
-         * 반복문에서 각 accountGoal의 월간 적립 포인트를 찾은 뒤
-         * MonthlyPointResponse에 저장한다.
-         */
-        for (AccountGoal accountGoal : foundAccountGoals) {
-            List<Point> monthlySavedPoints = pointRepository.findAllMonthlySavedPoint(accountGoal.getId(), LocalDateTime.of(year,month,first,zero,zero), LocalDateTime.of(year,nextMonth,first,zero,zero));
-            int savedPointSum = pointCalculator.monthlyPointCalculate(monthlySavedPoints, year, month);
-
-            EachMonthlySavedPointStatus eachMonthlySavedPointStatus
-                    = EachMonthlySavedPointStatus.of(accountGoal, savedPointSum);
-
-            eachMonthlySavedPoints.add(eachMonthlySavedPointStatus);
-        }
-        // 각 누적 포인트 순으로 정렬
-        eachMonthlySavedPoints.sort((o1, o2) -> Integer.compare(o2.getMonthlySavedPoint(), o1.getMonthlySavedPoint()));
-
-        return PointRankingResponse.builder()
-                .eachMonthlySavedPoints(eachMonthlySavedPoints)
-                .build();
+        return PointRankingResponse.of(eachMonthlySavedPoints);
     }
 }

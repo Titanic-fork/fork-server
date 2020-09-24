@@ -17,4 +17,10 @@ public class PointRankingResponse {
     public PointRankingResponse(List<EachMonthlySavedPointStatus> eachMonthlySavedPoints) {
         this.eachMonthlySavedPoints = eachMonthlySavedPoints;
     }
+
+    public static PointRankingResponse of(List<EachMonthlySavedPointStatus> eachMonthlySavedPoints) {
+        return PointRankingResponse.builder()
+                .eachMonthlySavedPoints(eachMonthlySavedPoints)
+                .build();
+    }
 }
