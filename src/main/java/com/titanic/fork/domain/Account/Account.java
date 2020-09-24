@@ -49,7 +49,7 @@ public abstract class Account {
 
     public AccountGoal addAccountGoal(AccountGoal accountGoal) {
         this.accountGoals.add(accountGoal);
-        accountGoal.setAccount(this);
+        accountGoal.addAccount(this);
         return accountGoal;
     }
 }

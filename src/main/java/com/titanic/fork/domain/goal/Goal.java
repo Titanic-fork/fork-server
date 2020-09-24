@@ -1,8 +1,6 @@
 package com.titanic.fork.domain.goal;
 
-import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.AccountGoal;
-import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +34,6 @@ public class Goal {
 
     public void addAccountGoal(AccountGoal accountGoal) {
         this.accountGoals.add(accountGoal);
-        accountGoal.setGoal(this);
+        accountGoal.addGoal(this);
     }
 }

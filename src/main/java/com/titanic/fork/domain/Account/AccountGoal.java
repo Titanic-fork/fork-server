@@ -48,11 +48,11 @@ public class AccountGoal {
                 .build();
     }
 
-    public void setAccount(Account account) {
+    public void addAccount(Account account) {
         this.account = account;
     }
 
-    public void setGoal(Goal goal) {
+    public void addGoal(Goal goal) {
         this.goal = goal;
     }
 }
