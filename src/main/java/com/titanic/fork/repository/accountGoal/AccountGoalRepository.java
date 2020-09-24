@@ -29,7 +29,8 @@ public class AccountGoalRepository {
 
     // goalId로 전체 AccountGoal를 찾는다. 하나도 없을 경우 NoSuchAccountGoal 예외
     public List<AccountGoal> findAllByGoalId(Long goalId) {
-        List<AccountGoal> foundAccountGoals = entityManager.createQuery("select ag from AccountGoal as ag left join fetch ag.account where ag.goal.id = :goalId", AccountGoal.class)
+        List<AccountGoal> foundAccountGoals = entityManager.createQuery("select ag from AccountGoal as ag " +
+                "left join fetch ag.account where ag.goal.id = :goalId", AccountGoal.class)
                 .setParameter("goalId", goalId)
                 .getResultList();
 

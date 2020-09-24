@@ -9,12 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AchievementResponse {
 
-    private int todayAchievement;
-    private int weeklyAchievement;
+    private float todayAchievement;
+    private float weeklyAchievement;
 
     @Builder
-    public AchievementResponse(int todayAchievement, int weeklyAchievement) {
+    public AchievementResponse(float todayAchievement, float weeklyAchievement) {
         this.todayAchievement = todayAchievement;
         this.weeklyAchievement = weeklyAchievement;
+    }
+
+    public static AchievementResponse of(float todayAchievement, float weeklyAchievement) {
+        return AchievementResponse.builder()
+                .todayAchievement(todayAchievement)
+                .weeklyAchievement(weeklyAchievement)
+                .build();
     }
 }

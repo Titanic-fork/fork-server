@@ -72,11 +72,12 @@ public class GoalControllerIntegrationTest {
 
     @DisplayName("메인화면 일일, 주간 목표달성률API")
     @ParameterizedTest
-    @CsvSource({"30,30"})
-    void 일일_주간목표달성률API를_테스트한다(int today, int weekly) {
+    @CsvSource({"1,6.0,6.0"})
+    void 일일_주간목표달성률API를_테스트한다(int goalId, float today, float weekly) {
 
         // given
-        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/achievement";
+        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/" + goalId +
+                "/achievement?todayTime=60&weeklyTime=420";
 
         // when
         AchievementResponse achievementResponse = webTestClient.get()
@@ -90,6 +91,5 @@ public class GoalControllerIntegrationTest {
         // then
         assertThat(achievementResponse.getTodayAchievement()).isEqualTo(today);
         assertThat(achievementResponse.getWeeklyAchievement()).isEqualTo(weekly);
-
     }
 }

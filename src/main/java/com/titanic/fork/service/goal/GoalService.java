@@ -4,6 +4,7 @@ import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.AccountGoal;
 import com.titanic.fork.domain.goal.Alarm;
 import com.titanic.fork.domain.goal.Goal;
+import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
 import com.titanic.fork.repository.goal.GoalRepository;
 import com.titanic.fork.domain.goal.Location;
 import com.titanic.fork.repository.account.AccountRepository;
@@ -27,6 +28,7 @@ public class GoalService {
     private final GoalRepository goalRepository;
     private final AccountRepository accountRepository;
     private final AccountService accountService;
+    private final AccountGoalRepository accountGoalRepository;
 
     public void create(CreateGoalRequest createGoalRequest, HttpServletRequest request) {
         Account foundAccount = accountService.findByEmail(request);
@@ -50,7 +52,17 @@ public class GoalService {
         goalRepository.save(newGoal);
     }
 
-    public AchievementResponse getAchievement(Integer todayTime, Integer weeklyTime) {
-        return null;
+    public AchievementResponse getAchievement(Long goalId, Integer todayTime, Integer weeklyTime, HttpServletRequest request) {
+        Account foundAccount = accountService.findByEmail(request);
+        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
+        int hour = foundAccountGoal.getTargetTime().getHour();
+        int minute = foundAccountGoal.getTargetTime().getMinute();
+        float todayTargetMinute = (hour * 60) + minute;
+        float weeklyTargetMinute = todayTargetMinute * 7;
+
+        float todayAchievement = Math.round((todayTime / todayTargetMinute) * 100);
+        float weeklyAchievement = Math.round((weeklyTime / weeklyTargetMinute) * 100);
+        return AchievementResponse
+                .of(todayAchievement, weeklyAchievement);
     }
 }

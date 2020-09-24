@@ -24,9 +24,11 @@ public class GoalController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("achievement")
-    public AchievementResponse getAchievement(@RequestParam Integer todayTime,
-                                              @RequestParam Integer weeklyTime) {
-        return goalService.getAchievement(todayTime, weeklyTime);
+    @GetMapping("{goalId}/achievement")
+    public AchievementResponse getAchievement(@PathVariable Long goalId,
+                                              @RequestParam Integer todayTime,
+                                              @RequestParam Integer weeklyTime,
+                                              HttpServletRequest request) {
+        return goalService.getAchievement(goalId, todayTime, weeklyTime, request);
     }
 }
