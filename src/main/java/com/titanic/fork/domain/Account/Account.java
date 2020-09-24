@@ -39,9 +39,17 @@ public abstract class Account {
         return this.name.equals(name);
     }
 
-    public abstract void changePassword(String newPassword);
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
+    }
 
-    public abstract void changePhoneNumber(String phoneNumber);
+    public void changePhoneNumber(String newPhoneNumber) {
+        this.phoneNumber = newPhoneNumber;
+    }
 
-    public abstract AccountGoal addAccountGoal(AccountGoal accountGoal);
+    public AccountGoal addAccountGoal(AccountGoal accountGoal) {
+        this.accountGoals.add(accountGoal);
+        accountGoal.setAccount(this);
+        return accountGoal;
+    }
 }

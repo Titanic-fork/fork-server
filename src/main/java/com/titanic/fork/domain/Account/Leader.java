@@ -15,21 +15,4 @@ public class Leader extends Account {
     public Leader(String password, String email, String name, String phoneNumber) {
         super(password, email, name, phoneNumber);
     }
-
-    @Override
-    public void changePassword(String newPassword) {
-        this.password = newPassword;
-    }
-
-    @Override
-    public void changePhoneNumber(String newPhoneNumber) {
-        this.phoneNumber = newPhoneNumber;
-    }
-
-    @Override
-    public AccountGoal addAccountGoal(AccountGoal accountGoal) {
-        this.accountGoals.add(accountGoal);
-        accountGoal.setAccount(this);
-        return accountGoal;
-    }
 }

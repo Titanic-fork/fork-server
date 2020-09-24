@@ -29,5 +29,11 @@ public abstract class Point {
     @JoinColumn(name = "ACCOUNT_GOAL_ID")
     protected AccountGoal accountGoal;
 
-    public abstract boolean isPeriod(int year, int month);
+    public boolean isPeriod(int year, int month) {
+        int first = 1;
+        int zero = 0;
+        int nextMonth = month + 1;
+        return createdDate.isAfter(LocalDateTime.of(year,month,first,zero,zero))
+                && createdDate.isBefore(LocalDateTime.of(year,nextMonth,first,zero,zero));
+    }
 }
