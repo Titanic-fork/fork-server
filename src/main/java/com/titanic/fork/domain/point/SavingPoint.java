@@ -12,6 +12,4 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @DiscriminatorValue("saving_point")
 public class SavingPoint extends Point {
-
-
 }

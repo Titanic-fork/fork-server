@@ -17,4 +17,16 @@ public class MonthlyPointResponse {
         this.savedPoint = savedPoint;
         this.usedPoint = usedPoint;
     }
+
+    public static MonthlyPointResponse toSavedPoint(int savedPointSum) {
+        return MonthlyPointResponse.builder()
+                .savedPoint(savedPointSum)
+                .build();
+    }
+
+    public static MonthlyPointResponse toUsedPoint(int usedPointSum) {
+        return MonthlyPointResponse.builder()
+                .usedPoint(usedPointSum)
+                .build();
+    }
 }

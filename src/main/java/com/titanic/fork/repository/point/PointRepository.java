@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -31,18 +32,24 @@ public class PointRepository {
     }
 
     // 사용자가 1달 간 적립한 포인트 조회
-    public List<Point> findAllMonthlySavedPoint(Long accountGoalId) {
+    public List<Point> findAllMonthlySavedPoint(Long accountGoalId, LocalDateTime startDate, LocalDateTime endDate) {
         return entityManager.createQuery("select p from SavingPoint as p " +
-                "left join fetch p.accountGoal as ag where ag.id = :accountGoalId", Point.class)
+                "left join fetch p.accountGoal as ag " +
+                "where ag.id = :accountGoalId and p.createdDate >= :startDate and p.createdDate < :endDate", Point.class)
                 .setParameter("accountGoalId", accountGoalId)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
                 .getResultList();
     }
 
     // 사용자가 1달 간 사용한 포인트 조회
-    public List<Point> findAllMonthlyUsedPoint(Long accountGoalId) {
+    public List<Point> findAllMonthlyUsedPoint(Long accountGoalId, LocalDateTime startDate, LocalDateTime endDate) {
         return entityManager.createQuery("select p from UsedPoint as p " +
-                "left join fetch p.accountGoal as ag where ag.id = :accountGoalId", Point.class)
+                "left join fetch p.accountGoal as ag " +
+                "where ag.id = :accountGoalId and p.createdDate >= :startDate and p.createdDate < :endDate", Point.class)
                 .setParameter("accountGoalId", accountGoalId)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
                 .getResultList();
     }
 }
