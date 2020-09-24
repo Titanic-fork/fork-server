@@ -9,9 +9,9 @@ import com.titanic.fork.repository.goal.GoalRepository;
 import com.titanic.fork.domain.goal.Location;
 import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.service.account.AccountService;
+import com.titanic.fork.domain.goal.AchievementCalculator;
 import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
-import com.titanic.fork.web.login.LoginEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +29,7 @@ public class GoalService {
     private final AccountRepository accountRepository;
     private final AccountService accountService;
     private final AccountGoalRepository accountGoalRepository;
+    private final AchievementCalculator achievementCalculator;
 
     public void create(CreateGoalRequest createGoalRequest, HttpServletRequest request) {
         Account foundAccount = accountService.findByEmail(request);
@@ -55,14 +56,7 @@ public class GoalService {
     public AchievementResponse getAchievement(Long goalId, Integer todayTime, Integer weeklyTime, HttpServletRequest request) {
         Account foundAccount = accountService.findByEmail(request);
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
-        int hour = foundAccountGoal.getTargetTime().getHour();
-        int minute = foundAccountGoal.getTargetTime().getMinute();
-        float todayTargetMinute = (hour * 60) + minute;
-        float weeklyTargetMinute = todayTargetMinute * 7;
 
-        float todayAchievement = Math.round((todayTime / todayTargetMinute) * 100);
-        float weeklyAchievement = Math.round((weeklyTime / weeklyTargetMinute) * 100);
-        return AchievementResponse
-                .of(todayAchievement, weeklyAchievement);
+        return achievementCalculator.calculateAchievement(foundAccountGoal, todayTime, weeklyTime);
     }
 }

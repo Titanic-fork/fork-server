@@ -3,6 +3,7 @@ package com.titanic.fork.domain.point;
 import com.titanic.fork.domain.Account.AccountGoal;
 import com.titanic.fork.repository.point.PointRepository;
 import com.titanic.fork.utils.DateSupplier;
+import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.response.point.EachMonthlySavedPointStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,14 +21,6 @@ public class PointCalculator implements Calculator {
     @Override
     public int sumCalculate(List<Point> points) {
         return points.stream()
-                .mapToInt(Point::getAmount)
-                .sum();
-    }
-
-    @Override
-    public int monthlyPointCalculate(List<Point> monthlySavedPoints, Integer year, Integer month) {
-        return monthlySavedPoints.stream()
-                .filter(point -> point.isPeriod(year,month))
                 .mapToInt(Point::getAmount)
                 .sum();
     }
@@ -53,5 +46,10 @@ public class PointCalculator implements Calculator {
         }
         eachMonthlySavedPoints.sort((o1, o2) -> Integer.compare(o2.getMonthlySavedPoint(), o1.getMonthlySavedPoint()));
         return eachMonthlySavedPoints;
+    }
+
+    @Override
+    public AchievementResponse calculateAchievement(AccountGoal foundAccountGoal, int todayTime, int weeklyTime) {
+        return null;
     }
 }
