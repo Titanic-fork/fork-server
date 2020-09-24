@@ -11,7 +11,6 @@ import com.titanic.fork.web.dto.response.point.EachMonthlySavedPointStatus;
 import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
 import com.titanic.fork.web.dto.response.point.PointRankingResponse;
 import com.titanic.fork.web.dto.response.point.PointResponse;
-import com.titanic.fork.web.login.LoginEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +35,8 @@ public class PointService {
         // accountID와 goalId로 1개 accountGoal을 찾는다.
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
         // accountGoal로 해당 목표에 쌓은 사용자의 누적포인트 및 사용된 포인트 조회
-        List<Point> savingPoints = pointRepository.findSavingPointByAccountGoalId(foundAccountGoal.getId());
-        List<Point> usedPoints = pointRepository.findUsedPointByAccountGoalId(foundAccount.getId());
+        List<Point> savingPoints = pointRepository.findAllSavingPointByAccountGoalId(foundAccountGoal.getId());
+        List<Point> usedPoints = pointRepository.findAllUsedPointByAccountGoalId(foundAccount.getId());
 
         int totalPoint = savingPoints.stream()
                 .mapToInt(Point::getAmount)
@@ -56,7 +55,7 @@ public class PointService {
 
         // accountID와 goalId로 1개 accountGoal을 찾는다.
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
-        List<Point> monthlySavedPoints = pointRepository.findMonthlySavedPoint(foundAccountGoal.getId());
+        List<Point> monthlySavedPoints = pointRepository.findAllMonthlySavedPoint(foundAccountGoal.getId());
 
         int savedPointSum = monthlySavedPoints.stream()
                 .filter(point -> point.isPeriod(year,month))
@@ -74,7 +73,7 @@ public class PointService {
 
         // accountID와 goalId로 1개 accountGoal을 찾는다.
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
-        List<Point> monthlyUsedPoints = pointRepository.findMonthlyUsedPoint(foundAccountGoal.getId());
+        List<Point> monthlyUsedPoints = pointRepository.findAllMonthlyUsedPoint(foundAccountGoal.getId());
 
         int usedPointSum = monthlyUsedPoints.stream()
                 .filter(point -> point.isPeriod(year,month))
@@ -87,7 +86,7 @@ public class PointService {
     }
 
     public PointRankingResponse getMonthlyPointRanking(Long goalId, Integer year, Integer month, HttpServletRequest request) {
-        List<AccountGoal> foundAccountGoals = accountGoalRepository.findByGoalId(goalId);
+        List<AccountGoal> foundAccountGoals = accountGoalRepository.findAllByGoalId(goalId);
         List<EachMonthlySavedPointStatus> eachMonthlySavedPoints = new ArrayList<>();
 
         /*
@@ -95,7 +94,7 @@ public class PointService {
          * MonthlyPointResponse에 저장한다.
          */
         for (AccountGoal accountGoal : foundAccountGoals) {
-            List<Point> monthlySavedPoints = pointRepository.findMonthlySavedPoint(accountGoal.getId());
+            List<Point> monthlySavedPoints = pointRepository.findAllMonthlySavedPoint(accountGoal.getId());
             int savedPointSum = monthlySavedPoints.stream()
                     .filter(point -> point.isPeriod(year,month))
                     .mapToInt(Point::getAmount)
