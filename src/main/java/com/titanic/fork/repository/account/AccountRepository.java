@@ -1,4 +1,4 @@
-package com.titanic.fork.repository;
+package com.titanic.fork.repository.account;
 
 import com.titanic.fork.domain.Account.Account;
 import lombok.RequiredArgsConstructor;

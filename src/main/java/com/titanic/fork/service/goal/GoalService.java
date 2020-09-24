@@ -4,9 +4,10 @@ import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.AccountGoal;
 import com.titanic.fork.domain.goal.Alarm;
 import com.titanic.fork.domain.goal.Goal;
-import com.titanic.fork.repository.GoalRepository;
+import com.titanic.fork.repository.goal.GoalRepository;
 import com.titanic.fork.domain.goal.Location;
-import com.titanic.fork.repository.AccountRepository;
+import com.titanic.fork.repository.account.AccountRepository;
+import com.titanic.fork.service.account.AccountService;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import com.titanic.fork.web.login.LoginEnum;
 import lombok.RequiredArgsConstructor;
@@ -24,37 +25,22 @@ public class GoalService {
 
     private final GoalRepository goalRepository;
     private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     public void create(CreateGoalRequest createGoalRequest, HttpServletRequest request) {
-        String userEmail = (String) request.getAttribute(LoginEnum.USER_EMAIL.getValue());
-        Account foundAccount = accountRepository.findByEmail(userEmail);
-
-        Location location = Location.builder()
-                .address(createGoalRequest.getAddress())
-                .latitude(createGoalRequest.getLatitude())
-                .longitude(createGoalRequest.getLongitude())
-                .build();
+        Account foundAccount = accountService.findByEmail(request);
+        Location location = Location.from(createGoalRequest);
 
         List<String> targetDayOfWeeks = new ArrayList<>();
         targetDayOfWeeks.add(createGoalRequest.getTargetDayOfWeeks());
 
-        Alarm alarm = Alarm.builder()
-                .targetDayOfWeeks(targetDayOfWeeks)
-                .alarmTime(createGoalRequest.getAlarmTime())
-                .content(createGoalRequest.getContent())
-                .build();
+        Alarm alarm = Alarm.of(targetDayOfWeeks, createGoalRequest);
 
-        AccountGoal accountGoal = AccountGoal.builder()
-                .alarm(alarm)
-                .targetTime(createGoalRequest.getTargetTime())
-                .build();
+        AccountGoal accountGoal = AccountGoal.of(alarm, createGoalRequest);
 
         // account에 accountGoal를 추가
         AccountGoal savedAccountGoal = foundAccount.addAccountGoal(accountGoal);
         accountRepository.save(foundAccount);
-
-        // account와 accountGoal 관계를 저장한 후 다시 찾은 후 goal과 accountGoal 관계를 지정하기 위함
-//        Account savedAccount = accountRepository.findByEmail(userEmail);
 
         Goal newGoal = CreateGoalRequest.toEntity(createGoalRequest, location);
 

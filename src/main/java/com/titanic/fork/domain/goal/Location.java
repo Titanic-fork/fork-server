@@ -1,5 +1,6 @@
 package com.titanic.fork.domain.goal;
 
+import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +23,14 @@ public class Location {
         this.address = address;
         this.longitude = longitude;
         this.latitude = latitude;
+    }
+
+    public static Location from(CreateGoalRequest createGoalRequest) {
+        return Location.builder()
+                .address(createGoalRequest.getAddress())
+                .latitude(createGoalRequest.getLatitude())
+                .longitude(createGoalRequest.getLongitude())
+                .build();
     }
 
     @Override

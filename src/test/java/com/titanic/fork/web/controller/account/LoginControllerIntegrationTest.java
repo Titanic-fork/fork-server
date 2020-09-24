@@ -1,6 +1,6 @@
 package com.titanic.fork.web.controller.account;
 
-import com.titanic.fork.repository.AccountRepository;
+import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.utils.TestEnum;
 import com.titanic.fork.web.dto.request.account.LoginRequest;
 import com.titanic.fork.web.login.LoginEnum;
@@ -38,7 +38,7 @@ public class LoginControllerIntegrationTest {
 
     @DisplayName("로그인API테스트")
     @ParameterizedTest
-    @CsvSource({"guswns1651@gmail.com,password1"})
+    @CsvSource({"guswns1654@gmail.com,password"})
     void 로그인_테스트한다(String email, String password) {
 
         // given
@@ -55,7 +55,7 @@ public class LoginControllerIntegrationTest {
                 .returnResult();
 
         // then
-//        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.OK);
+//        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 }

@@ -2,6 +2,7 @@ package com.titanic.fork.domain.Account;
 
 import com.titanic.fork.domain.goal.Alarm;
 import com.titanic.fork.domain.goal.Goal;
+import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,13 @@ public class AccountGoal {
         this.goal = goal;
         this.alarm = alarm;
         this.targetTime = targetTime;
+    }
+
+    public static AccountGoal of(Alarm alarm, CreateGoalRequest createGoalRequest) {
+        return AccountGoal.builder()
+                .alarm(alarm)
+                .targetTime(createGoalRequest.getTargetTime())
+                .build();
     }
 
     public void setAccount(Account account) {

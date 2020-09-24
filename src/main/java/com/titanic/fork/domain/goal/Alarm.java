@@ -1,5 +1,6 @@
 package com.titanic.fork.domain.goal;
 
+import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,5 +34,13 @@ public class Alarm {
         this.targetDayOfWeeks = targetDayOfWeeks;
         this.alarmTime = alarmTime;
         this.content = content;
+    }
+
+    public static Alarm of(List<String> targetDayOfWeeks, CreateGoalRequest createGoalRequest) {
+        return Alarm.builder()
+                .targetDayOfWeeks(targetDayOfWeeks)
+                .alarmTime(createGoalRequest.getAlarmTime())
+                .content(createGoalRequest.getContent())
+                .build();
     }
 }

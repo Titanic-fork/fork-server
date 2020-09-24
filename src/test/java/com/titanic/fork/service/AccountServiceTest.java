@@ -1,7 +1,7 @@
 package com.titanic.fork.service;
 
 import com.titanic.fork.domain.Account.Account;
-import com.titanic.fork.repository.AccountRepository;
+import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.service.account.AccountService;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
 import org.junit.jupiter.api.DisplayName;

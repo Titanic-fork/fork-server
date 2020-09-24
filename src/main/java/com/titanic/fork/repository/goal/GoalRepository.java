@@ -1,4 +1,4 @@
-package com.titanic.fork.repository;
+package com.titanic.fork.repository.goal;
 
 import com.titanic.fork.domain.goal.Goal;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.titanic.fork.service;
 
-import com.titanic.fork.repository.AccountRepository;
+import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.service.account.RegisterService;
 import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,13 +9,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

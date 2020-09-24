@@ -36,11 +36,11 @@ public class AccountControllerIntegrationTest {
 
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
-    @CsvSource({"guswns1651@gmail.com,010-1234-5678"})
+    @CsvSource({"guswns1653@gmail.com,010-1234-5678"})
     void 핸드폰번호_수정API를_테스트한다(String email, String phoneNumber) {
 
         // given
-        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/phoneNumber";
+        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/phone-number";
         NewPhoneNumberRequest newPhoneNumberRequest = NewPhoneNumberRequest.of(email, phoneNumber);
 
         // when
@@ -57,7 +57,7 @@ public class AccountControllerIntegrationTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"hyunjun,guswns1652@gmail.com"})
+    @CsvSource({"hyunjun,guswns1653@gmail.com"})
     void 비밀번호변경을_위한_인증API을_테스트한다(String name, String email) {
 
         // given
@@ -67,6 +67,7 @@ public class AccountControllerIntegrationTest {
         // when
         EntityExchangeResult<ResponseEntity> responseEntityEntityExchangeResult = webTestClient.put()
                 .uri(requestUrl)
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .body(Mono.just(validateNameAndPasswordRequest), ValidateNameAndPasswordRequest.class)
                 .exchange()
                 .expectBody(ResponseEntity.class)
@@ -79,16 +80,17 @@ public class AccountControllerIntegrationTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"guswns1651@gmail.com,newPassword"})
+    @CsvSource({"guswns1653@gmail.com,newPassword"})
     void 비밀번호변경API를_테스트한다(String email, String newPassword) {
 
         // given
-        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping +"/find";
+        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping +"/password";
         NewPasswordRequest newPasswordRequest = NewPasswordRequest.of(email, newPassword);
 
         // when
         EntityExchangeResult<ResponseEntity> newPasswordRequestEntityExchangeResult = webTestClient.put()
                 .uri(requestUrl)
+                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .body(Mono.just(newPasswordRequest), NewPasswordRequest.class)
                 .exchange()
                 .expectBody(ResponseEntity.class)

@@ -3,9 +3,10 @@ package com.titanic.fork.service.point;
 import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.AccountGoal;
 import com.titanic.fork.domain.point.Point;
-import com.titanic.fork.repository.AccountRepository;
+import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
 import com.titanic.fork.repository.point.PointRepository;
+import com.titanic.fork.service.account.AccountService;
 import com.titanic.fork.web.dto.response.point.EachMonthlySavedPointStatus;
 import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
 import com.titanic.fork.web.dto.response.point.PointRankingResponse;
@@ -27,9 +28,10 @@ public class PointService {
     private final PointRepository pointRepository;
     private final AccountGoalRepository accountGoalRepository;
     private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     public PointResponse getTotalAndAvailablePoint(Long goalId, HttpServletRequest request) {
-        Account foundAccount = findByEmail(request);
+        Account foundAccount = accountService.findByEmail(request);
 
         // accountID와 goalId로 1개 accountGoal을 찾는다.
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
@@ -48,14 +50,9 @@ public class PointService {
         return PointResponse.of(totalPoint, usedPoint);
     }
 
-    private Account findByEmail(HttpServletRequest request) {
-        String userEmail = (String) request.getAttribute(LoginEnum.USER_EMAIL.getValue());
-        return accountRepository.findByEmail(userEmail);
-    }
-
     // 사용자가 해당 년,월 동안 적립한 포인트 조회
     public MonthlyPointResponse getMonthlySavedPoint(Long goalId, Integer year, Integer month, HttpServletRequest request) {
-        Account foundAccount = findByEmail(request);
+        Account foundAccount = accountService.findByEmail(request);
 
         // accountID와 goalId로 1개 accountGoal을 찾는다.
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
@@ -73,7 +70,7 @@ public class PointService {
 
     // 사용자가 해당 년,월 동안 지출한 포인트 조회
     public MonthlyPointResponse getMonthlyUsedPoint(Long goalId, Integer year, Integer month, HttpServletRequest request) {
-        Account foundAccount = findByEmail(request);
+        Account foundAccount = accountService.findByEmail(request);
 
         // accountID와 goalId로 1개 accountGoal을 찾는다.
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
