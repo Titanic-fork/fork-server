@@ -1,7 +1,7 @@
 package com.titanic.fork.web.controller.account;
 
 import com.titanic.fork.repository.account.AccountRepository;
-import com.titanic.fork.utils.TestEnum;
+import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.dto.request.account.LoginRequest;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.api.DisplayName;
@@ -42,14 +42,14 @@ public class LoginControllerIntegrationTest {
     void 로그인_테스트한다(String email, String password) {
 
         // given
-        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/login";
+        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/login";
         LoginRequest loginRequest = LoginRequest.of(email, password);
 
         // when
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.post()
                 .uri(requestUrl)
                 .body(Mono.just(loginRequest), LoginRequest.class)
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();

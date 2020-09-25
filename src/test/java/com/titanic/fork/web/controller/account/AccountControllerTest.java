@@ -3,7 +3,7 @@ package com.titanic.fork.web.controller.account;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.titanic.fork.service.account.AccountService;
 import com.titanic.fork.service.account.RegisterService;
-import com.titanic.fork.utils.TestEnum;
+import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
 import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
 import com.titanic.fork.web.login.LoginEnum;
@@ -47,8 +47,8 @@ public class AccountControllerTest {
 
         // when, then
         mockMvc.perform(put(requestUrl)
-                .header(TestEnum.ORIGIN.getValue(), TestEnum.ALL.getValue())
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LocalTestEnum.ORIGIN.getValue(), LocalTestEnum.ALL.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(newPhoneNumberRequest))
                 .accept(MediaType.APPLICATION_JSON))
@@ -67,7 +67,7 @@ public class AccountControllerTest {
 
         // when
         final ResultActions actions = mockMvc.perform(post(REQUEST_MAPPING)
-                .header(TestEnum.ORIGIN.getValue(), TestEnum.ALL.getValue())
+                .header(LocalTestEnum.ORIGIN.getValue(), LocalTestEnum.ALL.getValue())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(registerRequestDto))
                 .accept(MediaType.APPLICATION_JSON))

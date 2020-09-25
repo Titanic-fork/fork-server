@@ -1,6 +1,6 @@
 package com.titanic.fork.web.controller.account;
 
-import com.titanic.fork.utils.TestEnum;
+import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
 import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;
@@ -40,14 +40,14 @@ public class AccountControllerIntegrationTest {
     void 핸드폰번호_수정API를_테스트한다(String email, String phoneNumber) {
 
         // given
-        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/phone-number";
+        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/phone-number";
         NewPhoneNumberRequest newPhoneNumberRequest = NewPhoneNumberRequest.of(email, phoneNumber);
 
         // when
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.put()
                 .uri(requestUrl)
                 .body(Mono.just(newPhoneNumberRequest), NewPhoneNumberRequest.class)
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();
@@ -61,13 +61,13 @@ public class AccountControllerIntegrationTest {
     void 비밀번호변경을_위한_인증API을_테스트한다(String name, String email) {
 
         // given
-        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping + "/authentication";
+        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/authentication";
         ValidateNameAndPasswordRequest validateNameAndPasswordRequest = ValidateNameAndPasswordRequest.of(name, email);
 
         // when
         EntityExchangeResult<ResponseEntity> responseEntityEntityExchangeResult = webTestClient.put()
                 .uri(requestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .body(Mono.just(validateNameAndPasswordRequest), ValidateNameAndPasswordRequest.class)
                 .exchange()
                 .expectBody(ResponseEntity.class)
@@ -84,13 +84,13 @@ public class AccountControllerIntegrationTest {
     void 비밀번호변경API를_테스트한다(String email, String newPassword) {
 
         // given
-        String requestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping +"/password";
+        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping +"/password";
         NewPasswordRequest newPasswordRequest = NewPasswordRequest.of(email, newPassword);
 
         // when
         EntityExchangeResult<ResponseEntity> newPasswordRequestEntityExchangeResult = webTestClient.put()
                 .uri(requestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), TestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .body(Mono.just(newPasswordRequest), NewPasswordRequest.class)
                 .exchange()
                 .expectBody(ResponseEntity.class)

@@ -22,8 +22,9 @@ public class PointController {
 
     private final PointService pointService;
     private static final String JWT_TOKEN = "eyJIUzI1NiI6IkhTMjU2IiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ" +
-            ".eyJBdXRob3JpemF0aW9uIjoiZ3Vzd25zMTY1M0BnbWFpbC5jb20iLCJzdWIiOiJndXN3bnMxNjUzQGdtYWlsLmNvbSIsImV4cCI6MTYwMTYzODI4OCwiaWF0IjoxNjAwNzc0Mjg4fQ" +
-            ".A6dxOdl0HnHqogXln8imccrZJ_WxVdYKbE9f728duXg";
+            ".eyJBdXRob3JpemF0aW9uIjoiZ3Vzd25zMTY1M0BnbWFpbC5jb20iLCJzdWIiOiJndXN3bnMxNjUzQGdtYWlsLmNvbSIsImV4cCI6MTYwMTg5NzYxNywiaWF0IjoxNjAxMDMzNjE3fQ" +
+            ".nfrrASV5ltnTCmffrXshuyNDrWo6pAcggtvzMk1_M9o";
+
 
     @ApiOperation(value = "메인화면 속 사용자의 누적 및 사용가능 포인트 조회 API",
             notes = "200 : 성공 \n" +

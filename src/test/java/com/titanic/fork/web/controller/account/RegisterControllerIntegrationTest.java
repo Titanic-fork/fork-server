@@ -1,6 +1,6 @@
 package com.titanic.fork.web.controller.account;
 
-import com.titanic.fork.utils.TestEnum;
+import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,7 +36,7 @@ public class RegisterControllerIntegrationTest {
     void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
 
         // given
-        String localRequestUrl = TestEnum.LOCALHOST.getValue() + port + requestMapping;
+        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping;
 //        String apiRequestUrl = TestEnum.SERVICE_URL.getValue() + requestMapping;
         RegisterRequestDto registerRequestDto = RegisterRequestDto.of(email,password,name,phoneNumber);
 
