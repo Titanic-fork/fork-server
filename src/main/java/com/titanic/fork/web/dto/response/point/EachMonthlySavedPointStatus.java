@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EachMonthlySavedPointStatus {
 
-    private Long AccountId;
+    private Long accountId;
     private String name;
     private int monthlySavedPoint;
 
     @Builder
     public EachMonthlySavedPointStatus(Long accountId, String name, int monthlySavedPoint) {
-        AccountId = accountId;
+        this.accountId = accountId;
         this.name = name;
         this.monthlySavedPoint = monthlySavedPoint;
     }
