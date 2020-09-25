@@ -21,6 +21,10 @@ public class AccountController {
 
     private final AccountService accountService;
     private final RegisterService registerService;
+    // 스웨거에 사용될 jwt example, Enum 사용이 안되서 부득히하게 선언
+    private static final String JWT_TOKEN = "eyJIUzI1NiI6IkhTMjU2IiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ" +
+            ".eyJBdXRob3JpemF0aW9uIjoiZ3Vzd25zMTY1M0BnbWFpbC5jb20iLCJzdWIiOiJndXN3bnMxNjUzQGdtYWlsLmNvbSIsImV4cCI6MTYwMTYzODI4OCwiaWF0IjoxNjAwNzc0Mjg4fQ" +
+            ".A6dxOdl0HnHqogXln8imccrZJ_WxVdYKbE9f728duXg";
 
     @ApiOperation(value = "회원가입 API",
             notes = "201 : 성공, Header Authorization에 JWT 토큰 응답 \n" +
@@ -53,10 +57,10 @@ public class AccountController {
     }
 
     @ApiOperation(value = "비밀번호 수정API",
-                    notes = "200 : 성공" +
-                            "500 : 서버 에러 (두 비밀번호가 같다는 전제")
-    @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
-            paramType = "header", dataType = "string", example = "testToken")
+                    notes = "200 : 성공 \n" +
+                            "500 : 서버 에러 (두 비밀번호가 같다는 전제)")
+    @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
+            paramType = "header", dataType = "string", example = JWT_TOKEN)
     @PutMapping("password")
     public ResponseEntity<Void> changePassword(@RequestBody NewPasswordRequest newPasswordRequest) {
         accountService.changePassword(newPasswordRequest);
@@ -66,8 +70,8 @@ public class AccountController {
     @ApiOperation(value = "핸드폰 번호를 수정하는 API",
                     notes = "200 : 성공 \n" +
                             "500 : 서버 에러")
-    @ApiImplicitParam(name = "Authorization", value = "Jwt token", required = true,
-            paramType = "header", dataType = "string", example = "testToken")
+    @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
+            paramType = "header", dataType = "string", example = JWT_TOKEN)
     @PutMapping("phone-number")
     public ResponseEntity<Void> changePhoneNumber(@RequestBody NewPhoneNumberRequest newPhoneNumberRequest) {
         accountService.changePhoneNumber(newPhoneNumberRequest);
