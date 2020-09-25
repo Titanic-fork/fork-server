@@ -19,39 +19,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = {RegisterController.class})
+@WebMvcTest(controllers = {AccountController.class})
 public class RegisterControllerTest {
 
     @Autowired
     MockMvc mockMvc;
 
-    @MockBean
-    RegisterService registerService;
 
-    private final String REQUEST_MAPPING = "/account";
-
-    @ParameterizedTest
-    @CsvSource({"guswns1653@gmail.com,password,hyunjun,010-7720-7957"})
-    void 회원가입테스트한다(String email, String password, String name, String phoneNumber) throws Exception {
-        /* given
-         * serialize를 해서 content에 넣어야 함.
-         */
-        RegisterRequestDto registerRequestDto = RegisterRequestDto.of(email, password, name, phoneNumber);
-
-        // when
-        final ResultActions actions = mockMvc.perform(post(REQUEST_MAPPING)
-                .header(TestEnum.ORIGIN.getValue(), TestEnum.ALL.getValue())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(registerRequestDto))
-                .accept(MediaType.APPLICATION_JSON))
-                .andDo(print());
-        // then
-        MvcResult mvcResult = actions
-                .andExpect(status().isCreated())
-                .andReturn();
-
-        System.out.println(mvcResult.getResponse().getHeader(LoginEnum.AUTHORIZATION.getValue()));
-    }
 
     public static String asJsonString(final Object obj) {
         try {
