@@ -1,7 +1,7 @@
 package com.titanic.fork.service.account;
 
 import com.titanic.fork.domain.Account.Account;
-import com.titanic.fork.exception.NoSuchAccountException;
+import com.titanic.fork.exception.account.NoSuchAccountException;
 import com.titanic.fork.exception.account.LoginAuthenticationFail;
 import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.service.JwtProvider;
@@ -51,7 +51,7 @@ public class AccountService {
         jwtProvider.loadJwtToHeader(response, loginRequest);
 
         if (loginFail(loginRequest, foundAccount)) {
-            throw new LoginAuthenticationFail();
+            throw new LoginAuthenticationFail("비밀번호가 일치하지 않습니다.");
         }
     }
 

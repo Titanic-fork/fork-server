@@ -24,19 +24,12 @@ public class RegisterService {
     private final PasswordEncoder passwordEncoder;
 
     public void register(RegisterRequest registerRequest, HttpServletResponse response) {
-        // 비밀번호 encode
+        // 비밀번호 encode 로직 //
         String encodePassword = passwordEncoder.encode(registerRequest.getPassword());
         Member account = Member.of(registerRequest, encodePassword);
         accountRepository.save(account);
         jwtProvider.loadJwtToHeader(response, registerRequest);
     }
-
-//    private void validateDuplicateEmail(RegisterRequest registerRequest) {
-//        List<Account> foundAccounts = accountRepository.findDuplicatedEmail(registerRequest.getEmail());
-//        if (!foundAccounts.isEmpty()) {
-//            throw new AlreadyExistedException();
-//        }
-//    }
 
     public void validateDuplicatedEmail(String email) {
         List<Account> foundAccounts = accountRepository.findDuplicatedEmail(email);
