@@ -64,4 +64,7 @@ public class AccountService {
         return accountRepository.findByEmail(userEmail);
     }
 
+    public void validateDuplicatedEmail(String email) {
+
+    }
 }

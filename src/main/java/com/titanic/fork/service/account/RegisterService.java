@@ -24,8 +24,6 @@ public class RegisterService {
     private final PasswordEncoder passwordEncoder;
 
     public void register(RegisterRequest registerRequest, HttpServletResponse response) {
-        validateDuplicateEmail(registerRequest);
-
         // 비밀번호 encode
         String encodePassword = passwordEncoder.encode(registerRequest.getPassword());
         Member account = Member.of(registerRequest, encodePassword);
@@ -33,10 +31,17 @@ public class RegisterService {
         jwtProvider.loadJwtToHeader(response, registerRequest);
     }
 
-    private void validateDuplicateEmail(RegisterRequest registerRequest) {
-        List<Account> foundAccounts = accountRepository.findDuplicatedEmail(registerRequest.getEmail());
+//    private void validateDuplicateEmail(RegisterRequest registerRequest) {
+//        List<Account> foundAccounts = accountRepository.findDuplicatedEmail(registerRequest.getEmail());
+//        if (!foundAccounts.isEmpty()) {
+//            throw new AlreadyExistedException();
+//        }
+//    }
+
+    public void validateDuplicatedEmail(String email) {
+        List<Account> foundAccounts = accountRepository.findDuplicatedEmail(email);
         if (!foundAccounts.isEmpty()) {
-            throw new AlreadyExistedException();
+            throw new AlreadyExistedException("중복되는 이메일입니다.");
         }
     }
 }

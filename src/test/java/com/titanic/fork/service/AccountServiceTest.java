@@ -1,11 +1,14 @@
 package com.titanic.fork.service;
 
 import com.titanic.fork.domain.Account.Account;
+import com.titanic.fork.exception.AlreadyExistedException;
 import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.service.account.AccountService;
+import com.titanic.fork.service.account.RegisterService;
 import com.titanic.fork.web.dto.request.account.LoginRequest;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
@@ -14,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @DisplayName(value = "AccountService 테스트")
 @SpringBootTest
@@ -25,6 +28,9 @@ public class AccountServiceTest {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private RegisterService registerService;
 
     @Mock
     private HttpServletResponse response;
@@ -56,5 +62,23 @@ public class AccountServiceTest {
         accountService.login(loginRequest, response);
 
         // then (결과가 void라 메서드 내 log로 확인하기)
+    }
+
+    @DisplayName("중복된 이메일이면 예외가 출력되는 테스트")
+    @ParameterizedTest
+    @CsvSource({"guswns1653@gmail.com"})
+    void 중복_이메일_예외(String email) {
+        // given, when, then
+        assertThatThrownBy(() ->
+                registerService.validateDuplicatedEmail(email)).isInstanceOf(AlreadyExistedException.class);
+    }
+
+    @DisplayName("중복된 이메일이면 예외가 출력되는 테스트")
+    @ParameterizedTest
+    @CsvSource({"guswns1700@gmail.com"})
+    void 중복_이메일_통과(String email) {
+        // given, when, then
+        assertThatThrownBy(() ->
+                registerService.validateDuplicatedEmail(email)).isInstanceOf(AlreadyExistedException.class);
     }
 }
