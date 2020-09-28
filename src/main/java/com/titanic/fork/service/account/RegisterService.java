@@ -4,9 +4,8 @@ import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.Member;
 import com.titanic.fork.exception.AlreadyExistedException;
 import com.titanic.fork.repository.account.AccountRepository;
-import com.titanic.fork.service.JwtService;
-import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
-import com.titanic.fork.web.login.LoginEnum;
+import com.titanic.fork.service.JwtProvider;
+import com.titanic.fork.web.dto.request.account.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,24 +20,21 @@ import java.util.List;
 public class RegisterService {
 
     private final AccountRepository accountRepository;
-    private final JwtService jwtService;
+    private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public void register(RegisterRequestDto registerRequestDto, HttpServletResponse response) {
-        validateDuplicateEmail(registerRequestDto.getEmail());
+    public void register(RegisterRequest registerRequest, HttpServletResponse response) {
+        validateDuplicateEmail(registerRequest);
 
         // 비밀번호 encode
-        String encodePassword = passwordEncoder.encode(registerRequestDto.getPassword());
-        registerRequestDto.setPassword(encodePassword);
-
-        Member account = Member.from(registerRequestDto);
+        String encodePassword = passwordEncoder.encode(registerRequest.getPassword());
+        Member account = Member.of(registerRequest, encodePassword);
         accountRepository.save(account);
-        String jwtTokenWithEmail = jwtService.createJwtTokenWithEmail(account.getEmail());
-        response.setHeader(LoginEnum.AUTHORIZATION.getValue(), jwtTokenWithEmail);
+        jwtProvider.loadJwtToHeader(response, registerRequest);
     }
 
-    private void validateDuplicateEmail(String email) {
-        List<Account> foundAccounts = accountRepository.findDuplicatedEmail(email);
+    private void validateDuplicateEmail(RegisterRequest registerRequest) {
+        List<Account> foundAccounts = accountRepository.findDuplicatedEmail(registerRequest.getEmail());
         if (!foundAccounts.isEmpty()) {
             throw new AlreadyExistedException();
         }
