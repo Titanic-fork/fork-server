@@ -1,6 +1,6 @@
 package com.titanic.fork.service;
 
-import com.titanic.fork.web.dto.request.AccountRequestDto;
+import com.titanic.fork.web.dto.request.account.AccountRequestDto;
 import com.titanic.fork.web.login.LoginEnum;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

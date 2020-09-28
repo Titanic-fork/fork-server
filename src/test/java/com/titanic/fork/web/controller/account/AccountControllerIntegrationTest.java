@@ -1,9 +1,7 @@
 package com.titanic.fork.web.controller.account;
 
 import com.titanic.fork.utils.LocalTestEnum;
-import com.titanic.fork.web.dto.request.account.NewPasswordRequest;
-import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
-import com.titanic.fork.web.dto.request.account.ValidateNameAndPasswordRequest;
+import com.titanic.fork.web.dto.request.account.*;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,6 +31,54 @@ public class AccountControllerIntegrationTest {
     private WebTestClient webTestClient;
 
     private final static String requestMapping = "/account";
+
+    @ParameterizedTest
+    @CsvSource({"guswns1658@gmail.com,password,hyunjun,010-7720-7957"})
+    void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
+
+        // given
+        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping;
+//        String apiRequestUrl = TestEnum.SERVICE_URL.getValue() + requestMapping;
+        RegisterRequest registerRequest = RegisterRequest.of(email,password,name,phoneNumber);
+
+        // when
+        EntityExchangeResult<ResponseEntity> registerResponse = webTestClient.post()
+                .uri(localRequestUrl)
+                .body(Mono.just(registerRequest), RegisterRequest.class)
+                .exchange()
+                .expectBody(ResponseEntity.class)
+                .returnResult();
+
+        /* then
+         * 회원가입 성공 후 Header.Authorization에 Jwt토큰이 담기는 지 테스트
+         * 실패 시 HttpStatus = 500(BAD_REQUEST)
+         */
+        System.out.println("token = " + registerResponse.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
+        assertThat(registerResponse.getStatus()).isEqualTo(HttpStatus.CREATED);
+    }
+
+    @DisplayName("로그인API테스트")
+    @ParameterizedTest
+    @CsvSource({"guswns1654@gmail.com,password"})
+    void 로그인_테스트한다(String email, String password) {
+
+        // given
+        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/login";
+        LoginRequest loginRequest = LoginRequest.of(email, password);
+
+        // when
+        EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.post()
+                .uri(requestUrl)
+                .body(Mono.just(loginRequest), LoginRequest.class)
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1654.getValue())
+                .exchange()
+                .expectBody(ResponseEntity.class)
+                .returnResult();
+
+        // then
+        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.OK);
+//        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
 
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest

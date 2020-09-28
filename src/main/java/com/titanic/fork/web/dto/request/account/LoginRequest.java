@@ -1,6 +1,5 @@
 package com.titanic.fork.web.dto.request.account;
 
-import com.titanic.fork.web.dto.request.AccountRequestDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

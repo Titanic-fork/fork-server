@@ -1,4 +1,4 @@
-package com.titanic.fork.web.dto.request;
+package com.titanic.fork.web.dto.request.account;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
