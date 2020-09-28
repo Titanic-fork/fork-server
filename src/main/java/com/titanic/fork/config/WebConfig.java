@@ -39,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
         /*
          * 회원가입하는 url (~/account)만 제외하기
          */
-        String[] excludePathPatterns = new String[]{"/account"};
+        String[] excludePathPatterns = new String[]{"/account", "/account/{email}"};
         String[] swaggerPaths = new String[]{"/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**"};
 
         registry.addInterceptor(loginInterceptor())

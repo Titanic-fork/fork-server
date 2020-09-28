@@ -33,8 +33,18 @@ public class AccountController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "중복 이메일 확인 API",
+            notes = "200 : 중복 이메일 아님 \n" +
+                    "202 : 중복된 이메일 존재")
+    @GetMapping("{email}")
+    public ResponseEntity<Void> validateDuplicatedEmail(@PathVariable String email) {
+        registerService.validateDuplicatedEmail(email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @ApiOperation(value = "로그인 API",
             notes = "200 : 성공, Header Authorization에 JWT 토큰 응답 \n" +
+                    "204 : 해당 이메일이 DB에 없는 경우" +
                     "401 : 이메일과 패스워드가 다른 경우 \n" +
                     "500 : 서버 에러")
     @PostMapping("login")

@@ -95,7 +95,7 @@ public class AccountControllerIntegrationTest {
                 .expectBody(ResponseEntity.class)
                 .returnResult();
         // then
-        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.ACCEPTED);
     }
 
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
