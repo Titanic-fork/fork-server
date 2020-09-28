@@ -100,12 +100,12 @@ public class AccountControllerIntegrationTest {
 
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
-    @CsvSource({"guswns1653@gmail.com,010-1234-5678"})
-    void 핸드폰번호_수정API를_테스트한다(String email, String phoneNumber) {
+    @CsvSource({"010-1234-5678"})
+    void 핸드폰번호_수정API를_테스트한다(String phoneNumber) {
 
         // given
         String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING + "/phone-number";
-        NewPhoneNumberRequest newPhoneNumberRequest = NewPhoneNumberRequest.of(email, phoneNumber);
+        NewPhoneNumberRequest newPhoneNumberRequest = NewPhoneNumberRequest.from(phoneNumber);
 
         // when
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.put()

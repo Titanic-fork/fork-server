@@ -29,9 +29,9 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
-    public void changePhoneNumber(NewPhoneNumberRequest newPhoneNumberRequest) {
-        Account foundAccount = accountRepository.findByEmail(newPhoneNumberRequest.getEmail());
-        foundAccount.changePhoneNumber(newPhoneNumberRequest.getPhoneNumber());
+    public void changePhoneNumber(NewPhoneNumberRequest newPhoneNumberRequest, HttpServletRequest request) {
+        Account foundAccount = findByEmail(request);
+        foundAccount.changePhoneNumber(newPhoneNumberRequest);
     }
 
     public void validateNameAndPassword(ValidateNameAndPasswordRequest validateNameAndPasswordRequest) {
@@ -62,9 +62,5 @@ public class AccountService {
     public Account findByEmail(HttpServletRequest request) {
         String userEmail = (String) request.getAttribute(LoginEnum.USER_EMAIL.getValue());
         return accountRepository.findByEmail(userEmail);
-    }
-
-    public void validateDuplicatedEmail(String email) {
-
     }
 }

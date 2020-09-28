@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.NoResultException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -36,7 +37,7 @@ public class AccountController {
     @ApiOperation(value = "중복 이메일 확인 API",
             notes = "200 : 중복 이메일 아님 \n" +
                     "202 : 중복된 이메일 존재")
-    @GetMapping("{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<Void> validateDuplicatedEmail(@PathVariable String email) {
         registerService.validateDuplicatedEmail(email);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -81,8 +82,9 @@ public class AccountController {
     @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
             paramType = "header", dataType = "string", example = JWT_TOKEN)
     @PutMapping("phone-number")
-    public ResponseEntity<Void> changePhoneNumber(@RequestBody NewPhoneNumberRequest newPhoneNumberRequest) {
-        accountService.changePhoneNumber(newPhoneNumberRequest);
+    public ResponseEntity<Void> changePhoneNumber(@RequestBody NewPhoneNumberRequest newPhoneNumberRequest,
+                                                  HttpServletRequest request) {
+        accountService.changePhoneNumber(newPhoneNumberRequest, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

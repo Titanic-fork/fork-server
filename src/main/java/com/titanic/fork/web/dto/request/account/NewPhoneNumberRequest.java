@@ -9,18 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NewPhoneNumberRequest {
 
-    private String email;
     private String phoneNumber;
 
     @Builder
-    public NewPhoneNumberRequest(String email, String phoneNumber) {
-        this.email = email;
+    public NewPhoneNumberRequest(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public static NewPhoneNumberRequest of(String email, String phoneNumber) {
+    public static NewPhoneNumberRequest from(String phoneNumber) {
         return NewPhoneNumberRequest.builder()
-                .email(email)
                 .phoneNumber(phoneNumber)
                 .build();
     }

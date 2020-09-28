@@ -1,5 +1,6 @@
 package com.titanic.fork.domain.Account;
 
+import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,8 +44,8 @@ public abstract class Account {
         this.password = newPassword;
     }
 
-    public void changePhoneNumber(String newPhoneNumber) {
-        this.phoneNumber = newPhoneNumber;
+    public void changePhoneNumber(NewPhoneNumberRequest newPhoneNumberRequest) {
+        this.phoneNumber = newPhoneNumberRequest.getPhoneNumber();
     }
 
     public AccountGoal addAccountGoal(AccountGoal accountGoal) {

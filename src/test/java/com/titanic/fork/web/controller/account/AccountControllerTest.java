@@ -39,10 +39,10 @@ public class AccountControllerTest {
 
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
-    @CsvSource({"guswns1651@gmail.com,010-1234-5678"})
-    void 핸드폰번호_수정API를_테스트한다(String email, String phoneNumber) throws Exception {
+    @CsvSource({"010-1234-5678"})
+    void 핸드폰번호_수정API를_테스트한다(String phoneNumber) throws Exception {
         // given
-        NewPhoneNumberRequest newPhoneNumberRequest = NewPhoneNumberRequest.of(email, phoneNumber);
+        NewPhoneNumberRequest newPhoneNumberRequest = NewPhoneNumberRequest.from(phoneNumber);
         String requestUrl = REQUEST_MAPPING + "/phone-number";
 
         // when, then

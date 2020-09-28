@@ -37,15 +37,15 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 
         /*
-         * 회원가입하는 url (~/account)만 제외하기
+         * 1. 회원가입하는 url (~/account) 제외
+         * 2. 중복 이메일 확인하는 url (~/account/email/{email}) 제외
          */
-        String[] excludePathPatterns = new String[]{"/account", "/account/{email}"};
+        String[] excludePathPatterns = new String[]{"/account", "/account/email/{email}/**"};
         String[] swaggerPaths = new String[]{"/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**"};
 
         registry.addInterceptor(loginInterceptor())
                 .addPathPatterns(ALL_PATH)
                 .excludePathPatterns(excludePathPatterns)
                 .excludePathPatterns(swaggerPaths);
-
     }
 }
