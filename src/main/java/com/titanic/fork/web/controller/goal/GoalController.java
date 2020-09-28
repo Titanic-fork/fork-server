@@ -1,7 +1,6 @@
 package com.titanic.fork.web.controller.goal;
 
 import com.titanic.fork.service.goal.GoalService;
-import com.titanic.fork.utils.DeployTestEnum;
 import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import io.swagger.annotations.ApiImplicitParam;
@@ -39,8 +38,8 @@ public class GoalController {
                     "500 : 서버 에러")
     @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
             paramType = "header", dataType = "string", example = JWT_TOKEN)
-    @GetMapping("{goalId}/achievement")
-    public AchievementResponse getAchievement(@PathVariable Long goalId,
+    @GetMapping("{goal-id}/achievement")
+    public AchievementResponse getAchievement(@PathVariable(value = "goal-id") Long goalId,
                                               @RequestParam(value = "today-elapsedtime") Integer todayElapsedTime,
                                               @RequestParam(value = "weekly-elapsedtime") Integer weeklyElapsedTime,
                                               HttpServletRequest request) {
