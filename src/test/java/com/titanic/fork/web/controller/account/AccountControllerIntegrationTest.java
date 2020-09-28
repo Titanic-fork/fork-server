@@ -30,14 +30,14 @@ public class AccountControllerIntegrationTest {
     @Autowired
     private WebTestClient webTestClient;
 
-    private final static String requestMapping = "/account";
+    private final static String REQUEST_MAPPING = "/account";
 
     @ParameterizedTest
     @CsvSource({"guswns1658@gmail.com,password,hyunjun,010-7720-7957"})
     void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
 
         // given
-        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping;
+        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING;
 //        String apiRequestUrl = TestEnum.SERVICE_URL.getValue() + requestMapping;
         RegisterRequest registerRequest = RegisterRequest.of(email,password,name,phoneNumber);
 
@@ -63,7 +63,7 @@ public class AccountControllerIntegrationTest {
     void 로그인_테스트한다(String email, String password) {
 
         // given
-        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/login";
+        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING + "/login";
         LoginRequest loginRequest = LoginRequest.of(email, password);
 
         // when
@@ -80,13 +80,31 @@ public class AccountControllerIntegrationTest {
 //        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
+    @DisplayName("중복된 이메일인지 확인하는 API 테스트")
+    @ParameterizedTest
+    @CsvSource({"guswns1653@gmail.com"})
+    void 중복된_이메일확인API를_테스트한다(String email) {
+
+        // given
+        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING + "/" + email;
+
+        // when
+        EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.get()
+                .uri(localRequestUrl)
+                .exchange()
+                .expectBody(ResponseEntity.class)
+                .returnResult();
+        // then
+        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.OK);
+    }
+
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
     @CsvSource({"guswns1653@gmail.com,010-1234-5678"})
     void 핸드폰번호_수정API를_테스트한다(String email, String phoneNumber) {
 
         // given
-        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/phone-number";
+        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING + "/phone-number";
         NewPhoneNumberRequest newPhoneNumberRequest = NewPhoneNumberRequest.of(email, phoneNumber);
 
         // when
@@ -107,7 +125,7 @@ public class AccountControllerIntegrationTest {
     void 비밀번호변경을_위한_인증API을_테스트한다(String name, String email) {
 
         // given
-        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/authentication";
+        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING + "/authentication";
         ValidateNameAndPasswordRequest validateNameAndPasswordRequest = ValidateNameAndPasswordRequest.of(name, email);
 
         // when
@@ -130,7 +148,7 @@ public class AccountControllerIntegrationTest {
     void 비밀번호변경API를_테스트한다(String email, String newPassword) {
 
         // given
-        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping +"/password";
+        String requestUrl = LocalTestEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING +"/password";
         NewPasswordRequest newPasswordRequest = NewPasswordRequest.of(email, newPassword);
 
         // when
