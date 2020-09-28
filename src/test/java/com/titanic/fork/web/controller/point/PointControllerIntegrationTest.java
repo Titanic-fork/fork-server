@@ -1,6 +1,6 @@
 package com.titanic.fork.web.controller.point;
 
-import com.titanic.fork.utils.LocalTestEnum;
+import com.titanic.fork.utils.LocalEnum;
 import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
 import com.titanic.fork.web.dto.response.point.PointRankingResponse;
 import com.titanic.fork.web.dto.response.point.PointResponse;
@@ -34,12 +34,12 @@ public class PointControllerIntegrationTest {
     void 사용자의_누적및사용가능_포인트조회API를_테스트한다(int totalPoint, int availablePoint) {
 
         // given
-        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/1";
+        String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/1";
 
         // when
         PointResponse pointResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(PointResponse.class)
                 .returnResult()
@@ -56,13 +56,13 @@ public class PointControllerIntegrationTest {
     void 사용자의_월간적립포인트조회API를_테스트한다(int goalId, int year, int month, int savedPoint) {
 
         //given
-        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/"
+        String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/"
                 + goalId + "/saved" + "/" + year + "/" + month;
 
         // when
         MonthlyPointResponse monthlyPointResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(MonthlyPointResponse.class)
                 .returnResult()
@@ -78,13 +78,13 @@ public class PointControllerIntegrationTest {
     void 사용자의_월간사용_포인트조회API를_테스트한다(int goalId, int year, int month, int savedPoint) {
 
         //given
-        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/"
+        String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/"
                 + goalId + "/used" + "/" + year + "/" + month;
 
         // when
         MonthlyPointResponse monthlyPointResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(MonthlyPointResponse.class)
                 .returnResult()
@@ -100,13 +100,13 @@ public class PointControllerIntegrationTest {
     void 해당목표_사용자들의_월간누적포인트랭킹API를_테스트한다(int goalId, int year, int month, int size, int savedPoint, String name) {
 
         // given
-        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/"
+        String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/"
                 + goalId + "/ranking" + "/" + year + "/" + month;
 
         // when
         PointRankingResponse pointRankingResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(PointRankingResponse.class)
                 .returnResult()

@@ -1,6 +1,6 @@
 package com.titanic.fork.web.controller.goal;
 
-import com.titanic.fork.utils.LocalTestEnum;
+import com.titanic.fork.utils.LocalEnum;
 import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import com.titanic.fork.web.login.LoginEnum;
@@ -54,13 +54,13 @@ public class GoalControllerIntegrationTest {
     @ParameterizedTest
     @MethodSource("setUpGoal")
     void 목표추가API를_테스트한다(CreateGoalRequest createGoalRequest) {
-        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping;
+        String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping;
 
         // when
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.post()
                 .uri(localRequestUrl)
                 .body(Mono.just(createGoalRequest), CreateGoalRequest.class)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1655.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1655.getValue())
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();
@@ -75,13 +75,13 @@ public class GoalControllerIntegrationTest {
     void 일일_주간목표달성률API를_테스트한다(int goalId, float today, float weekly) {
 
         // given
-        String localRequestUrl = LocalTestEnum.LOCALHOST.getValue() + port + requestMapping + "/" + goalId +
+        String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/" + goalId +
                 "/achievement?todayTime=60&weeklyTime=420";
 
         // when
         AchievementResponse achievementResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(AchievementResponse.class)
                 .returnResult()
