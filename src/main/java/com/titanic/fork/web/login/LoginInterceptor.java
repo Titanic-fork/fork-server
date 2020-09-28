@@ -1,6 +1,6 @@
 package com.titanic.fork.web.login;
 
-import com.titanic.fork.service.JwtService;
+import com.titanic.fork.service.JwtProvider;
 import org.apache.http.HttpStatus;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -19,7 +19,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         try {
             String userEmailInHeader = request.getHeader(LoginEnum.AUTHORIZATION.getValue());
-            String jwtUserEmail = JwtService.parseJwt(userEmailInHeader);
+            String jwtUserEmail = JwtProvider.parseJwt(userEmailInHeader);
             request.setAttribute(LoginEnum.USER_EMAIL.getValue(), jwtUserEmail);
             return true;
         } catch (Exception e) {

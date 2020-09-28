@@ -1,16 +1,20 @@
 package com.titanic.fork.service;
 
+import com.titanic.fork.web.dto.request.AccountRequestDto;
 import com.titanic.fork.web.login.LoginEnum;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class JwtService {
+@Slf4j
+public class JwtProvider {
 
     private final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 10;
@@ -39,5 +43,10 @@ public class JwtService {
                 .parseClaimsJws(jwtToken)
                 .getBody()
                 .getSubject();
+    }
+
+    public void loadJwtToHeader(HttpServletResponse response, AccountRequestDto accountRequestDto) {
+        response.setHeader(LoginEnum.AUTHORIZATION.getValue(), createJwtTokenWithEmail(accountRequestDto.getEmail()));
+        log.info("jwtToken, {}", createJwtTokenWithEmail(accountRequestDto.getEmail()));
     }
 }

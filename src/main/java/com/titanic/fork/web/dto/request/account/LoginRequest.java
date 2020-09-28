@@ -1,21 +1,18 @@
 package com.titanic.fork.web.dto.request.account;
 
+import com.titanic.fork.web.dto.request.AccountRequestDto;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LoginRequest {
+@SuperBuilder
+public class LoginRequest extends AccountRequestDto {
 
-    private String email;
-    private String password;
-
-    @Builder
     public LoginRequest(String email, String password) {
-        this.email = email;
-        this.password = password;
+        super(email, password);
     }
 
     public static LoginRequest of(String email, String password) {

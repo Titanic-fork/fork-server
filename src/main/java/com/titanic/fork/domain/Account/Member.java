@@ -1,6 +1,6 @@
 package com.titanic.fork.domain.Account;
 
-import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
+import com.titanic.fork.web.dto.request.account.RegisterRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,12 +19,12 @@ public class Member extends Account {
 
 
 
-    public static Member from(RegisterRequestDto registerRequestDto) {
+    public static Member of(RegisterRequest registerRequest, String encodedPassword) {
         return Member.builder()
-                .email(registerRequestDto.getEmail())
-                .name(registerRequestDto.getName())
-                .password(registerRequestDto.getPassword())
-                .phoneNumber(registerRequestDto.getPhoneNumber())
+                .email(registerRequest.getEmail())
+                .name(registerRequest.getName())
+                .password(encodedPassword)
+                .phoneNumber(registerRequest.getPhoneNumber())
                 .build();
     }
 }

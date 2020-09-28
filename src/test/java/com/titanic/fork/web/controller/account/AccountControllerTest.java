@@ -5,7 +5,7 @@ import com.titanic.fork.service.account.AccountService;
 import com.titanic.fork.service.account.RegisterService;
 import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
-import com.titanic.fork.web.dto.request.account.RegisterRequestDto;
+import com.titanic.fork.web.dto.request.account.RegisterRequest;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -63,13 +63,13 @@ public class AccountControllerTest {
         /* given
          * serialize를 해서 content에 넣어야 함.
          */
-        RegisterRequestDto registerRequestDto = RegisterRequestDto.of(email, password, name, phoneNumber);
+        RegisterRequest registerRequest = RegisterRequest.of(email, password, name, phoneNumber);
 
         // when
         final ResultActions actions = mockMvc.perform(post(REQUEST_MAPPING)
                 .header(LocalTestEnum.ORIGIN.getValue(), LocalTestEnum.ALL.getValue())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(registerRequestDto))
+                .content(asJsonString(registerRequest))
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());
         // then

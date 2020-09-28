@@ -27,9 +27,9 @@ public class AccountController {
             notes = "201 : 성공, Header Authorization에 JWT 토큰 응답 \n" +
                     "500 : 서버 에러")
     @PostMapping()
-    public ResponseEntity<Void> register(@RequestBody RegisterRequestDto registerRequestDto,
+    public ResponseEntity<Void> register(@RequestBody RegisterRequest registerRequest,
                                          HttpServletResponse response) {
-        registerService.register(registerRequestDto, response);
+        registerService.register(registerRequest, response);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -38,8 +38,9 @@ public class AccountController {
                     "401 : 이메일과 패스워드가 다른 경우 \n" +
                     "500 : 서버 에러")
     @PostMapping("login")
-    public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest) {
-        accountService.login(loginRequest);
+    public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest,
+                                      HttpServletResponse response) {
+        accountService.login(loginRequest, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
