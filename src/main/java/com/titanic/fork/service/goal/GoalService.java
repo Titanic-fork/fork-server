@@ -33,19 +33,23 @@ public class GoalService {
 
     public void create(CreateGoalRequest createGoalRequest, HttpServletRequest request) {
         Account foundAccount = accountService.findByEmail(request);
+        // 위치정보 생성
         Location location = Location.from(createGoalRequest);
 
+        // 알람 목표 요일 생성
         List<String> targetDayOfWeeks = new ArrayList<>();
         targetDayOfWeeks.add(createGoalRequest.getTargetDayOfWeeks());
 
+        // 알람 생성
         Alarm alarm = Alarm.of(targetDayOfWeeks, createGoalRequest);
-
+        // AccountGoal 생성
         AccountGoal accountGoal = AccountGoal.of(alarm, createGoalRequest);
 
         // account에 accountGoal를 추가
         AccountGoal savedAccountGoal = foundAccount.addAccountGoal(accountGoal);
         accountRepository.save(foundAccount);
 
+        // 목표 생성
         Goal newGoal = CreateGoalRequest.toEntity(createGoalRequest, location);
 
         // account에 추가한 accountGoal를 추가해야 테이블에서 정상처리된다.
