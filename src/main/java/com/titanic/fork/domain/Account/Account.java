@@ -26,6 +26,9 @@ public abstract class Account {
     protected String name;
     protected String phoneNumber;
 
+    /* CascadeType.ALL 사용 이유
+     * Account가 저장, 삭제, 변경될 때 AccountGoal도 저장, 삭제, 변경되기 때문이다.
+     */
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     protected final List<AccountGoal> accountGoals = new ArrayList<>();
 

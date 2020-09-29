@@ -23,6 +23,9 @@ public class Goal {
     @Embedded
     private Location location;
 
+    /* CascadeType.ALL 사용 이유
+     * Goal이 저장, 삭제, 변경될 때 AccountGoal도 저장, 삭제, 변경되기 때문이다.
+     */
     @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL)
     private final List<AccountGoal> accountGoals = new ArrayList<>();
 

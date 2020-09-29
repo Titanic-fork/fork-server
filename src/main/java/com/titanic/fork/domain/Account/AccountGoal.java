@@ -27,6 +27,9 @@ public class AccountGoal {
     @JoinColumn(name = "GOAL_ID")
     private Goal goal;
 
+    /* CascadeType.ALL 사용 이유
+     * AccountGoal이 Alarm을 참조하는 유일한 객체이기 때문이다.
+     */
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ALARM_ID")
     private Alarm alarm;
