@@ -29,6 +29,10 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
+    /**
+     * 변경감지 방식으로 업데이트 메서드를 구현
+     * 인터셉터로 넘어오는 이메일로 항상 DB에서 조회하기 때문에 자연스레 구현
+     */
     public void changePhoneNumber(NewPhoneNumberRequest newPhoneNumberRequest, HttpServletRequest request) {
         Account foundAccount = findByEmail(request);
         foundAccount.changePhoneNumber(newPhoneNumberRequest);
