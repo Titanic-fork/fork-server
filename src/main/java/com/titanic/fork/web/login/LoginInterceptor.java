@@ -1,6 +1,6 @@
 package com.titanic.fork.web.login;
 
-import com.titanic.fork.service.JwtProvider;
+import com.titanic.fork.utils.JwtProvider;
 import org.apache.http.HttpStatus;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 

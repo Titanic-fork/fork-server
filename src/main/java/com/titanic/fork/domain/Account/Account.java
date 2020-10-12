@@ -47,6 +47,10 @@ public abstract class Account {
         this.password = newPassword;
     }
 
+    /** - 변경로직
+     * 준영속상태인 Account를 DB에서 조회해 영속상태로 만들고 변경로직 처리
+     * merge보다 안정적인 방식
+     */
     public void changePhoneNumber(NewPhoneNumberRequest newPhoneNumberRequest) {
         this.phoneNumber = newPhoneNumberRequest.getPhoneNumber();
     }

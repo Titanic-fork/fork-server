@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.titanic.fork.service.account.AccountService;
 import com.titanic.fork.service.account.RegisterService;
 import com.titanic.fork.utils.LocalEnum;
+import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.dto.request.account.NewPhoneNumberRequest;
 import com.titanic.fork.web.dto.request.account.RegisterRequest;
 import com.titanic.fork.web.login.LoginEnum;
@@ -40,7 +41,7 @@ public class AccountControllerTest {
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
     @CsvSource({"010-1234-5678"})
-    void 핸드폰번호_수정API를_테스트한다(String phoneNumber) throws Exception {
+    void changePhoneNumber(String phoneNumber) throws Exception {
         // given
         NewPhoneNumberRequest newPhoneNumberRequest = NewPhoneNumberRequest.from(phoneNumber);
         String requestUrl = REQUEST_MAPPING + "/phone-number";
@@ -48,7 +49,7 @@ public class AccountControllerTest {
         // when, then
         mockMvc.perform(put(requestUrl)
                 .header(LocalEnum.ORIGIN.getValue(), LocalEnum.ALL.getValue())
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.getValue())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(newPhoneNumberRequest))
                 .accept(MediaType.APPLICATION_JSON))
@@ -59,7 +60,7 @@ public class AccountControllerTest {
 
     @ParameterizedTest
     @CsvSource({"guswns1653@gmail.com,password,hyunjun,010-7720-7957"})
-    void 회원가입테스트한다(String email, String password, String name, String phoneNumber) throws Exception {
+    void register(String email, String password, String name, String phoneNumber) throws Exception {
         /* given
          * serialize를 해서 content에 넣어야 함.
          */

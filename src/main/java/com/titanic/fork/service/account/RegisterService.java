@@ -4,7 +4,7 @@ import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.Member;
 import com.titanic.fork.exception.AlreadyExistedException;
 import com.titanic.fork.repository.account.AccountRepository;
-import com.titanic.fork.service.JwtProvider;
+import com.titanic.fork.utils.JwtProvider;
 import com.titanic.fork.web.dto.request.account.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

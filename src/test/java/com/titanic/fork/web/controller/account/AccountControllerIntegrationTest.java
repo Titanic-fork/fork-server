@@ -1,6 +1,7 @@
 package com.titanic.fork.web.controller.account;
 
 import com.titanic.fork.utils.LocalEnum;
+import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.dto.request.account.*;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.api.DisplayName;
@@ -32,9 +33,10 @@ public class AccountControllerIntegrationTest {
 
     private final static String REQUEST_MAPPING = "/account";
 
+    @DisplayName("회원가입API를_테스트한다")
     @ParameterizedTest
-    @CsvSource({"localTest1@gmail.com,password,hyunjun,010-7720-7957"})
-    void 회원가입API를_테스트한다(String email, String password, String name, String phoneNumber) {
+    @CsvSource({"localTest2@gmail.com,password,hyunjun,010-7720-7957"})
+    void register(String email, String password, String name, String phoneNumber) {
 
         // given
         String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING;
@@ -60,7 +62,7 @@ public class AccountControllerIntegrationTest {
     @DisplayName("로그인API테스트")
     @ParameterizedTest
     @CsvSource({"localTest1@gmail.com,password"})
-    void 로그인_테스트한다(String email, String password) {
+    void login(String email, String password) {
 
         // given
         String requestUrl = LocalEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING + "/login";
@@ -82,7 +84,7 @@ public class AccountControllerIntegrationTest {
     @DisplayName("중복된 이메일인지 확인하는 API 테스트")
     @ParameterizedTest
     @CsvSource({"localTest1@gmail.com"})
-    void 중복된_이메일확인API를_테스트한다(String email) {
+    void validateDuplicatedEmail(String email) {
 
         // given
         String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING + "/email/" + email;
@@ -100,7 +102,7 @@ public class AccountControllerIntegrationTest {
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
     @CsvSource({"010-1234-5678"})
-    void 핸드폰번호_수정API를_테스트한다(String phoneNumber) {
+    void changePhoneNumber(String phoneNumber) {
 
         // given
         String requestUrl = LocalEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING + "/phone-number";
@@ -110,7 +112,7 @@ public class AccountControllerIntegrationTest {
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.put()
                 .uri(requestUrl)
                 .body(Mono.just(newPhoneNumberRequest), NewPhoneNumberRequest.class)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_LOCAL_TEST_3.getValue())
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();
@@ -121,7 +123,7 @@ public class AccountControllerIntegrationTest {
 
     @ParameterizedTest
     @CsvSource({"hyunjun,guswns1653@gmail.com"})
-    void 비밀번호변경을_위한_인증API을_테스트한다(String name, String email) {
+    void validateNameAndPassword(String name, String email) {
 
         // given
         String requestUrl = LocalEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING + "/authentication";
@@ -144,7 +146,7 @@ public class AccountControllerIntegrationTest {
 
     @ParameterizedTest
     @CsvSource({"guswns1653@gmail.com,newPassword"})
-    void 비밀번호변경API를_테스트한다(String email, String newPassword) {
+    void changePassword(String email, String newPassword) {
 
         // given
         String requestUrl = LocalEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING +"/password";

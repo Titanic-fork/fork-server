@@ -1,6 +1,8 @@
 package com.titanic.fork.web.controller.goal;
 
+import com.titanic.fork.utils.DeployTestEnum;
 import com.titanic.fork.utils.LocalEnum;
+import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import com.titanic.fork.web.login.LoginEnum;
@@ -51,16 +53,36 @@ public class GoalControllerIntegrationTest {
         );
     }
 
+    @DisplayName("로컬에_목표추가API를_테스트한다")
     @ParameterizedTest
     @MethodSource("setUpGoal")
-    void 목표추가API를_테스트한다(CreateGoalRequest createGoalRequest) {
+    void createAtLocal(CreateGoalRequest createGoalRequest) {
         String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping;
 
         // when
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.post()
                 .uri(localRequestUrl)
                 .body(Mono.just(createGoalRequest), CreateGoalRequest.class)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1655.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.getValue())
+                .exchange()
+                .expectBody(ResponseEntity.class)
+                .returnResult();
+
+        // then
+        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.CREATED);
+    }
+
+    @DisplayName("배포서버에_목표추가API를_테스트한다")
+    @ParameterizedTest
+    @MethodSource("setUpGoal")
+    void createAtService(CreateGoalRequest createGoalRequest) {
+        String serviceRequestUrl = DeployTestEnum.SERVICE_URL.getValue()+ requestMapping;
+
+        // when
+        EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.post()
+                .uri(serviceRequestUrl)
+                .body(Mono.just(createGoalRequest), CreateGoalRequest.class)
+                .header(LoginEnum.AUTHORIZATION.getValue(), DeployTestEnum.JWT_TOKEN_GUSWNS1653.getValue())
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();
@@ -72,16 +94,16 @@ public class GoalControllerIntegrationTest {
     @DisplayName("메인화면 일일, 주간 목표달성률API")
     @ParameterizedTest
     @CsvSource({"1,6.0,6.0"})
-    void 일일_주간목표달성률API를_테스트한다(int goalId, float today, float weekly) {
+    void getAchievement(int goalId, float today, float weekly) {
 
         // given
         String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/" + goalId +
-                "/achievement?todayTime=60&weeklyTime=420";
+                "/achievement?today-elapsedtime=60&weekly-elapsedtime=420";
 
         // when
         AchievementResponse achievementResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.getValue())
                 .exchange()
                 .expectBody(AchievementResponse.class)
                 .returnResult()
