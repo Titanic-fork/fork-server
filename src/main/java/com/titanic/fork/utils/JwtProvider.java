@@ -1,4 +1,4 @@
-package com.titanic.fork.service;
+package com.titanic.fork.utils;
 
 import com.titanic.fork.web.dto.request.account.AccountRequestDto;
 import com.titanic.fork.web.login.LoginEnum;
@@ -17,7 +17,6 @@ import java.util.Map;
 public class JwtProvider {
 
     private final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
-    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 10;
 
     public String createJwtTokenWithEmail(String email) {
         Map<String, Object> header = new HashMap<>();
@@ -27,6 +26,7 @@ public class JwtProvider {
         Map<String, Object> payload = new HashMap<>();
         payload.put(LoginEnum.AUTHORIZATION.getValue(), email);
 
+        long EXPIRATION_TIME = 31536000000L; // 1년
         return Jwts.builder()
                 .setHeader(header)
                 .setClaims(payload)
@@ -47,6 +47,7 @@ public class JwtProvider {
 
     public void loadJwtToHeader(HttpServletResponse response, AccountRequestDto accountRequestDto) {
         response.setHeader(LoginEnum.AUTHORIZATION.getValue(), createJwtTokenWithEmail(accountRequestDto.getEmail()));
+        log.info("authorization : {}", response.getHeader(LoginEnum.AUTHORIZATION.getValue()));
         log.info("jwtToken, {}", createJwtTokenWithEmail(accountRequestDto.getEmail()));
     }
 }

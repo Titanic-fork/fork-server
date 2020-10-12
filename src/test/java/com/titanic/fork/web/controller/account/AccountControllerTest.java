@@ -37,6 +37,8 @@ public class AccountControllerTest {
     RegisterService registerService;
 
     private final String REQUEST_MAPPING = "/account";
+    private static final String token = LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.token;
+
 
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
@@ -49,7 +51,7 @@ public class AccountControllerTest {
         // when, then
         mockMvc.perform(put(requestUrl)
                 .header(LocalEnum.ORIGIN.getValue(), LocalEnum.ALL.getValue())
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(newPhoneNumberRequest))
                 .accept(MediaType.APPLICATION_JSON))

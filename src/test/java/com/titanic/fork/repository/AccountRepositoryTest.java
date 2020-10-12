@@ -24,7 +24,7 @@ public class AccountRepositoryTest {
 
     @DisplayName("중복되는 이메일 조회 테스트")
     @ParameterizedTest
-    @CsvSource({"guswns1653@gmail.com,1"})
+    @CsvSource({"localTest1@gmail.com,1"})
     void findDuplicatedEmail(String email, int size) {
         // given, when
         List<Account> foundEmails = accountRepository.findDuplicatedEmail(email);

@@ -32,10 +32,11 @@ public class AccountControllerIntegrationTest {
     private WebTestClient webTestClient;
 
     private final static String REQUEST_MAPPING = "/account";
+    private static final String token = LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.token;
 
     @DisplayName("회원가입API를_테스트한다")
     @ParameterizedTest
-    @CsvSource({"localTest2@gmail.com,password,hyunjun,010-7720-7957"})
+    @CsvSource({"localTest1@gmail.com,password,hyunjun,010-7720-7957"})
     void register(String email, String password, String name, String phoneNumber) {
 
         // given
@@ -112,7 +113,7 @@ public class AccountControllerIntegrationTest {
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.put()
                 .uri(requestUrl)
                 .body(Mono.just(newPhoneNumberRequest), NewPhoneNumberRequest.class)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_LOCAL_TEST_3.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), token)
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();

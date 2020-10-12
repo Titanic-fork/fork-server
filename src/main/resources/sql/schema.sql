@@ -1,5 +1,5 @@
 drop table if exists point_image;
-drop table if exists point;
+drop table if exists points;
 drop table if exists account_goal;
 drop table if exists goal;
 drop table if exists target_day_of_week;
@@ -41,7 +41,7 @@ create table goal (
         primary key (goal_id)
 );
 
-create table point (
+create table points (
        dtype varchar(31) not null,
         point_id bigint not null auto_increment,
         amount integer not null,

@@ -37,6 +37,7 @@ public class GoalControllerIntegrationTest {
     private WebTestClient webTestClient;
 
     private final static String requestMapping = "/goal";
+    private static final String token = LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.token;
 
     private static Stream<Arguments> setUpGoal() {
         return Stream.of(
@@ -63,7 +64,7 @@ public class GoalControllerIntegrationTest {
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.post()
                 .uri(localRequestUrl)
                 .body(Mono.just(createGoalRequest), CreateGoalRequest.class)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), token)
                 .exchange()
                 .expectBody(ResponseEntity.class)
                 .returnResult();
@@ -103,7 +104,7 @@ public class GoalControllerIntegrationTest {
         // when
         AchievementResponse achievementResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), token)
                 .exchange()
                 .expectBody(AchievementResponse.class)
                 .returnResult()

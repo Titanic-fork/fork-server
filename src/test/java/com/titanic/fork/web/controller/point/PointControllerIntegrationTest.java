@@ -1,6 +1,7 @@
 package com.titanic.fork.web.controller.point;
 
 import com.titanic.fork.utils.LocalEnum;
+import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
 import com.titanic.fork.web.dto.response.point.PointRankingResponse;
 import com.titanic.fork.web.dto.response.point.PointResponse;
@@ -26,20 +27,21 @@ public class PointControllerIntegrationTest {
     @Autowired
     private WebTestClient webTestClient;
 
-    private final static String requestMapping = "/point";
+    private static final String requestMapping = "/point";
+    private static final String token = LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.token;
 
     @DisplayName("사용자 누적포인트, 사용가능 포인트 조회 API")
     @ParameterizedTest
-    @CsvSource({"2000,1600"})
-    void 사용자의_누적및사용가능_포인트조회API를_테스트한다(int totalPoint, int availablePoint) {
+    @CsvSource({"1,3000,3000"})
+    void getTotalAndAvailablePoint(int goalId, int totalPoint, int availablePoint) {
 
         // given
-        String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/1";
+        String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/" + goalId;
 
         // when
         PointResponse pointResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), token)
                 .exchange()
                 .expectBody(PointResponse.class)
                 .returnResult()
@@ -52,8 +54,8 @@ public class PointControllerIntegrationTest {
 
     @DisplayName("사용자의 월간 적립 포인트 조회API")
     @ParameterizedTest
-    @CsvSource({"1,2020,9,2000"})
-    void 사용자의_월간적립포인트조회API를_테스트한다(int goalId, int year, int month, int savedPoint) {
+    @CsvSource({"1,2020,10,3000"})
+    void getMonthlySavedPoint(int goalId, int year, int month, int savedPoint) {
 
         //given
         String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/"
@@ -62,7 +64,7 @@ public class PointControllerIntegrationTest {
         // when
         MonthlyPointResponse monthlyPointResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), token)
                 .exchange()
                 .expectBody(MonthlyPointResponse.class)
                 .returnResult()
@@ -74,8 +76,8 @@ public class PointControllerIntegrationTest {
 
     @DisplayName("사용자의 월간 사용 포인트 조회API")
     @ParameterizedTest
-    @CsvSource({"1,2020,9,400"})
-    void 사용자의_월간사용_포인트조회API를_테스트한다(int goalId, int year, int month, int savedPoint) {
+    @CsvSource({"1,2020,10,0"})
+    void getMonthlyUsedPoint(int goalId, int year, int month, int savedPoint) {
 
         //given
         String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/"
@@ -84,7 +86,7 @@ public class PointControllerIntegrationTest {
         // when
         MonthlyPointResponse monthlyPointResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), token)
                 .exchange()
                 .expectBody(MonthlyPointResponse.class)
                 .returnResult()
@@ -96,8 +98,8 @@ public class PointControllerIntegrationTest {
 
     @DisplayName("해당 목표 사용자들의 월간 누적 포인트 랭킹API")
     @ParameterizedTest
-    @CsvSource({"1,2020,9,4,3000,hyunjun"})
-    void 해당목표_사용자들의_월간누적포인트랭킹API를_테스트한다(int goalId, int year, int month, int size, int savedPoint, String name) {
+    @CsvSource({"1,2020,10,4,3000,hyunjun"})
+    void getMonthlyPointRanking(int goalId, int year, int month, int size, int savedPoint, String name) {
 
         // given
         String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + requestMapping + "/"
@@ -106,7 +108,7 @@ public class PointControllerIntegrationTest {
         // when
         PointRankingResponse pointRankingResponse = webTestClient.get()
                 .uri(localRequestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), token)
                 .exchange()
                 .expectBody(PointRankingResponse.class)
                 .returnResult()
