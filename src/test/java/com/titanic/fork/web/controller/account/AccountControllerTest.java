@@ -39,6 +39,26 @@ public class AccountControllerTest {
     private final String REQUEST_MAPPING = "/account";
     private static final String token = LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.token;
 
+    @ParameterizedTest
+    @CsvSource({"localTest1@gmail.com,password,hyunjun,010-7720-7957"})
+    void register(String email, String password, String name, String phoneNumber) throws Exception {
+        /* given
+         * serialize를 해서 content에 넣어야 함.
+         */
+        RegisterRequest registerRequest = RegisterRequest.of(email, password, name, phoneNumber);
+
+        // when
+        final ResultActions actions = mockMvc.perform(post(REQUEST_MAPPING)
+                .header(LocalEnum.ORIGIN.getValue(), LocalEnum.ALL.getValue())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(registerRequest))
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+        // then
+        MvcResult mvcResult = actions
+                .andExpect(status().isCreated())
+                .andReturn();
+    }
 
     @DisplayName("로그인된 상태에서 핸드폰 번호를 수정하는 API 테스트")
     @ParameterizedTest
@@ -58,29 +78,6 @@ public class AccountControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
-    }
-
-    @ParameterizedTest
-    @CsvSource({"guswns1653@gmail.com,password,hyunjun,010-7720-7957"})
-    void register(String email, String password, String name, String phoneNumber) throws Exception {
-        /* given
-         * serialize를 해서 content에 넣어야 함.
-         */
-        RegisterRequest registerRequest = RegisterRequest.of(email, password, name, phoneNumber);
-
-        // when
-        final ResultActions actions = mockMvc.perform(post(REQUEST_MAPPING)
-                .header(LocalEnum.ORIGIN.getValue(), LocalEnum.ALL.getValue())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(registerRequest))
-                .accept(MediaType.APPLICATION_JSON))
-                .andDo(print());
-        // then
-        MvcResult mvcResult = actions
-                .andExpect(status().isCreated())
-                .andReturn();
-
-        System.out.println(mvcResult.getResponse().getHeader(LoginEnum.AUTHORIZATION.getValue()));
     }
 
     public static String asJsonString(final Object obj) {
