@@ -44,13 +44,6 @@ public class AccountGoal {
         this.targetTime = targetTime;
     }
 
-    public static AccountGoal of(Alarm alarm, CreateGoalRequest createGoalRequest) {
-        return AccountGoal.builder()
-                .alarm(alarm)
-                .targetTime(createGoalRequest.getTargetTime())
-                .build();
-    }
-
     public void addAccount(Account account) {
         this.account = account;
     }

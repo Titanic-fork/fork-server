@@ -1,7 +1,6 @@
 package com.titanic.fork.web.dto.request.goal;
 
 
-import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.AccountGoal;
 import com.titanic.fork.domain.goal.Alarm;
 import com.titanic.fork.domain.goal.Goal;
@@ -12,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,21 +23,27 @@ public class CreateGoalRequest {
     private Double longitude;
     private Double latitude;
     // 목표 시간
-    private LocalTime targetTime;
+    private int targetTimeHour;
+    private int targetTimeMinute;
+
     // 알림
-    private LocalTime alarmTime;
+    private int alarmTimeHour;
+    private int alarmTimeMinute;
     private String targetDayOfWeeks;
     private String content;
 
     @Builder
-    public CreateGoalRequest(String title, String address, Double longitude, Double latitude, LocalTime targetTime,
-                             LocalTime alarmTime, String targetDayOfWeeks, String content) {
+    public CreateGoalRequest(String title, String address, Double longitude, Double latitude,
+                             int targetTimeHour, int targetTimeMinute, int alarmTimeHour,
+                             int alarmTimeMinute, String targetDayOfWeeks, String content) {
         this.title = title;
         this.address = address;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.targetTime = targetTime;
-        this.alarmTime = alarmTime;
+        this.targetTimeHour = targetTimeHour;
+        this.targetTimeMinute = targetTimeMinute;
+        this.alarmTimeHour = alarmTimeHour;
+        this.alarmTimeMinute = alarmTimeMinute;
         this.targetDayOfWeeks = targetDayOfWeeks;
         this.content = content;
     }
@@ -48,6 +52,25 @@ public class CreateGoalRequest {
         return Goal.builder()
                 .title(createGoalRequest.getTitle())
                 .location(location)
+                .build();
+    }
+
+    public static AccountGoal toEntity(Alarm alarm, CreateGoalRequest createGoalRequest) {
+        LocalTime targetTime = LocalTime.of(createGoalRequest.getTargetTimeHour(),
+                createGoalRequest.getTargetTimeMinute());
+        return AccountGoal.builder()
+                .alarm(alarm)
+                .targetTime(targetTime)
+                .build();
+    }
+
+    public static Alarm toEntity(List<String> targetDayOfWeeks, CreateGoalRequest createGoalRequest) {
+        LocalTime alarmTime = LocalTime.of(createGoalRequest.getAlarmTimeHour(),
+                createGoalRequest.getAlarmTimeMinute());
+        return Alarm.builder()
+                .targetDayOfWeeks(targetDayOfWeeks)
+                .alarmTime(alarmTime)
+                .content(createGoalRequest.getContent())
                 .build();
     }
 }

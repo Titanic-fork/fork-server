@@ -42,15 +42,17 @@ public class GoalControllerIntegrationTest {
     private static Stream<Arguments> setUpGoal() {
         return Stream.of(
                 Arguments.of(CreateGoalRequest.builder()
-                .title("goalTitle")
-                .address("서울시 백제고분로45길 22-15")
-                .latitude(37.51064)
-                .longitude(127.11324)
-                .targetTime(LocalTime.of(15,30))
-                .targetDayOfWeeks("일")
-                .alarmTime(LocalTime.of(13,30))
-                .content("goalContent")
-                .build())
+                        .title("goalTitle")
+                        .address("서울시 백제고분로45길 22-15")
+                        .latitude(37.51064)
+                        .longitude(127.11324)
+                        .targetTimeHour(15)
+                        .targetTimeMinute(30)
+                        .alarmTimeHour(15)
+                        .alarmTimeMinute(30)
+                        .targetDayOfWeeks("일")
+                        .content("goalContent")
+                        .build())
         );
     }
 
@@ -77,7 +79,7 @@ public class GoalControllerIntegrationTest {
     @ParameterizedTest
     @MethodSource("setUpGoal")
     void createAtService(CreateGoalRequest createGoalRequest) {
-        String serviceRequestUrl = DeployTestEnum.SERVICE_URL.getValue()+ requestMapping;
+        String serviceRequestUrl = DeployTestEnum.SERVICE_URL.getValue() + requestMapping;
 
         // when
         EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.post()

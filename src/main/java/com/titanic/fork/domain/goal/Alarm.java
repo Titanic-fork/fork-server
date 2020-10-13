@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@NoArgsConstructor
+@Getter @NoArgsConstructor
 public class Alarm {
 
     @Id
@@ -34,13 +33,5 @@ public class Alarm {
         this.targetDayOfWeeks = targetDayOfWeeks;
         this.alarmTime = alarmTime;
         this.content = content;
-    }
-
-    public static Alarm of(List<String> targetDayOfWeeks, CreateGoalRequest createGoalRequest) {
-        return Alarm.builder()
-                .targetDayOfWeeks(targetDayOfWeeks)
-                .alarmTime(createGoalRequest.getAlarmTime())
-                .content(createGoalRequest.getContent())
-                .build();
     }
 }

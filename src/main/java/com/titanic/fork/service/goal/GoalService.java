@@ -13,6 +13,7 @@ import com.titanic.fork.domain.goal.AchievementCalculator;
 import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,9 +42,9 @@ public class GoalService {
         targetDayOfWeeks.add(createGoalRequest.getTargetDayOfWeeks());
 
         // 알람 생성
-        Alarm alarm = Alarm.of(targetDayOfWeeks, createGoalRequest);
+        Alarm alarm = CreateGoalRequest.toEntity(targetDayOfWeeks, createGoalRequest);
         // AccountGoal 생성
-        AccountGoal accountGoal = AccountGoal.of(alarm, createGoalRequest);
+        AccountGoal accountGoal = CreateGoalRequest.toEntity(alarm, createGoalRequest);
 
         // account에 accountGoal를 추가
         AccountGoal savedAccountGoal = foundAccount.addAccountGoal(accountGoal);
@@ -62,5 +63,9 @@ public class GoalService {
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
 
         return achievementCalculator.calculateAchievement(foundAccountGoal, todayTime, weeklyTime);
+    }
+
+    public ResponseEntity<Void> start(Long goalId, HttpServletRequest request) {
+        return null;
     }
 }

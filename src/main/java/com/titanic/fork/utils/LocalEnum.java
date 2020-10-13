@@ -10,7 +10,7 @@ public enum LocalEnum {
     JWT_TOKEN_GUSWNS1655("eyJIUzI1NiI6IkhTMjU2IiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJBdXRob3JpemF0aW9uIjoiZ3Vzd25zMTY1NUBnbWFpbC5jb20iLCJzdWIiOiJndXN3bnMxNjU1QGdtYWlsLmNvbSIsImV4cCI6MTYwMTcyMzQ5NCwiaWF0IjoxNjAwODU5NDk0fQ.Qj7wFePBD7IPqj6RQalNTN12_Tp15mWHEa1o0Dp6TGQ"),
     ORIGIN("Origin"), ALL("*");
 
-    private String value;
+    public String value;
 
     LocalEnum(String value) {
         this.value = value;

@@ -48,14 +48,12 @@ public class AccountControllerTest {
         RegisterRequest registerRequest = RegisterRequest.of(email, password, name, phoneNumber);
 
         // when
-        final ResultActions actions = mockMvc.perform(post(REQUEST_MAPPING)
+        mockMvc.perform(post(REQUEST_MAPPING)
                 .header(LocalEnum.ORIGIN.getValue(), LocalEnum.ALL.getValue())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(registerRequest))
                 .accept(MediaType.APPLICATION_JSON))
-                .andDo(print());
-        // then
-        MvcResult mvcResult = actions
+                .andDo(print())
                 .andExpect(status().isCreated())
                 .andReturn();
     }
