@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NewPasswordRequest {
 
+    // TODO : 사용하지 않는 필드, 추후 삭제
     private String email;
     private String newPassword;
 

@@ -38,16 +38,24 @@ public class AccountService {
         foundAccount.changePhoneNumber(newPhoneNumberRequest);
     }
 
-    public void validateNameAndPassword(ValidateNameAndPasswordRequest validateNameAndPasswordRequest) {
+    /**
+     * 이름과 이메일이 같은 경우 헤더에 JwtToken을 발행해서 비빌번호 변경 시 validation 처리를 한다.
+     */
+    public void validateNameAndPassword(ValidateNameAndPasswordRequest validateNameAndPasswordRequest,
+                                        HttpServletResponse response) {
         Account foundAccount = accountRepository.findByEmail(validateNameAndPasswordRequest.getEmail());
         if (!foundAccount.isEqualName(validateNameAndPasswordRequest.getName())) {
             throw new NoSuchAccountException();
         }
+        String jwtTokenWithEmail = jwtProvider.createJwtTokenWithEmail(foundAccount.getEmail());
+        response.setHeader(LoginEnum.AUTHORIZATION.getValue(), jwtTokenWithEmail);
     }
 
-    public void changePassword(NewPasswordRequest newPasswordRequest) {
-        Account foundAccount = accountRepository.findByEmail(newPasswordRequest.getEmail());
-        foundAccount.changePassword(newPasswordRequest.getNewPassword());
+    public void changePassword(NewPasswordRequest newPasswordRequest, HttpServletRequest request) {
+//        Account foundAccount = accountRepository.findByEmail(newPasswordRequest.getEmail());
+        Account foundAccount = findByEmail(request);
+        String encodePassword = passwordEncoder.encode(newPasswordRequest.getNewPassword());
+        foundAccount.changePassword(encodePassword);
     }
 
     public void login(LoginRequest loginRequest, HttpServletResponse response) {

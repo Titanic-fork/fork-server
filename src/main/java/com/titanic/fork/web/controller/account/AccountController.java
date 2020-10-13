@@ -60,8 +60,9 @@ public class AccountController {
                     "401 : 이름과 이메일이 다른 경우")
     @PutMapping("/authentication")
     public ResponseEntity<Void> validateNameAndPassword(@RequestBody ValidateNameAndPasswordRequest
-                                                                validateNameAndPasswordRequest) {
-        accountService.validateNameAndPassword(validateNameAndPasswordRequest);
+                                                                validateNameAndPasswordRequest,
+                                                        HttpServletResponse response) {
+        accountService.validateNameAndPassword(validateNameAndPasswordRequest, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -71,8 +72,9 @@ public class AccountController {
     @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
             paramType = "header", dataType = "string", example = JWT_TOKEN)
     @PutMapping("password")
-    public ResponseEntity<Void> changePassword(@RequestBody NewPasswordRequest newPasswordRequest) {
-        accountService.changePassword(newPasswordRequest);
+    public ResponseEntity<Void> changePassword(@RequestBody NewPasswordRequest newPasswordRequest,
+                                               HttpServletRequest request) {
+        accountService.changePassword(newPasswordRequest, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

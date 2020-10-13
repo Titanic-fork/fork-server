@@ -7,6 +7,8 @@ import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,6 +35,7 @@ public class AccountControllerIntegrationTest {
 
     private final static String REQUEST_MAPPING = "/account";
     private static final String token = LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.token;
+    private Logger log = LoggerFactory.getLogger(AccountControllerIntegrationTest.class);
 
     @DisplayName("회원가입API를_테스트한다")
     @ParameterizedTest
@@ -41,7 +44,6 @@ public class AccountControllerIntegrationTest {
 
         // given
         String localRequestUrl = LocalEnum.LOCALHOST.getValue() + port + REQUEST_MAPPING;
-//        String apiRequestUrl = TestEnum.SERVICE_URL.getValue() + requestMapping;
         RegisterRequest registerRequest = RegisterRequest.of(email,password,name,phoneNumber);
 
         // when
@@ -56,8 +58,8 @@ public class AccountControllerIntegrationTest {
          * 회원가입 성공 후 Header.Authorization에 Jwt토큰이 담기는 지 테스트
          * 실패 시 HttpStatus = 500(BAD_REQUEST)
          */
-        System.out.println("token = " + registerResponse.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
-        assertThat(registerResponse.getStatus()).isEqualTo(HttpStatus.CREATED);
+        log.info("token = {}", registerResponse.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
+        assertThat(registerResponse.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     @DisplayName("로그인API테스트")
@@ -77,9 +79,12 @@ public class AccountControllerIntegrationTest {
                 .expectBody(ResponseEntity.class)
                 .returnResult();
 
-        // then
+        /* then
+         * 로그인 성공 후 Header.Authorization에 Jwt토큰이 담기는 지 테스트
+         * 실패 시 HttpStatus = 500(BAD_REQUEST)
+         */
+        log.info("token = {} ", responseEntity.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
         assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.OK);
-//        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.FORBIDDEN);
     }
 
     @DisplayName("중복된 이메일인지 확인하는 API 테스트")
@@ -123,7 +128,7 @@ public class AccountControllerIntegrationTest {
     }
 
     @ParameterizedTest
-    @CsvSource({"hyunjun,guswns1653@gmail.com"})
+    @CsvSource({"hyunjun,localTest1@gmail.com"})
     void validateNameAndPassword(String name, String email) {
 
         // given
@@ -131,9 +136,9 @@ public class AccountControllerIntegrationTest {
         ValidateNameAndPasswordRequest validateNameAndPasswordRequest = ValidateNameAndPasswordRequest.of(name, email);
 
         // when
-        EntityExchangeResult<ResponseEntity> responseEntityEntityExchangeResult = webTestClient.put()
+        EntityExchangeResult<ResponseEntity> responseEntity = webTestClient.put()
                 .uri(requestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), token)
                 .body(Mono.just(validateNameAndPasswordRequest), ValidateNameAndPasswordRequest.class)
                 .exchange()
                 .expectBody(ResponseEntity.class)
@@ -142,7 +147,8 @@ public class AccountControllerIntegrationTest {
         /* then
          * 이름과 이메일이 일치하면 OK(200) / 아니면 401(UnAuthorized)
          */
-        assertThat(responseEntityEntityExchangeResult.getStatus()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEntity.getStatus()).isEqualTo(HttpStatus.OK);
+        log.info("token : {}", responseEntity.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
     }
 
     @ParameterizedTest
@@ -156,7 +162,7 @@ public class AccountControllerIntegrationTest {
         // when
         EntityExchangeResult<ResponseEntity> newPasswordRequestEntityExchangeResult = webTestClient.put()
                 .uri(requestUrl)
-                .header(LoginEnum.AUTHORIZATION.getValue(), LocalEnum.JWT_TOKEN_GUSWNS1653.getValue())
+                .header(LoginEnum.AUTHORIZATION.getValue(), token)
                 .body(Mono.just(newPasswordRequest), NewPasswordRequest.class)
                 .exchange()
                 .expectBody(ResponseEntity.class)
