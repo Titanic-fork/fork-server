@@ -68,7 +68,7 @@ public class AccountController {
 
     @ApiOperation(value = "비밀번호 수정API",
                     notes = "200 : 성공 \n" +
-                            "500 : 서버 에러 (두 비밀번호가 같다는 전제)")
+                            "500 : 서버 에러")
     @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
             paramType = "header", dataType = "string", example = JWT_TOKEN)
     @PutMapping("password")

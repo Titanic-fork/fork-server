@@ -1,17 +1,15 @@
 package com.titanic.fork.web.controller.goal;
 
 import com.titanic.fork.service.goal.GoalService;
-import com.titanic.fork.utils.LocalEnum;
-import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
-import com.titanic.fork.web.login.LoginEnum;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,6 +47,7 @@ public class GoalController {
         return goalService.getAchievement(goalId, todayElapsedTime, weeklyElapsedTime, request);
     }
 
+    @ApiIgnore
     @ApiOperation(value = "시작버튼 API",
     notes = "200 : 성공 \n" +
             "500 : 서버 에러")

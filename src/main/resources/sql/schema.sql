@@ -1,4 +1,5 @@
 drop table if exists point_image;
+drop table if exists point;
 drop table if exists points;
 drop table if exists account_goal;
 drop table if exists goal;
