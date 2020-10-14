@@ -21,9 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class PointController {
 
     private final PointService pointService;
-    private static final String JWT_TOKEN = "eyJIUzI1NiI6IkhTMjU2IiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ" +
-            ".eyJBdXRob3JpemF0aW9uIjoiZ3Vzd25zMTY1M0BnbWFpbC5jb20iLCJzdWIiOiJndXN3bnMxNjUzQGdtYWlsLmNvbSIsImV4cCI6MTYwMTg5NzYxNywiaWF0IjoxNjAxMDMzNjE3fQ" +
-            ".nfrrASV5ltnTCmffrXshuyNDrWo6pAcggtvzMk1_M9o";
+    private static final String JWT_TOKEN = "eyJIUzI1NiI6IkhTMjU2IiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJBdXRob3JpemF0aW9uIjoiZ3Vzd25zMTY1OUBnbWFpbC5jb20iLCJzdWIiOiJndXN3bnMxNjU5QGdtYWlsLmNvbSIsImV4cCI6MTYzNDIyMTA4MSwiaWF0IjoxNjAyNjg1MDgxfQ.Wq9MU5UJ7oUkKTiInSerINLdAfKEVJJmO5KLLiw3tz4";
 
 
     @ApiOperation(value = "메인화면 속 사용자의 누적 및 사용가능 포인트 조회 API",
@@ -31,8 +29,8 @@ public class PointController {
                     "500 : 서버 에러")
     @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
             paramType = "header", dataType = "string", example = JWT_TOKEN)
-    @GetMapping("{goalId}")
-    public PointResponse getTotalAndAvailablePoint(@PathVariable Long goalId,
+    @GetMapping("{goal-id}")
+    public PointResponse getTotalAndAvailablePoint(@PathVariable("goal-id") Long goalId,
                                                    HttpServletRequest request) {
         return pointService.getTotalAndAvailablePoint(goalId, request);
     }
@@ -42,8 +40,8 @@ public class PointController {
                     "500 : 서버 에러")
     @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
             paramType = "header", dataType = "string", example = JWT_TOKEN)
-    @GetMapping("{goalId}/saved/{year}/{month}")
-    public MonthlyPointResponse getMonthlySavedPoint(@PathVariable Long goalId,
+    @GetMapping("{goal-id}/saved/{year}/{month}")
+    public MonthlyPointResponse getMonthlySavedPoint(@PathVariable("goal-id") Long goalId,
                                                      @PathVariable Integer year,
                                                      @PathVariable Integer month,
                                                      HttpServletRequest request) {
@@ -55,8 +53,8 @@ public class PointController {
                     "500 : 서버 에러")
     @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
             paramType = "header", dataType = "string", example = JWT_TOKEN)
-    @GetMapping("{goalId}/used/{year}/{month}")
-    public MonthlyPointResponse getMonthlyUsedPoint(@PathVariable Long goalId,
+    @GetMapping("{goal-id}/used/{year}/{month}")
+    public MonthlyPointResponse getMonthlyUsedPoint(@PathVariable("goal-id") Long goalId,
                                                     @PathVariable Integer year,
                                                     @PathVariable Integer month,
                                                     HttpServletRequest request) {
@@ -68,8 +66,8 @@ public class PointController {
                     "500 : 서버 에러")
     @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
             paramType = "header", dataType = "string", example = JWT_TOKEN)
-    @GetMapping("{goalId}/ranking/{year}/{month}")
-    public PointRankingResponse getMonthlyPointRanking(@PathVariable Long goalId,
+    @GetMapping("{goal-id}/ranking/{year}/{month}")
+    public PointRankingResponse getMonthlyPointRanking(@PathVariable("goal-id") Long goalId,
                                                        @PathVariable Integer year,
                                                        @PathVariable Integer month,
                                                        HttpServletRequest request) {

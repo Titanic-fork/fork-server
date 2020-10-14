@@ -28,7 +28,7 @@ public class RegisterService {
         String encodePassword = passwordEncoder.encode(registerRequest.getPassword());
         Member account = Member.of(registerRequest, encodePassword);
         accountRepository.save(account);
-        jwtProvider.loadJwtToHeader(response, registerRequest);
+//        jwtProvider.loadJwtToHeader(response, registerRequest);
     }
 
     public void validateDuplicatedEmail(String email) {
