@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -35,6 +36,10 @@ public class AccountGoal {
     private Alarm alarm;
 
     private LocalTime targetTime;
+    private LocalDateTime startTime;
+    // 소요시간은 시,분,초만 필요하니까 LocalTime으로 설정
+    private LocalTime todayElapsedTime;
+    private LocalTime weeklyElapsedTime;
 
     @Builder
     public AccountGoal(Account account, Goal goal, Alarm alarm, LocalTime targetTime) {
@@ -50,5 +55,9 @@ public class AccountGoal {
 
     public void addGoal(Goal goal) {
         this.goal = goal;
+    }
+
+    public void start() {
+        this.startTime = LocalDateTime.now();
     }
 }

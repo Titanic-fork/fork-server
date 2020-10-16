@@ -2,17 +2,22 @@ package com.titanic.fork.repository.accountGoal;
 
 import com.titanic.fork.domain.Account.AccountGoal;
 import com.titanic.fork.exception.accountGoal.NoSuchAccountGoalException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class AccountGoalRepository {
 
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public AccountGoal findByAccountIdAndGoalId(Long accountId, Long goalId) {
         List<AccountGoal> foundAccountGoal = entityManager.createQuery("select ag from AccountGoal as ag where ag.account.id = :accountId and ag.goal.id = :goalId", AccountGoal.class)

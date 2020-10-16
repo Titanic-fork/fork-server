@@ -56,8 +56,7 @@ public class GoalController {
     @GetMapping("{goal-id}/start")
     public ResponseEntity<Void> start(@PathVariable(value = "goal-id") Long goalId,
                                       HttpServletRequest request) {
-        return goalService.start(goalId, request);
+        goalService.start(goalId, request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }

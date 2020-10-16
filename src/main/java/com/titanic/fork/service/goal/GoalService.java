@@ -12,7 +12,9 @@ import com.titanic.fork.service.account.AccountService;
 import com.titanic.fork.domain.goal.AchievementCalculator;
 import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,7 +67,10 @@ public class GoalService {
         return achievementCalculator.calculateAchievement(foundAccountGoal, todayTime, weeklyTime);
     }
 
-    public ResponseEntity<Void> start(Long goalId, HttpServletRequest request) {
-        return null;
+    public void start(Long goalId, HttpServletRequest request) {
+        Account foundAccount = accountService.findByEmail(request);
+        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
+        // 더티 체킹으로 자동으로 변경 SQL 실행.
+        foundAccountGoal.start();
     }
 }

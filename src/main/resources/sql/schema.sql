@@ -19,9 +19,12 @@ create table account (
 
 create table account_goal (
        id bigint not null auto_increment,
+        start_time datetime,
         target_time time,
+        today_elapsed_time time,
+        weekly_elapsed_time time,
         account_id bigint,
-        ALARM_ID bigint,
+        alarm_id bigint,
         goal_id bigint,
         primary key (id)
 );

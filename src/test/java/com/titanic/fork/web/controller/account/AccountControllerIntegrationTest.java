@@ -58,7 +58,6 @@ public class AccountControllerIntegrationTest {
          * 회원가입 성공 후 Header.Authorization에 Jwt토큰이 담기는 지 테스트
          * 실패 시 HttpStatus = 500(BAD_REQUEST)
          */
-        log.info("token = {}", registerResponse.getResponseHeaders().get(LoginEnum.AUTHORIZATION.getValue()));
         assertThat(registerResponse.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
