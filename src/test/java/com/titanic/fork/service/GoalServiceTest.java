@@ -6,6 +6,7 @@ import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
 import com.titanic.fork.repository.goal.GoalRepository;
 import com.titanic.fork.service.goal.GoalService;
+import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -43,11 +44,10 @@ public class GoalServiceTest {
     @CsvSource({"1,1"})
     void start(int goalId, int accountId) {
 
-        // given
-        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId((long) accountId, (long) goalId);
-
         // when
+        when(request.getAttribute(LoginEnum.USER_EMAIL.value)).thenReturn("localTest1@gmail.com");
         goalService.start((long) goalId, request);
+        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId((long) accountId, (long) goalId);
 
         // then
         assertThat(foundAccountGoal.getStartTime()).isAfter(LocalDateTime.now());
