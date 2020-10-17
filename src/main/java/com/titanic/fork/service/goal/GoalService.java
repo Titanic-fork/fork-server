@@ -93,4 +93,8 @@ public class GoalService {
         pointRepository.save(savingPoint);
         return ElapsedTimeResponse.from(elapsedTime);
     }
+
+    public void calculateDistance(Long goalId, double latitude, double longitude, HttpServletRequest request) {
+
+    }
 }

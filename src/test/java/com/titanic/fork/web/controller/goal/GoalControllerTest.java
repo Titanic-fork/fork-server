@@ -4,6 +4,7 @@ import com.titanic.fork.service.goal.GoalService;
 import com.titanic.fork.utils.LocalEnum;
 import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.login.LoginEnum;
+import org.apache.tomcat.jni.Local;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -58,6 +59,25 @@ public class GoalControllerTest {
 
         // given
         String requestUrl = LocalEnum.LOCALHOST.value + REQUEST_MAPPING + "/" + goalId + "/end";
+
+        // when, then
+        mockMvc.perform(get(requestUrl)
+                .header(LocalEnum.ORIGIN.value, LocalEnum.ALL.value)
+                .header(LoginEnum.AUTHORIZATION.value, token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @DisplayName("calculateDistance API 테스트, 실제 21m거리 예시")
+    @ParameterizedTest
+    @CsvSource({"1,37.51056,127.11285"})
+    void calculateDistance(int goalId, double latitude, double longitude) throws Exception {
+        // given
+        String requestUrl = LocalEnum.LOCALHOST.value + REQUEST_MAPPING + "/" + goalId +
+                "?latitude=" + latitude + "&longitude=" + longitude;
 
         // when, then
         mockMvc.perform(get(requestUrl)

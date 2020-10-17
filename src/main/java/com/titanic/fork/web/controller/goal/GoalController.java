@@ -70,4 +70,18 @@ public class GoalController {
                                    HttpServletRequest request) {
         return goalService.end(goalId, request);
     }
+
+    @ApiOperation(value = "사용자와 목표 사이 거리 계산 API",
+            notes = "200 : 시작 가능 \n" +
+                    "403 : 거리가 멀어 시작 불가능")
+    @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
+            paramType = "header", dataType = "string", example = JWT_TOKEN)
+    @GetMapping("{goal-id}")
+    public ResponseEntity<Void> calculateDistance(@PathVariable(value = "goal-id") Long goalId,
+                                   @RequestParam(value = "latitude") double latitude,
+                                   @RequestParam(value = "longitude") double longitude,
+                                   HttpServletRequest request) {
+        goalService.calculateDistance(goalId, latitude, longitude, request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
