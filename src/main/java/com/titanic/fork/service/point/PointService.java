@@ -8,10 +8,7 @@ import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
 import com.titanic.fork.repository.point.PointRepository;
 import com.titanic.fork.service.account.AccountService;
 import com.titanic.fork.utils.DateSupplier;
-import com.titanic.fork.web.dto.response.point.EachMonthlySavedPointStatus;
-import com.titanic.fork.web.dto.response.point.MonthlyPointResponse;
-import com.titanic.fork.web.dto.response.point.PointRankingResponse;
-import com.titanic.fork.web.dto.response.point.PointResponse;
+import com.titanic.fork.web.dto.response.point.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,5 +71,9 @@ public class PointService {
                 pointCalculator.getRankingOfPoints(foundAccountGoals, year, month);
 
         return PointRankingResponse.of(eachMonthlySavedPoints);
+    }
+
+    public PointHistoriesResponse getPointHistory(Long goalId, HttpServletRequest request) {
+        return null;
     }
 }
