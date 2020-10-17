@@ -4,6 +4,7 @@ import com.titanic.fork.domain.Account.AccountGoal;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "points")
+@SuperBuilder
 public abstract class Point {
 
     @Id

@@ -1,5 +1,6 @@
 package com.titanic.fork.repository.point;
 
+import com.titanic.fork.domain.Account.AccountGoal;
 import com.titanic.fork.domain.point.Point;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -51,5 +52,9 @@ public class PointRepository {
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate)
                 .getResultList();
+    }
+
+    public void save(Point point) {
+        entityManager.persist(point);
     }
 }

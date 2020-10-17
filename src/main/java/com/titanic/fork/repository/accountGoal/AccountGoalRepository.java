@@ -44,4 +44,8 @@ public class AccountGoalRepository {
         }
         return foundAccountGoals;
     }
+
+    public void save(AccountGoal accountGoal) {
+        entityManager.persist(accountGoal);
+    }
 }

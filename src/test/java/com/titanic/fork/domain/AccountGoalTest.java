@@ -20,7 +20,6 @@ public class AccountGoalTest {
 
     @Test
     void start() {
-
         // given
         LocalDateTime now = LocalDateTime.now();
 
@@ -29,8 +28,14 @@ public class AccountGoalTest {
 
         // then
         assertThat(accountGoal.getStartTime()).isAfter(now);
-
     }
 
+    @Test
+    void calculateElapsedTime() {
+        // given
+        LocalDateTime start = LocalDateTime.now();
 
+        // when
+        accountGoal.calculateElapsedTime();
+    }
 }

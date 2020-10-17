@@ -3,6 +3,7 @@ package com.titanic.fork.web.controller.goal;
 import com.titanic.fork.service.goal.GoalService;
 import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
+import com.titanic.fork.web.dto.response.goal.ElapsedTimeResponse;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -65,9 +66,8 @@ public class GoalController {
     @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
             paramType = "header", dataType = "string", example = JWT_TOKEN)
     @GetMapping("{goal-id}/end")
-    public ResponseEntity<Void> end(@PathVariable(value = "goal-id") Long goalId,
-                                      HttpServletRequest request) {
-//        goalService.end(goalId, request);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ElapsedTimeResponse end(@PathVariable(value = "goal-id") Long goalId,
+                                   HttpServletRequest request) {
+        return goalService.end(goalId, request);
     }
 }

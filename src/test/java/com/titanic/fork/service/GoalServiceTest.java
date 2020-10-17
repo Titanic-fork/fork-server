@@ -1,20 +1,14 @@
 package com.titanic.fork.service;
 
-import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.AccountGoal;
-import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
-import com.titanic.fork.repository.goal.GoalRepository;
 import com.titanic.fork.service.goal.GoalService;
+import com.titanic.fork.web.dto.response.goal.ElapsedTimeResponse;
 import com.titanic.fork.web.login.LoginEnum;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +47,20 @@ public class GoalServiceTest {
         // then
         log.info("startTime {}", foundAccountGoal.getStartTime());
         assertThat(foundAccountGoal.getStartTime()).isBefore(LocalDateTime.now());
+    }
+
+    @DisplayName("종료버튼 누르면 소요시간을 리턴하는 테스트")
+    @ParameterizedTest
+    @CsvSource({"1"})
+    void end(int goalId) {
+
+        // when
+        when(request.getAttribute(LoginEnum.USER_EMAIL.value)).thenReturn("localTest1@gmail.com");
+        ElapsedTimeResponse elapsedTimeResponse = goalService.end((long) goalId, request);
+
+        // then
+        log.info("elapsedTimeResponse {}", elapsedTimeResponse);
+        assertThat(elapsedTimeResponse.getElapsedHour()).isLessThan(23);
+        assertThat(elapsedTimeResponse.getElapsedMinute()).isLessThan(60);
     }
 }
