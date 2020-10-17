@@ -28,7 +28,7 @@ public class PointServiceTest {
     private Logger log = LoggerFactory.getLogger(PointServiceTest.class);
 
     @ParameterizedTest
-    @CsvSource({"1,1"})
+    @CsvSource({"1,2"})
     void getPointHistory(int goalId, int expectedSize) {
         // when
         when(request.getAttribute(LoginEnum.USER_EMAIL.value)).thenReturn("localTest1@gmail.com");

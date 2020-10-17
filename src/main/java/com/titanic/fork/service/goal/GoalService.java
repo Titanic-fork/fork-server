@@ -96,7 +96,7 @@ public class GoalService {
     }
 
     /** 사용자와 목표의 거리 계산 메서드
-     *  기준 거리 : 50m
+     *  기준 거리 : 300m
      */
     public boolean calculateDistance(Long goalId, double latitude, double longitude, HttpServletRequest request) {
         Goal foundGoal = goalRepository.findById(goalId);
