@@ -39,9 +39,11 @@ public class AccountGoal {
 
     private LocalTime targetTime;
     private LocalDateTime startTime;
-    // 소요시간은 시,분,초만 필요하니까 LocalTime으로 설정
-    private LocalTime todayElapsedTime;
-    private LocalTime weeklyElapsedTime;
+    /**
+      * 소요시간은 시간만 필요하니까 int으로 설정
+      */
+    private int todayElapsedTime;
+    private int weeklyElapsedTime;
 
     @Builder
     public AccountGoal(Account account, Goal goal, Alarm alarm, LocalTime targetTime) {
@@ -88,9 +90,7 @@ public class AccountGoal {
     }
 
     private void addElapsedTime(LocalTime elapsedTime) {
-        todayElapsedTime = todayElapsedTime.plusHours(elapsedTime.getHour());
-        todayElapsedTime = todayElapsedTime.plusMinutes(elapsedTime.getMinute());
-        weeklyElapsedTime = weeklyElapsedTime.plusHours(elapsedTime.getHour());
-        weeklyElapsedTime = weeklyElapsedTime.plusMinutes(elapsedTime.getMinute());
+        todayElapsedTime += elapsedTime.getHour();
+        weeklyElapsedTime += elapsedTime.getHour();
     }
 }

@@ -61,6 +61,6 @@ public class GoalServiceTest {
         // then
         log.info("elapsedTimeResponse {}", elapsedTimeResponse);
         assertThat(elapsedTimeResponse.getElapsedHour()).isLessThan(23);
-        assertThat(elapsedTimeResponse.getElapsedMinute()).isLessThan(60);
+        assertThat(elapsedTimeResponse.getElapsedMinute()).isLessThan(59);
     }
 }
