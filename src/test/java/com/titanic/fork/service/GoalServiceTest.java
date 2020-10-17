@@ -63,4 +63,16 @@ public class GoalServiceTest {
         assertThat(elapsedTimeResponse.getElapsedHour()).isLessThan(23);
         assertThat(elapsedTimeResponse.getElapsedMinute()).isLessThan(59);
     }
+
+    @DisplayName("사용자와 목표의 거리를 계산하는 테스트")
+    @ParameterizedTest
+    @CsvSource({"1,37.51056,127.11285"})
+    void calculateDistance(int goalId, double latitude, double longitude) {
+        // when
+        when(request.getAttribute(LoginEnum.USER_EMAIL.value)).thenReturn("localTest1@gmail.com");
+        boolean result = goalService.calculateDistance((long) goalId, latitude, longitude, request);
+
+        // then
+        assertThat(result).isTrue();
+    }
 }

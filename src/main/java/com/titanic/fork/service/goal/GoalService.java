@@ -12,13 +12,14 @@ import com.titanic.fork.repository.account.AccountRepository;
 import com.titanic.fork.repository.point.PointRepository;
 import com.titanic.fork.service.account.AccountService;
 import com.titanic.fork.domain.goal.AchievementCalculator;
+import com.titanic.fork.utils.checker.CheckerFactory;
+import com.titanic.fork.utils.checker.DistanceChecker;
+import com.titanic.fork.utils.checker.DistanceUnit;
 import com.titanic.fork.web.dto.request.goal.AchievementResponse;
 import com.titanic.fork.web.dto.request.goal.CreateGoalRequest;
 import com.titanic.fork.web.dto.response.goal.ElapsedTimeResponse;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.aspectj.weaver.Checker;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,7 +80,7 @@ public class GoalService {
         foundAccountGoal.start();
     }
 
-    /** 종료버튼 API
+    /** 종료버튼 메서드
      *  종료버튼 누르면 해당 AccountGoal의 startTime으로 소요시간 계산
      * @return ElapsedTimeResponse
      */
@@ -94,7 +95,14 @@ public class GoalService {
         return ElapsedTimeResponse.from(elapsedTime);
     }
 
-    public void calculateDistance(Long goalId, double latitude, double longitude, HttpServletRequest request) {
-
+    /** 사용자와 목표의 거리 계산 메서드
+     *  기준 거리 : 50m
+     */
+    public boolean calculateDistance(Long goalId, double latitude, double longitude, HttpServletRequest request) {
+        Goal foundGoal = goalRepository.findById(goalId);
+        DistanceChecker distanceChecker = CheckerFactory.getInstance().getChecker(DistanceUnit.METER.unit);
+        double distance = distanceChecker.getDistance(foundGoal.getLocation().getLatitude(), foundGoal.getLocation().getLongitude(),
+                latitude, latitude);
+        return distanceChecker.isPossible(distance);
     }
 }

@@ -15,4 +15,8 @@ public class GoalRepository {
     public void save(Goal newGoal) {
         entityManager.persist(newGoal);
     }
+
+    public Goal findById(Long goalId) {
+        return entityManager.find(Goal.class, goalId);
+    }
 }
