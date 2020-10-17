@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 public class PointController {
 
     private final PointService pointService;
-    private static final String JWT_TOKEN = "eyJIUzI1NiI6IkhTMjU2IiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJBdXRob3JpemF0aW9uIjoiZ3Vzd25zMTY1OUBnbWFpbC5jb20iLCJzdWIiOiJndXN3bnMxNjU5QGdtYWlsLmNvbSIsImV4cCI6MTYzNDIyMTA4MSwiaWF0IjoxNjAyNjg1MDgxfQ.Wq9MU5UJ7oUkKTiInSerINLdAfKEVJJmO5KLLiw3tz4";
+    private static final String JWT_TOKEN = "eyJIUzI1NiI6IkhTMjU2IiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJBdXRob3JpemF0aW9uIjoiZ3Vzd25zMTY1MUBnbWFpbC5jb20iLCJzdWIiOiJndXN3bnMxNjUxQGdtYWlsLmNvbSIsImV4cCI6MTYzNDQ4NjI5MiwiaWF0IjoxNjAyOTUwMjkyfQ.AX1YqEp8X129RCL5_HqJiMlJmJO5jnZP0oabi32TQB8";
 
     @ApiOperation(value = "사용자 포인트 히스토리 API",
             notes = "200 : 성공 \n" +
