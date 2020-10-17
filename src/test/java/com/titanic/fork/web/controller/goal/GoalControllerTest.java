@@ -4,6 +4,7 @@ import com.titanic.fork.service.goal.GoalService;
 import com.titanic.fork.utils.LocalEnum;
 import com.titanic.fork.utils.LocalTestEnum;
 import com.titanic.fork.web.login.LoginEnum;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,32 @@ public class GoalControllerTest {
     private final String REQUEST_MAPPING = "/goal";
     private static final String token = LocalTestEnum.JWT_TOKEN_LOCAL_TEST_1.token;
 
+    @DisplayName("start API 테스트")
     @ParameterizedTest
     @CsvSource({"1"})
     void start(int goalId) throws Exception {
 
         // given
-        String requestUrl = LocalEnum.LOCALHOST.getValue() + REQUEST_MAPPING + "/" + goalId + "/start";
+        String requestUrl = LocalEnum.LOCALHOST.value + REQUEST_MAPPING + "/" + goalId + "/start";
+
+        // when, then
+        mockMvc.perform(get(requestUrl)
+                .header(LocalEnum.ORIGIN.value, LocalEnum.ALL.value)
+                .header(LoginEnum.AUTHORIZATION.value, token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @DisplayName("end API 테스트")
+    @ParameterizedTest
+    @CsvSource({"1"})
+    void end(int goalId) throws Exception {
+
+        // given
+        String requestUrl = LocalEnum.LOCALHOST.value + REQUEST_MAPPING + "/" + goalId + "/end";
 
         // when, then
         mockMvc.perform(get(requestUrl)

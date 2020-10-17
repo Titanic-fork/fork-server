@@ -47,7 +47,6 @@ public class GoalController {
         return goalService.getAchievement(goalId, todayElapsedTime, weeklyElapsedTime, request);
     }
 
-    @ApiIgnore
     @ApiOperation(value = "시작버튼 API",
     notes = "200 : 성공 \n" +
             "500 : 서버 에러")
@@ -57,6 +56,18 @@ public class GoalController {
     public ResponseEntity<Void> start(@PathVariable(value = "goal-id") Long goalId,
                                       HttpServletRequest request) {
         goalService.start(goalId, request);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "종료버튼 API",
+            notes = "200 : 성공 \n" +
+                    "500 : 서버 에러")
+    @ApiImplicitParam(name = "Authorization", value = "test jwt token", required = true,
+            paramType = "header", dataType = "string", example = JWT_TOKEN)
+    @GetMapping("{goal-id}/end")
+    public ResponseEntity<Void> end(@PathVariable(value = "goal-id") Long goalId,
+                                      HttpServletRequest request) {
+//        goalService.end(goalId, request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

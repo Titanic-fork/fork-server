@@ -7,6 +7,7 @@ import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
 import com.titanic.fork.repository.goal.GoalRepository;
 import com.titanic.fork.service.goal.GoalService;
 import com.titanic.fork.web.login.LoginEnum;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -37,9 +38,9 @@ public class GoalServiceTest {
 
     @Mock
     private HttpServletRequest request;
-
     private Logger log = LoggerFactory.getLogger(GoalServiceTest.class);
 
+    @DisplayName("시작버튼 누르면 해당 AccountGoal에 startTime 필드에 값추가 테스트")
     @ParameterizedTest
     @CsvSource({"1,1"})
     void start(int goalId, int accountId) {
@@ -50,7 +51,7 @@ public class GoalServiceTest {
         AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId((long) accountId, (long) goalId);
 
         // then
-        assertThat(foundAccountGoal.getStartTime()).isAfter(LocalDateTime.now());
         log.info("startTime {}", foundAccountGoal.getStartTime());
+        assertThat(foundAccountGoal.getStartTime()).isBefore(LocalDateTime.now());
     }
 }
