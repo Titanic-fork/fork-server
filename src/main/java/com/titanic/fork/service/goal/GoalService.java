@@ -102,7 +102,7 @@ public class GoalService {
         Goal foundGoal = goalRepository.findById(goalId);
         DistanceChecker distanceChecker = CheckerFactory.getInstance().getChecker(DistanceUnit.METER.unit);
         double distance = distanceChecker.getDistance(foundGoal.getLocation().getLatitude(), foundGoal.getLocation().getLongitude(),
-                latitude, latitude);
+                latitude, longitude);
         return distanceChecker.isPossible(distance);
     }
 }
