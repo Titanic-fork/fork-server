@@ -18,6 +18,6 @@ public class MeterDistanceChecker implements DistanceChecker {
 
     @Override
     public boolean isPossible(double distance) {
-        return (distance > 50) ? false : true;
+        return (distance > 300) ? false : true;
     }
 }

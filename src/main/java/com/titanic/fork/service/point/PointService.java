@@ -4,6 +4,7 @@ import com.titanic.fork.domain.Account.Account;
 import com.titanic.fork.domain.Account.AccountGoal;
 import com.titanic.fork.domain.point.Point;
 import com.titanic.fork.domain.point.PointCalculator;
+import com.titanic.fork.domain.point.Points;
 import com.titanic.fork.repository.accountGoal.AccountGoalRepository;
 import com.titanic.fork.repository.point.PointRepository;
 import com.titanic.fork.service.account.AccountService;
@@ -74,6 +75,9 @@ public class PointService {
     }
 
     public PointHistoriesResponse getPointHistory(Long goalId, HttpServletRequest request) {
-        return null;
+        Account foundAccount = accountService.findByEmail(request);
+        AccountGoal foundAccountGoal = accountGoalRepository.findByAccountIdAndGoalId(foundAccount.getId(), goalId);
+        Points points = pointRepository.findAllPointByAccountGoalId(foundAccountGoal.getId());
+        return PointHistoriesResponse.from(points);
     }
 }

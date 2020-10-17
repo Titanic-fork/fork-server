@@ -2,6 +2,7 @@ package com.titanic.fork.repository.point;
 
 import com.titanic.fork.domain.Account.AccountGoal;
 import com.titanic.fork.domain.point.Point;
+import com.titanic.fork.domain.point.Points;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -56,5 +57,13 @@ public class PointRepository {
 
     public void save(Point point) {
         entityManager.persist(point);
+    }
+
+    public Points findAllPointByAccountGoalId(Long accountGoalId) {
+        List<Point> points = entityManager.createQuery("select p from Point as p " +
+                "where p.accountGoal.id = :accountGoalId", Point.class)
+                .setParameter("accountGoalId", accountGoalId)
+                .getResultList();
+        return Points.from(points);
     }
 }
